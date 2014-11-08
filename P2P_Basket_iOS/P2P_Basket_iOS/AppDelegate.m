@@ -17,6 +17,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0){
+        [application setStatusBarStyle:UIStatusBarStyleLightContent];//黑体白字
+    }
     return YES;
 }
 
