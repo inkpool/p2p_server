@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "RootViewController.h"
 
 @interface AppDelegate ()
 
@@ -20,6 +21,14 @@
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0){
         [application setStatusBarStyle:UIStatusBarStyleLightContent];//黑体白字
     }
+    
+//    UIViewController *rootViewController = [[UIStoryboard
+//                           storyboardWithName:@"Main" bundle:nil]
+//                          instantiateViewControllerWithIdentifier:@"navigationController"];
+
+    RootViewController *rootviewController = [[RootViewController alloc] init];
+    self.window.rootViewController = rootviewController;
+    
     return YES;
 }
 

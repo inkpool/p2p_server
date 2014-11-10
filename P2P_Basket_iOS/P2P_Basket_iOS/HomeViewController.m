@@ -23,7 +23,7 @@
     CGFloat screen_width = size.width;
     CGFloat screen_height = size.height;
     
-    
+
     //left_bt上显示一个UIView(红色背景，红色背景上又一个Label，显示到期项目的个数)，
     //一个Label（显示“已经到期”），right_bt类似
     //左UIButton
@@ -87,17 +87,19 @@
 
 #pragma mark - ButtonPressedAction
 
-- (IBAction)leftButtonPressed {
+- (IBAction)leftButtonPressed {//左变白色
     UIButton *left_bt = (UIButton *)[self.view viewWithTag:101];
     UIButton *right_bt = (UIButton *)[self.view viewWithTag:102];
     left_bt.backgroundColor = [UIColor whiteColor];//用户选中的为白色
     right_bt.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];//未选中的为浅灰色
 }
 
-- (IBAction)rightButtonPressed {
+- (IBAction)rightButtonPressed {//右变浅灰色
     UIButton *left_bt = (UIButton *)[self.view viewWithTag:101];
     UIButton *right_bt = (UIButton *)[self.view viewWithTag:102];
     left_bt.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
     right_bt.backgroundColor = [UIColor whiteColor];
 }
+
+
 @end
