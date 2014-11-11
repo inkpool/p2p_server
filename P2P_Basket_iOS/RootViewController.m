@@ -1,0 +1,247 @@
+//
+//  RootViewController.m
+//  P2P_Basket_iOS
+//
+//  Created by xuxin on 14-11-10.
+//  Copyright (c) 2014年 inkJake. All rights reserved.
+//
+
+#import "RootViewController.h"
+#import <QuartzCore/QuartzCore.h>
+#import "LeftSliderController.h"
+
+#define RCloseDuration 0.3f
+#define ROpenDuration 0.4f
+#define RContentScale 0.85f
+#define RContentOffset 220.0f
+#define RJudgeOffset 100.0f
+
+@interface RootViewController ()
+{
+    UIView *_mainContentView;
+    UIView *_leftSideView;
+    
+    UITapGestureRecognizer *_tapGestureRec;
+    UIPanGestureRecognizer *_panGestureRec;
+}
+
+@end
+
+static RootViewController *sharedRC;
+@implementation RootViewController
+
++ (id)sharedRootController
+{//单例
+    return sharedRC;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedRC = self;
+    });
+    
+    //初始化，初始化结束后，_mainContentView位于_leftSideView的上层（覆盖），所以最先显示_mainContentView
+    [self initSubviews];
+    [self initChildControllers];
+    
+    
+    
+    _tapGestureRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSideBar)];//只要点击了self.view（即屏幕上的任何一点），_mainContentView就会完全覆盖_leftSideView
+    [self.view addGestureRecognizer:_tapGestureRec];
+    _tapGestureRec.enabled = NO;//未显示_leftSideView，不响应用户普通的点击事件
+    
+    _panGestureRec = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveViewWithGesture:)];
+    [_mainContentView addGestureRecognizer:_panGestureRec];//只有_mainContentView响应手指滑动事件，_mainContentView滑动时，_leftSideView会露出一部分（此时_leftSideView未被_mainContentView完全覆盖）
+    
+}
+
+
+#pragma mark -
+#pragma mark Intialize Method
+
+- (void)initSubviews
+{//self.view显示最上层的view，通过设置最上层的view，实现主界面和slider view的切换
+    
+    UIView *lv = [[UIView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:lv];
+    _leftSideView = lv;
+    
+    UIView *mv = [[UIView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:mv];
+    _mainContentView = mv;
+}
+
+- (void)initChildControllers
+{
+    //初始化“更多”功能界面所在的ViewController
+    LeftSliderController *leftSC = [[LeftSliderController alloc] init];
+    [self addChildViewController:leftSC];
+    [_leftSideView addSubview:leftSC.view];
+    
+    //初始化NavigationController，以显示“主页”、“流水”等tab view
+    UINavigationController *nc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"navigationController"];
+    [self addChildViewController:nc];//添加子视图控制器（添加后，才能响应tabBarController控制的视图中的点击事件）
+    [_mainContentView addSubview:nc.view];
+
+    //NavigationItem：点击左按钮，显示“更多”功能界面；点击右按钮，显示添加“新的投资”的界面
+    UITabBarController *tbc = [nc.childViewControllers firstObject];
+    [tbc.navigationItem.leftBarButtonItem setAction:@selector(leftBarButtonItemPressed)];
+    [tbc.navigationItem.rightBarButtonItem setAction:@selector(rightBarButtonItemPressed)];
+}
+
+#pragma mark -
+#pragma mark Actions
+- (void)leftBarButtonItemPressed {
+    //NSLog(@"left");
+    CGAffineTransform conT = [self transform];
+    
+    [self configureViewShadow];//设置阴影
+    
+    [UIView animateWithDuration:ROpenDuration
+                     animations:^{
+                         //UIView有个transform的属性，通过设置该属性，我们可以实现调整该view在其superView中的大小和位置,
+                         //具体来说，Transform(变化矩阵)是一种3×3的矩阵,通过这个矩阵我们可以对一个坐标系统进行缩放，平移，旋转
+                         //以及这两者的任意组合操作。
+                         _mainContentView.transform = conT;
+                     }
+                     completion:^(BOOL finished) {
+                         _tapGestureRec.enabled = YES;//开启响应点击屏幕时间，执行closeSideBar方法的手势
+                     }];
+
+}
+
+- (void)rightBarButtonItemPressed {
+    NSLog(@"right");
+}
+
+- (void)closeSideBar
+{
+    CGAffineTransform oriT = CGAffineTransformIdentity;//当你改变过一个view.transform属性或者view.layer.transform的时候需要恢复默认状态的话，记得先把他们重置可以使用view.transform = CGAffineTransformIdentity
+    [UIView animateWithDuration:RCloseDuration
+                     animations:^{
+                         _mainContentView.transform = oriT;
+                     }
+                     completion:^(BOOL finished) {
+                         _tapGestureRec.enabled = NO;
+                     }];
+}
+
+- (void)moveViewWithGesture:(UIPanGestureRecognizer *)panGes
+{
+    static CGFloat currentTranslateX;
+    
+    if (panGes.state == UIGestureRecognizerStateBegan)
+    {
+        currentTranslateX = _mainContentView.transform.tx;//获取开始拖动时_mainContentView的x坐标
+    }
+    if (panGes.state == UIGestureRecognizerStateChanged)
+    {
+        /*
+         让view跟着手指移动
+         
+         1.获取每次系统捕获到的手指移动的偏移量translation
+         2.根据偏移量translation算出当前view应该出现的位置
+         3.设置view的新frame
+         4.将translation重置为0（十分重要。否则translation每次都会叠加，很快你的view就会移除屏幕！）
+         */
+        //CGPoint translation = [gestureRecognizer translationInView:self.view];
+        //view.center = CGPointMake(gestureRecognizer.view.center.x + translation.x, gestureRecognizer.view.center.y + translation.y);
+        //[gestureRecognizer setTranslation:CGPointMake(0, 0) inView:self.view];//  注意一旦你完成上述的移动，将translation重置为0十分重要。否则translation每次都会叠加，很快你的view就会移除屏幕！
+        
+        CGFloat transX = [panGes translationInView:_mainContentView].x;//在x轴上，手指移动的偏移量
+        transX = transX + currentTranslateX;//此时_mainContentView(中心点)在x上的坐标
+        
+        CGFloat sca;//mainContentView的缩放比例
+        if (transX > 0)
+        {
+            [self configureViewShadow];//设置阴影
+            
+            if (_mainContentView.frame.origin.x < RContentOffset)
+            {
+                sca = 1 - (_mainContentView.frame.origin.x/RContentOffset) * (1-RContentScale);
+            }
+            else
+            {
+                sca = RContentScale;//当mainContentView偏移超过RContentOffset时，缩小比例固定为RContentScale
+            }
+        }
+        else {
+            sca = 1.0;
+            transX = _mainContentView.transform.tx;
+        }
+        CGAffineTransform transS = CGAffineTransformMakeScale(1.0, sca);
+        CGAffineTransform transT = CGAffineTransformMakeTranslation(transX, 0);
+        
+        CGAffineTransform conT = CGAffineTransformConcat(transT, transS);
+        
+        _mainContentView.transform = conT;
+    }
+    else if (panGes.state == UIGestureRecognizerStateEnded)//手势结束
+    {
+        CGFloat panX = [panGes translationInView:_mainContentView].x;
+        CGFloat finalX = currentTranslateX + panX;
+        if (finalX > RJudgeOffset)// 手指滑动的偏移量不需要达到RContentOffset（220），只要到RJudgeOffset（100），就可以显示leftSliderView
+        {
+            CGAffineTransform conT = [self transform];
+            [UIView beginAnimations:nil context:nil];
+            _mainContentView.transform = conT;
+            [UIView commitAnimations];
+            
+            _tapGestureRec.enabled = YES;
+            return;
+        }
+        else//还显示mainContentView
+        {
+            //当你改变过一个view.transform属性或者view.layer.transform的时候需要恢复默认状态的话，记得先把他们重置可以使用view.transform = CGAffineTransformIdentity
+            CGAffineTransform oriT = CGAffineTransformIdentity;
+            [UIView beginAnimations:nil context:nil];
+            _mainContentView.transform = oriT;
+            [UIView commitAnimations];
+            
+            _tapGestureRec.enabled = NO;
+        }
+    }
+}
+
+
+#pragma mark -
+#pragma mark Transform
+
+- (CGAffineTransform)transform
+{
+    CGFloat translateX = RContentOffset;
+    
+    //CGAffineTransformMakeTranslation：移动，创建一个平移的变化
+    //它将返回一个CGAffineTransform类型的仿射变换，这个函数的两个参数指定x和y方向上以点为单位的平移量。
+    //假设是一个视图，那么它的起始位置 x 会加上tx , y 会加上 ty
+    CGAffineTransform transT = CGAffineTransformMakeTranslation(translateX, 0);
+    
+    //CGAffineTransformMakeScale：缩放，创建一个给定比例放缩的变换
+    //假设是一个图片视图引用了这个变换，那么图片的宽度就会变为 width*sx ，对应高度变为 hight * sy。
+    CGAffineTransform scaleT = CGAffineTransformMakeScale(1.0, RContentScale);//RContentScale = 0.83f
+    
+    //CGAffineTransformConcat 通过两个已经存在的放射矩阵生成一个新的矩阵t' = t1 * t2
+    CGAffineTransform conT = CGAffineTransformConcat(transT, scaleT);
+    
+    return conT;
+}
+
+- (void)configureViewShadow//设置阴影
+{
+    CGFloat shadowW = -2.0f;
+    _mainContentView.layer.shadowOffset = CGSizeMake(shadowW, 1.0);//设置阴影的偏移量
+    _mainContentView.layer.shadowColor = [UIColor blackColor].CGColor;//设置阴影的颜色为黑色
+    _mainContentView.layer.shadowOpacity = 0.8f;//设置阴影的不透明度
+}
+
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
