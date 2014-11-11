@@ -7,7 +7,7 @@
         <!--流水-->
         <scene sceneID="i3c-il-s2k">
             <objects>
-                <viewController id="liQ-FN-gK2" sceneMemberID="viewController">
+                <viewController id="liQ-FN-gK2" customClass="FlowViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="naS-kB-pRE"/>
                         <viewControllerLayoutGuide type="bottom" id="v8v-h2-7Sf"/>
@@ -92,12 +92,6 @@
                                         <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="8.5" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgG-x7-i9L">
-                                        <rect key="frame" x="143" y="71" width="71" height="33"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                                        <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="+" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhG-yz-P6H">
                                         <rect key="frame" x="189" y="76" width="11" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -119,6 +113,12 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="%" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TTY-mB-8dy">
                                         <rect key="frame" x="239" y="79" width="18" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="8.5" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgG-x7-i9L">
+                                        <rect key="frame" x="143" y="71" width="71" height="33"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                         <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -171,7 +171,7 @@
         <!--Navigation Controller-->
         <scene sceneID="dgb-sl-Pcy">
             <objects>
-                <navigationController id="83C-lG-dM6" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="navigationController" id="83C-lG-dM6" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="DdT-sB-QLI">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -186,12 +186,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Osx-be-DO0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-614" y="-465.99999999999989"/>
+            <point key="canvasLocation" x="-362" y="-466"/>
         </scene>
         <!--分析-->
         <scene sceneID="Syg-by-jH8">
             <objects>
-                <viewController id="fnJ-FG-uSo" sceneMemberID="viewController">
+                <viewController id="fnJ-FG-uSo" customClass="AnalysisViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="eOQ-vs-DPU"/>
                         <viewControllerLayoutGuide type="bottom" id="S9n-yz-fKP"/>
@@ -210,7 +210,7 @@
         <!--平台-->
         <scene sceneID="Ncp-jc-rob">
             <objects>
-                <viewController id="HEA-8r-Z8j" sceneMemberID="viewController">
+                <viewController id="HEA-8r-Z8j" customClass="PlatformViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XnE-st-YM1"/>
                         <viewControllerLayoutGuide type="bottom" id="iNd-5q-CvS"/>

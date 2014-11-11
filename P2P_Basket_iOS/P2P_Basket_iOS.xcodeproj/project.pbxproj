@@ -13,8 +13,14 @@
 		1D5C9C2E1A0B60CC007CFFF9 /* anchor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5C9C291A0B60CC007CFFF9 /* anchor@2x.png */; };
 		1D5C9C2F1A0B60CC007CFFF9 /* chart_up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5C9C2A1A0B60CC007CFFF9 /* chart_up@2x.png */; };
 		1D5C9C301A0B60CC007CFFF9 /* layers@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5C9C2B1A0B60CC007CFFF9 /* layers@2x.png */; };
+		1D666CFF1A10C843004DC666 /* LeftSliderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D666CFE1A10C843004DC666 /* LeftSliderController.m */; };
 		1D78F4A31A0D1581009ED28B /* menu-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D78F4A21A0D1581009ED28B /* menu-icon@2x.png */; };
 		1D78F4A51A0D168E009ED28B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D78F4A41A0D168E009ED28B /* QuartzCore.framework */; };
+		1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D989AAA1A10F6260092EED1 /* FlowViewController.m */; };
+		1D989AAE1A10F6560092EED1 /* AnalysisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D989AAD1A10F6560092EED1 /* AnalysisViewController.m */; };
+		1D989AB11A10F6750092EED1 /* PlatformViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D989AB01A10F6750092EED1 /* PlatformViewController.m */; };
+		1D9C11901A10B12400BE0E23 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1D9C118F1A10B12400BE0E23 /* 1.jpg */; };
+		1DF0BDF11A10550A00E491D6 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0BDF01A10550A00E491D6 /* RootViewController.m */; };
 		E608615619FFEDC800EBDBE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E608615519FFEDC800EBDBE1 /* main.m */; };
 		E608615919FFEDC800EBDBE1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E608615819FFEDC800EBDBE1 /* AppDelegate.m */; };
 		E608616119FFEDC800EBDBE1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E608616019FFEDC800EBDBE1 /* Images.xcassets */; };
@@ -40,8 +46,19 @@
 		1D5C9C291A0B60CC007CFFF9 /* anchor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "anchor@2x.png"; sourceTree = "<group>"; };
 		1D5C9C2A1A0B60CC007CFFF9 /* chart_up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chart_up@2x.png"; sourceTree = "<group>"; };
 		1D5C9C2B1A0B60CC007CFFF9 /* layers@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "layers@2x.png"; sourceTree = "<group>"; };
+		1D666CFD1A10C843004DC666 /* LeftSliderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftSliderController.h; sourceTree = "<group>"; };
+		1D666CFE1A10C843004DC666 /* LeftSliderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftSliderController.m; sourceTree = "<group>"; };
 		1D78F4A21A0D1581009ED28B /* menu-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-icon@2x.png"; sourceTree = "<group>"; };
 		1D78F4A41A0D168E009ED28B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		1D989AA91A10F6260092EED1 /* FlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowViewController.h; sourceTree = "<group>"; };
+		1D989AAA1A10F6260092EED1 /* FlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowViewController.m; sourceTree = "<group>"; };
+		1D989AAC1A10F6560092EED1 /* AnalysisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalysisViewController.h; sourceTree = "<group>"; };
+		1D989AAD1A10F6560092EED1 /* AnalysisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalysisViewController.m; sourceTree = "<group>"; };
+		1D989AAF1A10F6750092EED1 /* PlatformViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlatformViewController.h; sourceTree = "<group>"; };
+		1D989AB01A10F6750092EED1 /* PlatformViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlatformViewController.m; sourceTree = "<group>"; };
+		1D9C118F1A10B12400BE0E23 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
+		1DF0BDEF1A10550A00E491D6 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = ../RootViewController.h; sourceTree = "<group>"; };
+		1DF0BDF01A10550A00E491D6 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = ../RootViewController.m; sourceTree = "<group>"; };
 		E608615019FFEDC800EBDBE1 /* P2P_Basket_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = P2P_Basket_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E608615419FFEDC800EBDBE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E608615519FFEDC800EBDBE1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -76,6 +93,7 @@
 		1D5C9C261A0B60A2007CFFF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1D9C118F1A10B12400BE0E23 /* 1.jpg */,
 				1D78F4A21A0D1581009ED28B /* menu-icon@2x.png */,
 				1D5C9C281A0B60CC007CFFF9 /* homepage@2x.png */,
 				1D5C9C291A0B60CC007CFFF9 /* anchor@2x.png */,
@@ -83,6 +101,31 @@
 				1D5C9C2B1A0B60CC007CFFF9 /* layers@2x.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		1D666CFC1A10C798004DC666 /* Side */ = {
+			isa = PBXGroup;
+			children = (
+				1D666CFD1A10C843004DC666 /* LeftSliderController.h */,
+				1D666CFE1A10C843004DC666 /* LeftSliderController.m */,
+			);
+			name = Side;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		1D666D031A10C963004DC666 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				1D5C9C211A0B5FE0007CFFF9 /* HomeViewController.h */,
+				1D5C9C221A0B5FE0007CFFF9 /* HomeViewController.m */,
+				1D989AA91A10F6260092EED1 /* FlowViewController.h */,
+				1D989AAA1A10F6260092EED1 /* FlowViewController.m */,
+				1D989AAC1A10F6560092EED1 /* AnalysisViewController.h */,
+				1D989AAD1A10F6560092EED1 /* AnalysisViewController.m */,
+				1D989AAF1A10F6750092EED1 /* PlatformViewController.h */,
+				1D989AB01A10F6750092EED1 /* PlatformViewController.m */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 		1D78F4A61A0D1693009ED28B /* Frameworks */ = {
@@ -118,11 +161,13 @@
 			children = (
 				E608615719FFEDC800EBDBE1 /* AppDelegate.h */,
 				E608615819FFEDC800EBDBE1 /* AppDelegate.m */,
-				1D5C9C211A0B5FE0007CFFF9 /* HomeViewController.h */,
-				1D5C9C221A0B5FE0007CFFF9 /* HomeViewController.m */,
+				1DF0BDEF1A10550A00E491D6 /* RootViewController.h */,
+				1DF0BDF01A10550A00E491D6 /* RootViewController.m */,
 				1D5C9C241A0B5FF8007CFFF9 /* Main.storyboard */,
 				E608616019FFEDC800EBDBE1 /* Images.xcassets */,
 				E608616219FFEDC800EBDBE1 /* LaunchScreen.xib */,
+				1D666D031A10C963004DC666 /* ViewControllers */,
+				1D666CFC1A10C798004DC666 /* Side */,
 				E608615319FFEDC800EBDBE1 /* Supporting Files */,
 			);
 			path = P2P_Basket_iOS;
@@ -240,6 +285,7 @@
 				E608616119FFEDC800EBDBE1 /* Images.xcassets in Resources */,
 				1D5C9C2E1A0B60CC007CFFF9 /* anchor@2x.png in Resources */,
 				1D5C9C301A0B60CC007CFFF9 /* layers@2x.png in Resources */,
+				1D9C11901A10B12400BE0E23 /* 1.jpg in Resources */,
 				1D5C9C2D1A0B60CC007CFFF9 /* homepage@2x.png in Resources */,
 				1D5C9C2F1A0B60CC007CFFF9 /* chart_up@2x.png in Resources */,
 			);
@@ -260,8 +306,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E608615919FFEDC800EBDBE1 /* AppDelegate.m in Sources */,
+				1D666CFF1A10C843004DC666 /* LeftSliderController.m in Sources */,
+				1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */,
 				1D5C9C231A0B5FE0007CFFF9 /* HomeViewController.m in Sources */,
+				1DF0BDF11A10550A00E491D6 /* RootViewController.m in Sources */,
+				1D989AAE1A10F6560092EED1 /* AnalysisViewController.m in Sources */,
 				E608615619FFEDC800EBDBE1 /* main.m in Sources */,
+				1D989AB11A10F6750092EED1 /* PlatformViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
