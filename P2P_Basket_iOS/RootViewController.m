@@ -20,7 +20,7 @@
 {
     UIView *_mainContentView;
     UIView *_leftSideView;
-    
+    NSInteger ifActivated;
     UITapGestureRecognizer *_tapGestureRec;
     UIPanGestureRecognizer *_panGestureRec;
 }
@@ -37,6 +37,7 @@ static RootViewController *sharedRC;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    ifActivated=0;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -49,9 +50,10 @@ static RootViewController *sharedRC;
     
     
     
-    _tapGestureRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSideBar)];//只要点击了self.view（即屏幕上的任何一点），_mainContentView就会完全覆盖_leftSideView
-    [self.view addGestureRecognizer:_tapGestureRec];
-    _tapGestureRec.enabled = NO;//未显示_leftSideView，不响应用户普通的点击事件
+//    _tapGestureRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSideBar)];//只要点击了self.view（即屏幕上的任何一点），_mainContentView就会完全覆盖_leftSideView
+//    [self.view addGestureRecognizer:_tapGestureRec];
+    
+//    _tapGestureRec.enabled = NO;//未显示_leftSideView，不响应用户普通的点击事件
     
     _panGestureRec = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveViewWithGesture:)];
     [_mainContentView addGestureRecognizer:_panGestureRec];//只有_mainContentView响应手指滑动事件，_mainContentView滑动时，_leftSideView会露出一部分（此时_leftSideView未被_mainContentView完全覆盖）
@@ -95,21 +97,31 @@ static RootViewController *sharedRC;
 #pragma mark -
 #pragma mark Actions
 - (void)leftBarButtonItemPressed {
-    //NSLog(@"left");
-    CGAffineTransform conT = [self transform];
     
-    [self configureViewShadow];//设置阴影
-    
-    [UIView animateWithDuration:ROpenDuration
-                     animations:^{
-                         //UIView有个transform的属性，通过设置该属性，我们可以实现调整该view在其superView中的大小和位置,
-                         //具体来说，Transform(变化矩阵)是一种3×3的矩阵,通过这个矩阵我们可以对一个坐标系统进行缩放，平移，旋转
-                         //以及这两者的任意组合操作。
-                         _mainContentView.transform = conT;
-                     }
-                     completion:^(BOOL finished) {
-                         _tapGestureRec.enabled = YES;//开启响应点击屏幕时间，执行closeSideBar方法的手势
-                     }];
+    if(ifActivated==0)
+    {
+        //NSLog(@"left");
+        CGAffineTransform conT = [self transform];
+        
+        [self configureViewShadow];//设置阴影
+        
+        [UIView animateWithDuration:ROpenDuration
+                         animations:^{
+                             //UIView有个transform的属性，通过设置该属性，我们可以实现调整该view在其superView中的大小和位置,
+                             //具体来说，Transform(变化矩阵)是一种3×3的矩阵,通过这个矩阵我们可以对一个坐标系统进行缩放，平移，旋转
+                             //以及这两者的任意组合操作。
+                             _mainContentView.transform = conT;
+                         }
+                         completion:^(BOOL finished) {
+                             _tapGestureRec.enabled = YES;//开启响应点击屏幕时间，执行closeSideBar方法的手势
+                         }];
+        ifActivated=1;
+    }
+    else
+    {
+        [self closeSideBar];
+        ifActivated=0;
+    }
 
 }
 

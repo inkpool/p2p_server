@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LeftSliderController : UIViewController
+@interface LeftSliderController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 
 @end
