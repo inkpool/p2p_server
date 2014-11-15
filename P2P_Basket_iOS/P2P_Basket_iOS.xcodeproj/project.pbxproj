@@ -26,6 +26,7 @@
 		E608616119FFEDC800EBDBE1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E608616019FFEDC800EBDBE1 /* Images.xcassets */; };
 		E608616419FFEDC800EBDBE1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E608616219FFEDC800EBDBE1 /* LaunchScreen.xib */; };
 		E608617019FFEDC800EBDBE1 /* P2P_Basket_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E608616F19FFEDC800EBDBE1 /* P2P_Basket_iOSTests.m */; };
+		E65EB9001A17AA10004F23B7 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,8 @@
 		E608616919FFEDC800EBDBE1 /* P2P_Basket_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = P2P_Basket_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E608616E19FFEDC800EBDBE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E608616F19FFEDC800EBDBE1 /* P2P_Basket_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = P2P_Basket_iOSTests.m; sourceTree = "<group>"; };
+		E65EB8FE1A17AA10004F23B7 /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
+		E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +127,8 @@
 				1D989AAD1A10F6560092EED1 /* AnalysisViewController.m */,
 				1D989AAF1A10F6750092EED1 /* PlatformViewController.h */,
 				1D989AB01A10F6750092EED1 /* PlatformViewController.m */,
+				E65EB8FE1A17AA10004F23B7 /* MoreViewController.h */,
+				E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -309,6 +314,7 @@
 				1D666CFF1A10C843004DC666 /* LeftSliderController.m in Sources */,
 				1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */,
 				1D5C9C231A0B5FE0007CFFF9 /* HomeViewController.m in Sources */,
+				E65EB9001A17AA10004F23B7 /* MoreViewController.m in Sources */,
 				1DF0BDF11A10550A00E491D6 /* RootViewController.m in Sources */,
 				1D989AAE1A10F6560092EED1 /* AnalysisViewController.m in Sources */,
 				E608615619FFEDC800EBDBE1 /* main.m in Sources */,
