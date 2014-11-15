@@ -227,7 +227,7 @@
             </objects>
             <point key="canvasLocation" x="800" y="514.99999999999966"/>
         </scene>
-        <!--Item-->
+        <!--更多-->
         <scene sceneID="6tZ-qu-TMh">
             <objects>
                 <viewController id="aWb-Hr-U2d" customClass="MoreViewController" sceneMemberID="viewController">
@@ -240,7 +240,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="daC-FD-qBk"/>
+                    <tabBarItem key="tabBarItem" title="更多" image="more.png" id="daC-FD-qBk"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dqH-fD-XpB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -253,6 +253,7 @@
         <image name="homepage.png" width="32" height="32"/>
         <image name="layers.png" width="32" height="32"/>
         <image name="menu-icon.png" width="22" height="17"/>
+        <image name="more.png" width="32" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

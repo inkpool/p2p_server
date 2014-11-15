@@ -27,6 +27,7 @@
 		E608616419FFEDC800EBDBE1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E608616219FFEDC800EBDBE1 /* LaunchScreen.xib */; };
 		E608617019FFEDC800EBDBE1 /* P2P_Basket_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E608616F19FFEDC800EBDBE1 /* P2P_Basket_iOSTests.m */; };
 		E65EB9001A17AA10004F23B7 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */; };
+		E65EB9021A17AD32004F23B7 /* more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E65EB9011A17AD32004F23B7 /* more@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		E608616F19FFEDC800EBDBE1 /* P2P_Basket_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = P2P_Basket_iOSTests.m; sourceTree = "<group>"; };
 		E65EB8FE1A17AA10004F23B7 /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
 		E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
+		E65EB9011A17AD32004F23B7 /* more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "more@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 		1D5C9C261A0B60A2007CFFF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E65EB9011A17AD32004F23B7 /* more@2x.png */,
 				1D9C118F1A10B12400BE0E23 /* 1.jpg */,
 				1D78F4A21A0D1581009ED28B /* menu-icon@2x.png */,
 				1D5C9C281A0B60CC007CFFF9 /* homepage@2x.png */,
@@ -293,6 +296,7 @@
 				1D9C11901A10B12400BE0E23 /* 1.jpg in Resources */,
 				1D5C9C2D1A0B60CC007CFFF9 /* homepage@2x.png in Resources */,
 				1D5C9C2F1A0B60CC007CFFF9 /* chart_up@2x.png in Resources */,
+				E65EB9021A17AD32004F23B7 /* more@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
