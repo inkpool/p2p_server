@@ -7,6 +7,7 @@
 //
 
 #import "HomeViewController.h"
+#import "AddViewController.h"
 
 @interface HomeViewController ()
 
@@ -88,6 +89,7 @@
 #pragma mark - ButtonPressedAction
 
 - (IBAction)leftButtonPressed {//左变白色
+    
     UIButton *left_bt = (UIButton *)[self.view viewWithTag:101];
     UIButton *right_bt = (UIButton *)[self.view viewWithTag:102];
     left_bt.backgroundColor = [UIColor whiteColor];//用户选中的为白色

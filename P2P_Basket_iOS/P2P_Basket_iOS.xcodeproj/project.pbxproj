@@ -28,6 +28,7 @@
 		E608617019FFEDC800EBDBE1 /* P2P_Basket_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E608616F19FFEDC800EBDBE1 /* P2P_Basket_iOSTests.m */; };
 		E65EB9001A17AA10004F23B7 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */; };
 		E65EB9021A17AD32004F23B7 /* more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E65EB9011A17AD32004F23B7 /* more@2x.png */; };
+		E6C8E4261A18C7A600229A9F /* AddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C8E4251A18C7A600229A9F /* AddViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,8 @@
 		E65EB8FE1A17AA10004F23B7 /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
 		E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
 		E65EB9011A17AD32004F23B7 /* more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "more@2x.png"; sourceTree = "<group>"; };
+		E6C8E4241A18C7A600229A9F /* AddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddViewController.h; sourceTree = "<group>"; };
+		E6C8E4251A18C7A600229A9F /* AddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +135,8 @@
 				1D989AB01A10F6750092EED1 /* PlatformViewController.m */,
 				E65EB8FE1A17AA10004F23B7 /* MoreViewController.h */,
 				E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */,
+				E6C8E4241A18C7A600229A9F /* AddViewController.h */,
+				E6C8E4251A18C7A600229A9F /* AddViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -314,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6C8E4261A18C7A600229A9F /* AddViewController.m in Sources */,
 				E608615919FFEDC800EBDBE1 /* AppDelegate.m in Sources */,
 				1D666CFF1A10C843004DC666 /* LeftSliderController.m in Sources */,
 				1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */,

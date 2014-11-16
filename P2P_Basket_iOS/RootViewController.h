@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface RootViewController : UIViewController
+{
+    UINavigationController *nc;
+}
 
 + (id)sharedRootController;//单例，RootViewController只初始化一次
 

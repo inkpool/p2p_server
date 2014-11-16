@@ -9,6 +9,7 @@
 #import "RootViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "LeftSliderController.h"
+#import "AddViewController.h"
 
 #define RCloseDuration 0.3f
 #define ROpenDuration 0.4f
@@ -84,13 +85,15 @@ static RootViewController *sharedRC;
     [_leftSideView addSubview:leftSC.view];
     
     //初始化NavigationController，以显示“主页”、“流水”等tab view
-    UINavigationController *nc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"navigationController"];
+    nc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"navigationController"];
     [self addChildViewController:nc];//添加子视图控制器（添加后，才能响应tabBarController控制的视图中的点击事件）
     [_mainContentView addSubview:nc.view];
 
     //NavigationItem：点击左按钮，显示“更多”功能界面；点击右按钮，显示添加“新的投资”的界面
     UITabBarController *tbc = [nc.childViewControllers firstObject];
     [tbc.navigationItem.leftBarButtonItem setAction:@selector(leftBarButtonItemPressed)];
+    
+    
     [tbc.navigationItem.rightBarButtonItem setAction:@selector(rightBarButtonItemPressed)];
 }
 
@@ -126,7 +129,11 @@ static RootViewController *sharedRC;
 }
 
 - (void)rightBarButtonItemPressed {
-    NSLog(@"right");
+    
+    //添加“新建投资”页面
+    AddViewController *aDV = [[AddViewController alloc]init];
+    
+    [nc pushViewController:aDV animated:YES];
 }
 
 - (void)closeSideBar
