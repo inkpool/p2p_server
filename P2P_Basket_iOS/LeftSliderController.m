@@ -27,7 +27,7 @@
     
     //添加一个背景图片
     UIImageView *backView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    backView.image = [UIImage imageNamed:@"1.jpg"];
+    backView.image = [UIImage imageNamed:@"background.jpg"];
     [self.view addSubview:backView];
     
 
