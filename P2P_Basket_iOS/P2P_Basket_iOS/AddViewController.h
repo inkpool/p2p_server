@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddViewController : UIViewController
+@interface AddViewController : UIViewController<UITextFieldDelegate, UIPickerViewDelegate,UIPickerViewDataSource>
+{
+    UITextField *platformField,*productField,*capitalField,*minRateField,*maxRateField,*cal_typeField,*startimeField,*endtimeField;
+
+    NSArray *platformArray,*productArray;
+    NSInteger currentTextTag;
+}
+
 
 @end
