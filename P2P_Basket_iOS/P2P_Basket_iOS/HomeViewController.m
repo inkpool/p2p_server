@@ -86,7 +86,7 @@
     [self.view addSubview:right_bt];
     
     //添加UITableView
-    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64+147+50, screen_width-15, screen_height-(64+147+50)) style:UITableViewStylePlain];
+    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64+147+50, screen_width-15, screen_height-(64+147+50+49)) style:UITableViewStylePlain];
     tableView.dataSource = self;
     tableView.delegate = self;
     tableView.showsVerticalScrollIndicator = NO;
@@ -171,6 +171,7 @@
         label5.font = [UIFont systemFontOfSize:13];
         [cell.contentView addSubview:label5];
 
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
     }
     //写入数据
