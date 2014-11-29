@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FlowViewController : UIViewController
+@interface FlowViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @end
