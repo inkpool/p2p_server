@@ -22,6 +22,7 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
     NSString *dbPath = [self getDataBasePath];
+    NSLog(@"%@",dbPath);
     NSString *resPath;
     BOOL success = [fileManager fileExistsAtPath:dbPath];
     if(!success)

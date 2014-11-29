@@ -12,8 +12,9 @@
 {
     UITextField *platformField,*productField,*capitalField,*minRateField,*maxRateField,*cal_typeField,*startimeField,*endtimeField;
 
-    NSArray *platformArray,*productArray;
+    NSArray *platformArray,*productArray,*cal_typeArray;
     NSInteger currentTextTag;
+    UIDatePicker *startTimePicker,*endTimePicker;
 }
 
 

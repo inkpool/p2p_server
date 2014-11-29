@@ -8,6 +8,7 @@
 
 #import "AddViewController.h"
 #import "platformDB.h"
+#import "recordDB.h"
 
 @interface AddViewController ()
 
@@ -50,7 +51,7 @@
     
     //计算Label宽高
     CGFloat labelHeight=(screen_height-naviHeight)/11;
-    CGFloat labelWidth=screen_width/3;
+    CGFloat labelWidth=(screen_width-screen_width/10)/3;
     
     
     UILabel *platformLabel = [[UILabel alloc]initWithFrame:CGRectMake(screen_width/10, naviHeight+screen_width/10, labelWidth, labelHeight)];
@@ -104,18 +105,52 @@
     productField.delegate=self;
     [self.view addSubview:productField];
     
-     minRateField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth, naviHeight+screen_width/10+labelHeight*2, labelWidth, labelHeight)];
+    minRateField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth, naviHeight+screen_width/10+labelHeight*2, labelWidth/3*2, labelHeight)];
+    
     minRateField.tag=103;
     minRateField.placeholder=@"最低利率";
     minRateField.delegate=self;
     [self.view addSubview:minRateField];
     
-     maxRateField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth*2, naviHeight+screen_width/10+labelHeight*2, labelWidth, labelHeight)];
+    UILabel *minRateLabel=[[UILabel alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth+labelWidth/3*2, naviHeight+screen_width/10+labelHeight*2, labelWidth/3, labelHeight)];
+    minRateLabel.text=@"% ~";
+    minRateLabel.tag=403;
+    [self.view addSubview:minRateLabel];
+    
+    maxRateField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth*2, naviHeight+screen_width/10+labelHeight*2, labelWidth/3*2, labelHeight)];
     maxRateField.tag=104;
     maxRateField.placeholder=@"最高利率";
     maxRateField.delegate=self;
     [self.view addSubview:maxRateField];
     
+    UILabel *maxRateLabel=[[UILabel alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth*2+labelWidth/3*2, naviHeight+screen_width/10+labelHeight*2, labelWidth/3, labelHeight)];
+    maxRateLabel.text=@"%";
+    maxRateLabel.tag=404;
+    [self.view addSubview:maxRateLabel];
+    
+    capitalField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth, naviHeight+screen_width/10+labelHeight*3, labelWidth, labelHeight)];
+    capitalField.tag=105;
+    capitalField.placeholder=@"点击输入";
+    capitalField.delegate=self;
+    [self.view addSubview:capitalField];
+    
+    cal_typeField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth, naviHeight+screen_width/10+labelHeight*4, labelWidth, labelHeight)];
+    cal_typeField.tag=106;
+    cal_typeField.placeholder=@"点击选择";
+    cal_typeField.delegate=self;
+    [self.view addSubview:cal_typeField];
+    
+    startimeField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth, naviHeight+screen_width/10+labelHeight*5, labelWidth, labelHeight)];
+    startimeField.tag=107;
+    startimeField.placeholder=@"点击选择";
+    startimeField.delegate=self;
+    [self.view addSubview:startimeField];
+    
+    endtimeField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth, naviHeight+screen_width/10+labelHeight*6, labelWidth, labelHeight)];
+    endtimeField.tag=108;
+    endtimeField.placeholder=@"点击选择";
+    endtimeField.delegate=self;
+    [self.view addSubview:endtimeField];
     
     
     
@@ -247,6 +282,50 @@
             return YES;
         }
         break;
+        case 105:
+        {
+            textField.keyboardType=UIKeyboardTypeDecimalPad;
+            return YES;
+        }
+        break;
+        case 106:
+        {
+            cal_typeArray=[NSArray arrayWithObjects:@"到期还本息",@"每月还本息", nil];
+            pickView.tag=206;
+            rightButton.tag=306;
+            leftButton.tag=306;
+            pickView.delegate=self;
+            [self.view addSubview:pickView];
+            UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            NSArray *toolbarItems = [NSArray arrayWithObjects:leftButton,spaceItem, rightButton, nil];
+            [toolBar setItems:toolbarItems];
+            [self.view addSubview:toolBar];
+            //textField.keyboardType=UIKeyboardTypeDecimalPad;
+            return NO;
+        }
+        break;
+        case 107:
+        {
+            
+//            NSDateFormatter *formater = [[ NSDateFormatter alloc] init];
+//            NSDate *curDate = [NSDate date];//获取当前日期
+//            [formater setDateFormat:@"yyyy-MM-dd"];//这里去掉 具体时间 保留日期
+//            NSString * curTime = [formater stringFromDate:curDate];
+//            textField.text=curTime;
+//            return NO;
+            startTimePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0,0.6*screen_height,0.0,0.0)];
+            startTimePicker.datePickerMode=UIDatePickerModeDate;
+            [self.view addSubview:startTimePicker];
+            
+            
+        }
+        break;
+        case 108:
+        {
+            
+            return NO;
+        }
+        break;
             
         default:NSLog(@"2222");break;
     }
@@ -274,6 +353,9 @@
     
     UITextField *currentTextField=(UITextField *)[self.view viewWithTag:currentTextTag];
     [currentTextField resignFirstResponder];
+    
+    UIView *currentView=[self.view viewWithTag:currentTextTag];
+    [currentView resignFirstResponder];
 }
 
 #pragma mark - PickerView Delegate
@@ -287,6 +369,7 @@
     {
         case 201:return [platformArray count];
         case 202:return [productArray count];
+        case 206:return [cal_typeArray count];
         default:return 0;
     }
     
@@ -298,21 +381,12 @@
     {
         case 201:return [platformArray objectAtIndex:row];
         case 202:return [productArray objectAtIndex:row];
+        case 206:return [cal_typeArray objectAtIndex:row];
         default:return nil;
     }
 }
 
 #pragma mark - Button Pressed
-
--(void)addPressed:(id)sender{
-    NSInteger i = [sender tag];
-    UIPickerView *pickerView=(UIPickerView*)[self.view viewWithTag:i-100];
-    NSInteger row =[pickerView selectedRowInComponent:0];
-    NSString *selected = [platformArray objectAtIndex:row];
-    UITextField *intoTextField=(UITextField*)[self.view viewWithTag:101];
-    intoTextField.text=selected;
-    [pickerView removeFromSuperview];
-}
 
 -(void)donePressed:(id)sender{
     NSLog(@"Done pressed.");
@@ -338,13 +412,33 @@
         if([[rateArray objectAtIndex:0] isEqualToString:[rateArray objectAtIndex:1]])
         {
             minRateField.text=[rateArray objectAtIndex:0];
+            minRateField.textAlignment=NSTextAlignmentCenter;
+            [maxRateField removeFromSuperview];
+            //maxRateField.text=nil;
+            UILabel *minLabel=(UILabel*)[self.view viewWithTag:403];
+            minLabel.text=@"%";
+            UILabel *maxLabel=(UILabel*)[self.view viewWithTag:404];
+            maxLabel.text=nil;
         }else{
+            [self.view addSubview:maxRateField];
             minRateField.text=[rateArray objectAtIndex:0];
+            minRateField.textAlignment=NSTextAlignmentCenter;
             maxRateField.text=[rateArray objectAtIndex:1];
+            maxRateField.textAlignment=NSTextAlignmentCenter;
+            UILabel *minLabel=(UILabel*)[self.view viewWithTag:403];
+            minLabel.text=@"%~";
+            UILabel *maxLabel=(UILabel*)[self.view viewWithTag:404];
+            maxLabel.text=@"%";
+            
+            
         }
         
         NSLog(@"min%@,max%@",[rateArray objectAtIndex:0],[rateArray objectAtIndex:1]);
-
+    }
+    
+    if(i==(long)306)
+    {
+        cal_typeField.text=[cal_typeArray objectAtIndex:row];
     }
     
     
@@ -364,8 +458,9 @@
     
 }
 
-
 -(void)confirmPressed{
+    recordDB *myRecordDB = [[recordDB alloc]init];
+    [myRecordDB insertRecord:@"呵呵" secondPara:@"测试" thirdPara:1000 forthPara:7 fifthPara:10 sixthPara:1 seventhPara:@"2011-01-01" eighthPara:@"2012-01-01"];
 
 }
 
