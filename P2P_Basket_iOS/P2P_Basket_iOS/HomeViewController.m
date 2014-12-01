@@ -30,7 +30,6 @@
     screen_height = size.height;
     
     flag = 1;//初始显示即将到期
-    
 
     //left_bt上显示一个UIView(红色背景，红色背景上又一个Label，显示到期项目的个数)，
     //一个Label（显示“已经到期”），right_bt类似
@@ -108,6 +107,8 @@
     UIButton *right_bt = (UIButton *)[self.view viewWithTag:102];
     left_bt.backgroundColor = [UIColor whiteColor];//用户选中的为白色
     right_bt.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];//未选中的为浅灰色
+    
+    [tableView reloadData];
 }
 
 - (IBAction)rightButtonPressed {//右变浅灰色
@@ -116,6 +117,8 @@
     UIButton *right_bt = (UIButton *)[self.view viewWithTag:102];
     left_bt.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
     right_bt.backgroundColor = [UIColor whiteColor];
+    
+    [tableView reloadData];
 }
 
 
@@ -129,9 +132,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    //NSLog(@"%d",[violationRecord count]);
-    return 10;//violationRecord[0]内记录的时车辆的信息（非违章信息）
+    if (flag == 1) {//即将到期
+        return [expiringRecord count];
+    } else {
+        return [expireRecord count];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -142,10 +147,15 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
-        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15, 13, screen_width/3, 15)];
+        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15, 13, screen_width/3-25, 15)];
         label1.tag = 1001;
         label1.font = [UIFont systemFontOfSize:15];
         [cell.contentView addSubview:label1];
+        
+        UILabel *label6 = [[UILabel alloc] initWithFrame:CGRectMake(15+screen_width/3-25, 13, 30, 15)];
+        label6.text = @"到期";
+        label6.font = [UIFont systemFontOfSize:15];
+        [cell.contentView addSubview:label6];
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3+25, 10, 38, 24)];
         imageView.tag = 1002;
@@ -176,50 +186,35 @@
     }
     //写入数据
     UILabel *label1 = (UILabel *)[cell.contentView viewWithTag:1001];
-    label1.text = @"2014-8-25 到期";
     UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1002];
-//    [imageView setImage:[UIImage imageNamed:@"人人贷-icon"]];
-    [imageView setImage:[UIImage imageNamed:@"点融网-icon"]];
-//    [imageView setImage:[UIImage imageNamed:@"爱投资-icon"]];
-//    [imageView setImage:[UIImage imageNamed:@"积木盒子-icon"]];
-//    [imageView setImage:[UIImage imageNamed:@"陆金所-icon"]];
-//    [imageView setImage:[UIImage imageNamed:@"盛融在线-icon"]];
-//    [imageView setImage:[UIImage imageNamed:@"鑫合汇-icon"]];
-//    [imageView setImage:[UIImage imageNamed:@"有利网-icon"]];
-    
     UILabel *label2 = (UILabel *)[cell.contentView viewWithTag:1003];
-//    label2.text = @"人人贷-优选计划";
-//    label2.textColor = [UIColor colorWithRed:13.0/255.0 green:90.0/255.0 blue:157.0/255.0 alpha:1.0];
-    
-    label2.text = @"点触网-团团赚-高手";
-    label2.textColor = [UIColor colorWithRed:33.0/255.0 green:150.0/255.0 blue:46.0/255.0 alpha:1.0];
-    
-//    label2.text = @"爱投资-";
-//    label2.textColor = [UIColor colorWithRed:207.0/255.0 green:150.0/255.0 blue:12.0/255.0 alpha:1.0];
-//
-//    label2.text = @"积木盒子-饮品生产";
-//    label2.textColor = [UIColor colorWithRed:27.0/255.0 green:166.0/255.0 blue:220.0/255.0 alpha:1.0];
-    
-//    label2.text = @"陆金所-富盈人生";
-//    label2.textColor = [UIColor colorWithRed:213.0/255.0 green:74.0/255.0 blue:20.0/255.0 alpha:1.0];
-    
-//    label2.text = @"盛融在线-";
-//    label2.textColor = [UIColor colorWithRed:232.0/255.0 green:170.0/255.0 blue:21.0/255.0 alpha:1.0];
-    
-//    label2.text = @"鑫合汇-";
-//    label2.textColor = [UIColor colorWithRed:14.0/255.0 green:110.0/255.0 blue:203.0/255.0 alpha:1.0];
-    
-//    label2.text = @"有利网-月息通";
-//    label2.textColor = [UIColor colorWithRed:235.0/255.0 green:97.0/255.0 blue:7.0/255.0 alpha:1.0];
-
-    
     UILabel *label4 = (UILabel *)[cell.contentView viewWithTag:1004];
-    label4.text = @"1,000,000";
-    
     UILabel *label5 = (UILabel *)[cell.contentView viewWithTag:1005];
-    label5.text = @"12%~14%";
     
-    
+    if (flag == 1) {//即将到期
+        NSString *imageName = [NSString stringWithFormat:@"%@-icon",[expiringRecord[indexPath.row] objectForKey:@"platform"]];
+        [imageView setImage:[UIImage imageNamed:imageName]];
+        NSString *label1Text = [NSString stringWithFormat:@"%@",[expiringRecord[indexPath.row] objectForKey:@"endDate"]];
+        label1.text = label1Text;
+        NSString *label2Text = [NSString stringWithFormat:@"%@-%@",[expiringRecord[indexPath.row] objectForKey:@"platform"],[expiringRecord[indexPath.row] objectForKey:@"product"]];
+        label2.text = label2Text;
+        NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[expiringRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
+        label4.text = label4Text;
+        NSString *label5Text = [NSString stringWithFormat:@"%.1f~%.1f",[[expiringRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[expiringRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
+        label5.text = label5Text;
+    } else {
+        NSString *imageName = [NSString stringWithFormat:@"%@-icon",[expireRecord[indexPath.row] objectForKey:@"platform"]];
+        [imageView setImage:[UIImage imageNamed:imageName]];
+        NSString *label1Text = [NSString stringWithFormat:@"%@",[expireRecord[indexPath.row] objectForKey:@"endDate"]];
+        label1.text = label1Text;
+        NSString *label2Text = [NSString stringWithFormat:@"%@-%@",[expireRecord[indexPath.row] objectForKey:@"platform"],[expireRecord[indexPath.row] objectForKey:@"product"]];
+        label2.text = label2Text;
+        NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[expireRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
+        label4.text = label4Text;
+        NSString *label5Text = [NSString stringWithFormat:@"%.1f~%.1f",[[expireRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[expireRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
+        label5.text = label5Text;
+    }
+  
     return cell;
 }
 
@@ -227,6 +222,5 @@
 {
     return 65;
 }//返回cell的高度
-
 
 @end

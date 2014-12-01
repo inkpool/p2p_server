@@ -140,7 +140,6 @@
     else {
         //设置三角旋转
         CGAffineTransform rotation;
-        
         if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button_flag*10]] isEqualToString:@"1"]) {
             rotation= CGAffineTransformMakeRotation(M_PI);//pi 180°
             [UIView animateWithDuration:0.2f
@@ -187,9 +186,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    //NSLog(@"%d",[violationRecord count]);
-    return 10;//violationRecord[0]内记录的时车辆的信息（非违章信息）
+    return 10;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

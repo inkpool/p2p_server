@@ -37,7 +37,7 @@
 		E616DAEF1A28D68700A17ED9 /* platformDB.m in Sources */ = {isa = PBXBuildFile; fileRef = E616DAEE1A28D68700A17ED9 /* platformDB.m */; };
 		E65EB9001A17AA10004F23B7 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */; };
 		E65EB9021A17AD32004F23B7 /* more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E65EB9011A17AD32004F23B7 /* more@2x.png */; };
-		E68B042D1A2A1FD700DF1EBB /* recordDB.m in Sources */ = {isa = PBXBuildFile; fileRef = E68B042C1A2A1FD700DF1EBB /* recordDB.m */; };
+		E68B042D1A2A1FD700DF1EBB /* RecordDB.m in Sources */ = {isa = PBXBuildFile; fileRef = E68B042C1A2A1FD700DF1EBB /* RecordDB.m */; };
 		E68B042F1A2A28DC00DF1EBB /* p2p_basket.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = E68B042E1A2A28DC00DF1EBB /* p2p_basket.sqlite */; };
 		E6B2DBC61A2226F50086F403 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B2DBC51A2226F50086F403 /* libsqlite3.dylib */; };
 		E6C8E4261A18C7A600229A9F /* AddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C8E4251A18C7A600229A9F /* AddViewController.m */; };
@@ -97,8 +97,8 @@
 		E65EB8FE1A17AA10004F23B7 /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
 		E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
 		E65EB9011A17AD32004F23B7 /* more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "more@2x.png"; sourceTree = "<group>"; };
-		E68B042B1A2A1FD700DF1EBB /* recordDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = recordDB.h; sourceTree = "<group>"; };
-		E68B042C1A2A1FD700DF1EBB /* recordDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = recordDB.m; sourceTree = "<group>"; };
+		E68B042B1A2A1FD700DF1EBB /* RecordDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordDB.h; sourceTree = "<group>"; };
+		E68B042C1A2A1FD700DF1EBB /* RecordDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordDB.m; sourceTree = "<group>"; };
 		E68B042E1A2A28DC00DF1EBB /* p2p_basket.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = p2p_basket.sqlite; path = P2P_Basket_iOS/p2p_basket.sqlite; sourceTree = "<group>"; };
 		E6B2DBC51A2226F50086F403 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		E6C8E4241A18C7A600229A9F /* AddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddViewController.h; sourceTree = "<group>"; };
@@ -201,6 +201,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1DAA30941A2C5DC20066C215 /* DataBase */ = {
+			isa = PBXGroup;
+			children = (
+				E68B042B1A2A1FD700DF1EBB /* RecordDB.h */,
+				E68B042C1A2A1FD700DF1EBB /* RecordDB.m */,
+				E616DAED1A28D68700A17ED9 /* platformDB.h */,
+				E616DAEE1A28D68700A17ED9 /* platformDB.m */,
+			);
+			name = DataBase;
+			sourceTree = "<group>";
+		};
 		E608614719FFEDC800EBDBE1 = {
 			isa = PBXGroup;
 			children = (
@@ -226,16 +237,13 @@
 			isa = PBXGroup;
 			children = (
 				E608615719FFEDC800EBDBE1 /* AppDelegate.h */,
-				E68B042B1A2A1FD700DF1EBB /* recordDB.h */,
-				E68B042C1A2A1FD700DF1EBB /* recordDB.m */,
-				E616DAED1A28D68700A17ED9 /* platformDB.h */,
-				E616DAEE1A28D68700A17ED9 /* platformDB.m */,
 				E608615819FFEDC800EBDBE1 /* AppDelegate.m */,
 				1DF0BDEF1A10550A00E491D6 /* RootViewController.h */,
 				1DF0BDF01A10550A00E491D6 /* RootViewController.m */,
 				1D5C9C241A0B5FF8007CFFF9 /* Main.storyboard */,
 				E608616019FFEDC800EBDBE1 /* Images.xcassets */,
 				E608616219FFEDC800EBDBE1 /* LaunchScreen.xib */,
+				1DAA30941A2C5DC20066C215 /* DataBase */,
 				1D666D031A10C963004DC666 /* ViewControllers */,
 				1D666CFC1A10C798004DC666 /* Side */,
 				E608615319FFEDC800EBDBE1 /* Supporting Files */,
@@ -387,7 +395,7 @@
 			files = (
 				E616DAEF1A28D68700A17ED9 /* platformDB.m in Sources */,
 				E6C8E4261A18C7A600229A9F /* AddViewController.m in Sources */,
-				E68B042D1A2A1FD700DF1EBB /* recordDB.m in Sources */,
+				E68B042D1A2A1FD700DF1EBB /* RecordDB.m in Sources */,
 				E608615919FFEDC800EBDBE1 /* AppDelegate.m in Sources */,
 				1D666CFF1A10C843004DC666 /* LeftSliderController.m in Sources */,
 				1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */,

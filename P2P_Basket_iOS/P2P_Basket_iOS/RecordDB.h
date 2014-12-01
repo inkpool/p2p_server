@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 
-@interface recordDB : NSObject
+@interface RecordDB : NSObject
 -(NSString *)getDataBasePath;
 -(void)copyDatabaseIfNeeded;
 -(NSInteger)insertRecord:(NSString*)platform secondPara:(NSString*)product thirdPara:(float)capital forthPara:(float)minRate
                fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate;
+- (NSMutableArray *)getAllRecord;
 @end
 

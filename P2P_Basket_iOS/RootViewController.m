@@ -10,6 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "LeftSliderController.h"
 #import "AddViewController.h"
+#include "RecordDB.h"
+#import "HomeViewController.h"
 
 #define RCloseDuration 0.3f
 #define ROpenDuration 0.4f
@@ -24,6 +26,8 @@
     NSInteger ifActivated;
     UITapGestureRecognizer *_tapGestureRec;
     UIPanGestureRecognizer *_panGestureRec;
+    NSMutableArray *expireRecord;//已到期的投资记录
+    NSMutableArray *expiringRecord;//即将到期的投资记录
 }
 
 @end
@@ -38,18 +42,21 @@ static RootViewController *sharedRC;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    ifActivated=0;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedRC = self;
     });
     
+    ifActivated=0;
+    
+    [self initRecord];
+//    NSLog(@"%@\n\n\n",expireRecord);
+//    NSLog(@"expiringRecord:\n%@",expiringRecord);
+    
     //初始化，初始化结束后，_mainContentView位于_leftSideView的上层（覆盖），所以最先显示_mainContentView
     [self initSubviews];
     [self initChildControllers];
-    
-    
     
 //    _tapGestureRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSideBar)];//只要点击了self.view（即屏幕上的任何一点），_mainContentView就会完全覆盖_leftSideView
 //    [self.view addGestureRecognizer:_tapGestureRec];
@@ -65,8 +72,47 @@ static RootViewController *sharedRC;
 #pragma mark -
 #pragma mark Intialize Method
 
-- (void)initSubviews
-{//self.view显示最上层的view，通过设置最上层的view，实现主界面和slider view的切换
+- (void)initRecord {
+    //1、初始化record，即从数据库recordT表中读出用户所有的投资记录
+    //2、找出所有已经到期和即将到期的投资
+    
+    //读取数据库表recordT中用户的所有投资记录
+    RecordDB *recordDB = [[RecordDB alloc] init];
+    [recordDB copyDatabaseIfNeeded];
+    records = [recordDB getAllRecord];
+
+    expireRecord = [[NSMutableArray alloc] init];
+    expiringRecord = [[NSMutableArray alloc] init];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat : @"yyyy-M-d"];
+    NSCalendar*calendar = [NSCalendar currentCalendar];
+    NSDate *nowDate = [NSDate date];
+    NSDateComponents *nowComps = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate: nowDate];
+    
+    NSDate *endDate;
+    NSDateComponents *endComps;
+    NSInteger flag1;
+    NSInteger flag2;
+    for (int i = 0; i < [records count]; i++) {
+        endDate = [formatter dateFromString:[records[i] objectForKey:@"endDate"]];
+        endComps = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate: endDate];
+        
+        flag1 = ([nowComps year]-[endComps year])*10000 + ([nowComps month]-[endComps month])*100 + ([nowComps day]-[endComps day]);
+        flag2 = ([nowComps year]-[endComps year])*10000 + ([nowComps month]-[endComps month])*100 + ([nowComps day]+10-[endComps day]);//小于10天即为即将到期
+        if (flag1 > 0) {
+            [expireRecord addObject:records[i]];//已到期
+        }
+        if (flag1 < 0 && flag2 > 0) {
+            [expiringRecord addObject:records[i]];//即将到期
+        }
+    }
+
+}
+
+
+- (void)initSubviews {
+//self.view显示最上层的view，通过设置最上层的view，实现主界面和slider view的切换
     
     UIView *lv = [[UIView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:lv];
@@ -77,8 +123,7 @@ static RootViewController *sharedRC;
     _mainContentView = mv;
 }
 
-- (void)initChildControllers
-{
+- (void)initChildControllers {
     //初始化“更多”功能界面所在的ViewController
     LeftSliderController *leftSC = [[LeftSliderController alloc] init];
     [self addChildViewController:leftSC];
@@ -91,8 +136,14 @@ static RootViewController *sharedRC;
 
     //NavigationItem：点击左按钮，显示“更多”功能界面；点击右按钮，显示添加“新的投资”的界面
     UITabBarController *tbc = [nc.childViewControllers firstObject];
-    [tbc.navigationItem.leftBarButtonItem setAction:@selector(leftBarButtonItemPressed)];
     
+    //向HomeViewController传递值
+    HomeViewController *homeViewController = tbc.viewControllers[0];
+    homeViewController->records = records;
+    homeViewController->expireRecord = expireRecord;
+    homeViewController->expiringRecord = expiringRecord;
+    
+    [tbc.navigationItem.leftBarButtonItem setAction:@selector(leftBarButtonItemPressed)];
     
     [tbc.navigationItem.rightBarButtonItem setAction:@selector(rightBarButtonItemPressed)];
 }
@@ -105,7 +156,7 @@ static RootViewController *sharedRC;
     {
         //NSLog(@"left");
         CGAffineTransform conT = [self transform];
-        
+
         [self configureViewShadow];//设置阴影
         
         [UIView animateWithDuration:ROpenDuration
@@ -132,7 +183,6 @@ static RootViewController *sharedRC;
     
     //添加“新建投资”页面
     AddViewController *aDV = [[AddViewController alloc]init];
-    
     [nc pushViewController:aDV animated:YES];
 }
 

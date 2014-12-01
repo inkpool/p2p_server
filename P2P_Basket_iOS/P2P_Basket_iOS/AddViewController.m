@@ -8,7 +8,7 @@
 
 #import "AddViewController.h"
 #import "platformDB.h"
-#import "recordDB.h"
+#import "RecordDB.h"
 
 @interface AddViewController ()
 
@@ -459,7 +459,7 @@
 }
 
 -(void)confirmPressed{
-    recordDB *myRecordDB = [[recordDB alloc]init];
+    RecordDB *myRecordDB = [[RecordDB alloc]init];
     [myRecordDB insertRecord:@"呵呵" secondPara:@"测试" thirdPara:1000 forthPara:7 fifthPara:10 sixthPara:1 seventhPara:@"2011-01-01" eighthPara:@"2012-01-01"];
 
 }
