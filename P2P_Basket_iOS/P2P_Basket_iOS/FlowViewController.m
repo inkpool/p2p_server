@@ -31,9 +31,9 @@
     
     button_flag = 0;
     triangle_flag = [NSMutableDictionary dictionary];
-    [triangle_flag setObject:@"1" forKey:@"1010"];//初始时三角超下
-    [triangle_flag setObject:@"1" forKey:@"1020"];
-    [triangle_flag setObject:@"1" forKey:@"1030"];
+    [triangle_flag setValue:@"1" forKey:@"1010"];//初始时三角超下
+    [triangle_flag setValue:@"1" forKey:@"1020"];
+    [triangle_flag setValue:@"1" forKey:@"1030"];
     
     //添加上面的选择菜单
     UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 64, screen_width/3, 36)];
@@ -89,9 +89,6 @@
     line3.image = [UIImage imageNamed:@"horiz_line"];
     [self.view addSubview:line3];
 
-
-    
-    
     //tableview有背景颜色，和菜单（背景为白色）相区别
     UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 102, screen_width, screen_height)];
     backgroundView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:248.0/255.0 blue:247.0/255.0 alpha:1.0];
@@ -124,38 +121,37 @@
             UIButton *pre_button = (UIButton *)[self.view viewWithTag:button_flag];
             [pre_button setTitleColor:[UIColor colorWithRed:89.0/255.0 green:89.0/255.0 blue:89.0/255.0 alpha:1.0] forState:UIControlStateNormal];//先前被点击的button标题还原成灰色
             UIImageView *pre_triangle = (UIImageView *)[self.view viewWithTag:button_flag*10];
-            if ([[triangle_flag objectForKey:[NSString stringWithFormat:@"%ld",button_flag*10]] isEqualToString:@"1"]) {
-                pre_triangle.image = [UIImage imageNamed:@"triangle_gray_1"];//还原成朝下的灰色三角
-            } else {
-                pre_triangle.image = [UIImage imageNamed:@"triangle_gray_2"];//还原成朝上的灰色三角
-            }
+            pre_triangle.image = [UIImage imageNamed:@"triangle_gray_1"];//还原成朝下的灰色三角
+            
 
         }
         
         //现在被点击的按钮变为蓝色
         [button setTitleColor:[UIColor colorWithRed:14.0/255.0 green:108.0/255.0 blue:255.0/255.0 alpha:1.0] forState:UIControlStateNormal];//现在被点击的button标题设为蓝色
-        if ([[triangle_flag objectForKey:[NSString stringWithFormat:@"%ld",button_flag*10]] isEqualToString:@"1"]) {
-            triangle.image = [UIImage imageNamed:@"triangle_blue_1"];//设置成朝下的蓝色三角
-        } else {
-            triangle.image = [UIImage imageNamed:@"triangle_blue_2"];//设置成朝上的蓝色三角
-        }
+        triangle.image = [UIImage imageNamed:@"triangle_blue_1"];//设置成朝下的蓝色三角
+//        if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button.tag*10]] isEqualToString:@"1"]) {
+//            triangle.image = [UIImage imageNamed:@"triangle_blue_1"];//设置成朝下的蓝色三角
+//        } else {
+//            triangle.image = [UIImage imageNamed:@"triangle_blue_2"];//设置成朝上的蓝色三角
+//        }
         button_flag = button.tag;
         
     }
     else {
         //设置三角旋转
         CGAffineTransform rotation;
-        if ([[triangle_flag objectForKey:[NSString stringWithFormat:@"%ld",button_flag*10]] isEqualToString:@"1"]) {
+        
+        if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button_flag*10]] isEqualToString:@"1"]) {
             rotation= CGAffineTransformMakeRotation(M_PI);//pi 180°
             [UIView animateWithDuration:0.2f
                              animations:^{
                                  triangle.transform = rotation;
                              }
                              completion:^(BOOL finished) {
-                                 [triangle_flag setObject:@"2" forKey:[NSString stringWithFormat:@"%ld",button_flag*10]];
+                                 [triangle_flag setValue:@"2" forKey:[NSString stringWithFormat:@"%ld",button_flag*10]];
                              }];
         } else {
-//            //iOS7可以逆时针旋转（设置-M_PI），但iOS8好像只能顺时针旋转，所以这里分两步旋转，蛋疼。。。
+//            //iOS7可以逆时针旋转（设置-M_PI），但iOS8好像不喜欢逆针旋转，所以这里分两步旋转，蛋疼。。。
 //            rotation= CGAffineTransformMakeRotation(M_PI_2);//90°
 //            [UIView animateWithDuration:0.2f
 //                             animations:^{
@@ -170,13 +166,13 @@
                                  triangle.transform = rotation;
                              }
                              completion:^(BOOL finished) {
-                                 [triangle_flag setObject:@"1" forKey:[NSString stringWithFormat:@"%ld",button_flag*10]];
+                                 [triangle_flag setValue:@"1" forKey:[NSString stringWithFormat:@"%ld",button_flag*10]];
                              }];
         }
 
     }
+    //NSLog(@"%@",triangle_flag);
     
-    NSLog(@"%@",triangle_flag);
 }
 
 
