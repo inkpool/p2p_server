@@ -35,6 +35,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="IzG-C2-zKV">
+                                <rect key="frame" x="52" y="48" width="97" height="21"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QbF-2r-nIX">
                                 <rect key="frame" x="0.0" y="64" width="600" height="147"/>
                                 <subviews>
@@ -87,7 +91,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="135600.58" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M1o-TL-wfi">
-                                        <rect key="frame" x="143" y="106" width="121" height="33"/>
+                                        <rect key="frame" x="143" y="106" width="173" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                         <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -125,15 +129,20 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.25315020161290325" green="0.32607736895161288" blue="0.53685735887096775" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="IzG-C2-zKV">
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" tag="1" title="主页" image="homepage.png" id="L9a-Fa-HHt"/>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="dateLabel" destination="lXW-9n-sX1" id="Uju-jU-Xrc"/>
+                        <outlet property="incomeLabel1" destination="gbM-Wa-tHM" id="TC0-tg-aXa"/>
+                        <outlet property="incomeLabel2" destination="0rT-nN-5vh" id="9kV-EB-wQx"/>
+                        <outlet property="rateLabel1" destination="wgG-x7-i9L" id="5Lm-Rj-Cdy"/>
+                        <outlet property="rateLable2" destination="yKm-FV-5EL" id="TDF-Za-fkc"/>
+                        <outlet property="totalCapitalLable" destination="M1o-TL-wfi" id="qKQ-Gm-VID"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qKr-f4-PiQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

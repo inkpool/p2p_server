@@ -12,6 +12,7 @@
 #import "AddViewController.h"
 #include "RecordDB.h"
 #import "HomeViewController.h"
+#import "FlowViewController.h"
 
 #define RCloseDuration 0.3f
 #define ROpenDuration 0.4f
@@ -51,8 +52,6 @@ static RootViewController *sharedRC;
     ifActivated=0;
     
     [self initRecord];
-//    NSLog(@"%@\n\n\n",expireRecord);
-//    NSLog(@"expiringRecord:\n%@",expiringRecord);
     
     //初始化，初始化结束后，_mainContentView位于_leftSideView的上层（覆盖），所以最先显示_mainContentView
     [self initSubviews];
@@ -137,11 +136,13 @@ static RootViewController *sharedRC;
     //NavigationItem：点击左按钮，显示“更多”功能界面；点击右按钮，显示添加“新的投资”的界面
     UITabBarController *tbc = [nc.childViewControllers firstObject];
     
-    //向HomeViewController传递值
+    //向HomeViewController、FlowViewController传递数据库中用户所有的投资记录
     HomeViewController *homeViewController = tbc.viewControllers[0];
     homeViewController->records = records;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
+    FlowViewController *flowViewController = tbc.viewControllers[3];
+    flowViewController->records = records;
     
     [tbc.navigationItem.leftBarButtonItem setAction:@selector(leftBarButtonItemPressed)];
     

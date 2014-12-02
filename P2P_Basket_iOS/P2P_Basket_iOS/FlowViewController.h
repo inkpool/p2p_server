@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface FlowViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
-
+{
+    UITableView *tableView;
+@public
+    NSMutableArray *records;//用户所有的投资记录
+}
 @end

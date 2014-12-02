@@ -23,6 +23,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self showData];
+    
     //获取屏幕分辨率
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
@@ -44,7 +46,7 @@
     [left_bt addSubview:left_view];
     
     UILabel *left_label1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, screen_width/7-10, 16)];
-    left_label1.text = @"5";
+    left_label1.text = [NSString stringWithFormat:@"%d",[expiringRecord count]];
     left_label1.textAlignment = UITextAlignmentCenter;
     left_label1.textColor = [UIColor whiteColor];
     [left_view addSubview:left_label1];
@@ -66,7 +68,7 @@
     [right_bt addSubview:right_view];
     
     UILabel *right_label1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, screen_width/7-10, 16)];
-    right_label1.text = @"456";
+    right_label1.text = [NSString stringWithFormat:@"%d",[expireRecord count]];
     right_label1.textAlignment = UITextAlignmentCenter;
     right_label1.textColor = [UIColor whiteColor];
     [right_view addSubview:right_label1];
@@ -98,6 +100,19 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)showData {
+    //显示当天年月日
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat : @"yyyy-M-d"];
+    NSString *nowDate = [formatter stringFromDate:[NSDate date]];
+    dateLabel.text = nowDate;
+    //计算显示在投总额
+    float totalCapital = 0;
+    for (int i = 0; i < [records count]; i++) {
+        totalCapital += [[records[i] objectForKey:@"capital"] floatValue];
+    }
+    totalCapitalLable.text = [NSString stringWithFormat:@"%.2f",totalCapital];
+}
 
 #pragma mark - ButtonPressedAction
 
@@ -176,7 +191,7 @@
         label4.font = [UIFont systemFontOfSize:16];
         [cell.contentView addSubview:label4];
         
-        UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/4*3, 45, screen_width/4-15, 15)];
+        UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/4*3-2, 45, screen_width/4-10, 15)];
         label5.tag = 1005;
         label5.font = [UIFont systemFontOfSize:13];
         [cell.contentView addSubview:label5];
@@ -200,7 +215,7 @@
         label2.text = label2Text;
         NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[expiringRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
         label4.text = label4Text;
-        NSString *label5Text = [NSString stringWithFormat:@"%.1f~%.1f",[[expiringRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[expiringRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
+        NSString *label5Text = [NSString stringWithFormat:@"%.2f~%.2f",[[expiringRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[expiringRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
         label5.text = label5Text;
     } else {
         NSString *imageName = [NSString stringWithFormat:@"%@-icon",[expireRecord[indexPath.row] objectForKey:@"platform"]];
@@ -211,7 +226,7 @@
         label2.text = label2Text;
         NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[expireRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
         label4.text = label4Text;
-        NSString *label5Text = [NSString stringWithFormat:@"%.1f~%.1f",[[expireRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[expireRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
+        NSString *label5Text = [NSString stringWithFormat:@"%.2f~%.2f",[[expireRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[expireRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
         label5.text = label5Text;
     }
   

@@ -28,6 +28,7 @@
     if(!success)
     {
         resPath = [[NSBundle mainBundle] pathForResource:@"p2p_basket" ofType:@"sqlite"];
+        NSLog(@"resPath:\n%@",resPath);
         success = [fileManager copyItemAtPath:resPath toPath:dbPath error:&error];
         if(!success)
         {

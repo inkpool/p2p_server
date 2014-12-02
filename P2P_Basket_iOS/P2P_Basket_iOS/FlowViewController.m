@@ -18,6 +18,7 @@
     CGFloat screen_height;//屏幕高
     NSInteger button_flag;//记录此前哪个button被选中
     NSMutableDictionary *triangle_flag;//记录三角的朝向
+    NSArray *sortedRecord;//保存用户投资记录排序后的结果
 }
 
 - (void)viewDidLoad {
@@ -34,6 +35,7 @@
     [triangle_flag setValue:@"1" forKey:@"1010"];//初始时三角超下
     [triangle_flag setValue:@"1" forKey:@"1020"];
     [triangle_flag setValue:@"1" forKey:@"1030"];
+    sortedRecord = records;
     
     //添加上面的选择菜单
     UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 64, screen_width/3, 36)];
@@ -94,7 +96,7 @@
     backgroundView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:248.0/255.0 blue:247.0/255.0 alpha:1.0];
     [self.view addSubview:backgroundView];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 102, screen_width-15, screen_height-102-49)];
+    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 102, screen_width-15, screen_height-102-49)];
     tableView.dataSource = self;
     tableView.delegate = self;
     tableView.showsVerticalScrollIndicator = NO;
@@ -140,38 +142,74 @@
     else {
         //设置三角旋转
         CGAffineTransform rotation;
-        if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button_flag*10]] isEqualToString:@"1"]) {
+        if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button.tag*10]] isEqualToString:@"1"]) {
+            [triangle_flag setValue:@"2" forKey:[NSString stringWithFormat:@"%ld",button.tag*10]];
             rotation= CGAffineTransformMakeRotation(M_PI);//pi 180°
             [UIView animateWithDuration:0.2f
                              animations:^{
                                  triangle.transform = rotation;
                              }
                              completion:^(BOOL finished) {
-                                 [triangle_flag setValue:@"2" forKey:[NSString stringWithFormat:@"%ld",button_flag*10]];
+                                 
                              }];
         } else {
-//            //iOS7可以逆时针旋转（设置-M_PI），但iOS8好像不喜欢逆针旋转，所以这里分两步旋转，蛋疼。。。
-//            rotation= CGAffineTransformMakeRotation(M_PI_2);//90°
-//            [UIView animateWithDuration:0.2f
-//                             animations:^{
-//                                 triangle.transform = rotation;
-//                             }
-//                             completion:^(BOOL finished) {
-//                                 
-//                             }];
+            [triangle_flag setValue:@"1" forKey:[NSString stringWithFormat:@"%ld",button.tag*10]];
             rotation= CGAffineTransformMakeRotation(0);//0°
             [UIView animateWithDuration:0.2f
                              animations:^{
                                  triangle.transform = rotation;
                              }
                              completion:^(BOOL finished) {
-                                 [triangle_flag setValue:@"1" forKey:[NSString stringWithFormat:@"%ld",button_flag*10]];
+                                 [triangle_flag setValue:@"1" forKey:[NSString stringWithFormat:@"%ld",button.tag*10]];
                              }];
         }
 
     }
-    //NSLog(@"%@",triangle_flag);
     
+    //对用户投资记录进行排序
+    if (button.tag == 101) {//按投资时间降序
+        if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button.tag*10]] isEqualToString:@"1"]) {
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            //NSLog(@"sortedRecord:%@",sortedRecord);
+        }
+        else {//按投资时间升序
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:YES];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+        }
+    }
+    else if (button.tag == 102) {//按投资金额降序
+        if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button.tag*10]] isEqualToString:@"1"]) {
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"capital" ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            
+        }
+        else {//按投资金额升序
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"capital" ascending:YES];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+        }
+    }
+    else {//按年化收益率降序
+        if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button.tag*10]] isEqualToString:@"1"]) {
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"maxRate" ascending:NO];
+            NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"minRate" ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,secondDescriptor,nil];
+            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            
+        }
+        else {//按年化收益率升序
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"maxRate" ascending:YES];
+            NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"minRate" ascending:YES];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,secondDescriptor,nil];
+            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+        }
+    }
+    
+    [tableView reloadData];
 }
 
 
@@ -186,7 +224,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return [records count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -197,10 +235,15 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
-        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15, 13, screen_width/3, 15)];
+        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15, 13, screen_width/3-25, 15)];
         label1.tag = 1001;
         label1.font = [UIFont systemFontOfSize:15];
         [cell.contentView addSubview:label1];
+        
+        UILabel *label6 = [[UILabel alloc] initWithFrame:CGRectMake(15+screen_width/3-25, 13, 30, 15)];
+        label6.text = @"到期";
+        label6.font = [UIFont systemFontOfSize:15];
+        [cell.contentView addSubview:label6];
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3+25, 10, 38, 24)];
         imageView.tag = 1002;
@@ -221,7 +264,7 @@
         label4.font = [UIFont systemFontOfSize:16];
         [cell.contentView addSubview:label4];
         
-        UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/4*3, 45, screen_width/4-15, 15)];
+        UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/4*3-2, 45, screen_width/4-10, 15)];
         label5.tag = 1005;
         label5.font = [UIFont systemFontOfSize:13];
         [cell.contentView addSubview:label5];
@@ -229,52 +272,24 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:248.0/255.0 blue:247.0/255.0 alpha:1.0];
     }
+    
     //写入数据
     UILabel *label1 = (UILabel *)[cell.contentView viewWithTag:1001];
-    label1.text = @"2014-8-25 到期";
     UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1002];
-    //    [imageView setImage:[UIImage imageNamed:@"人人贷-icon"]];
-    [imageView setImage:[UIImage imageNamed:@"点融网-icon"]];
-    //    [imageView setImage:[UIImage imageNamed:@"爱投资-icon"]];
-    //    [imageView setImage:[UIImage imageNamed:@"积木盒子-icon"]];
-    //    [imageView setImage:[UIImage imageNamed:@"陆金所-icon"]];
-    //    [imageView setImage:[UIImage imageNamed:@"盛融在线-icon"]];
-    //    [imageView setImage:[UIImage imageNamed:@"鑫合汇-icon"]];
-    //    [imageView setImage:[UIImage imageNamed:@"有利网-icon"]];
-    
     UILabel *label2 = (UILabel *)[cell.contentView viewWithTag:1003];
-    //    label2.text = @"人人贷-优选计划";
-    //    label2.textColor = [UIColor colorWithRed:13.0/255.0 green:90.0/255.0 blue:157.0/255.0 alpha:1.0];
-    
-    label2.text = @"点触网-团团赚-高手";
-    label2.textColor = [UIColor colorWithRed:33.0/255.0 green:150.0/255.0 blue:46.0/255.0 alpha:1.0];
-    
-    //    label2.text = @"爱投资-";
-    //    label2.textColor = [UIColor colorWithRed:207.0/255.0 green:150.0/255.0 blue:12.0/255.0 alpha:1.0];
-    //
-    //    label2.text = @"积木盒子-饮品生产";
-    //    label2.textColor = [UIColor colorWithRed:27.0/255.0 green:166.0/255.0 blue:220.0/255.0 alpha:1.0];
-    
-    //    label2.text = @"陆金所-富盈人生";
-    //    label2.textColor = [UIColor colorWithRed:213.0/255.0 green:74.0/255.0 blue:20.0/255.0 alpha:1.0];
-    
-    //    label2.text = @"盛融在线-";
-    //    label2.textColor = [UIColor colorWithRed:232.0/255.0 green:170.0/255.0 blue:21.0/255.0 alpha:1.0];
-    
-    //    label2.text = @"鑫合汇-";
-    //    label2.textColor = [UIColor colorWithRed:14.0/255.0 green:110.0/255.0 blue:203.0/255.0 alpha:1.0];
-    
-    //    label2.text = @"有利网-月息通";
-    //    label2.textColor = [UIColor colorWithRed:235.0/255.0 green:97.0/255.0 blue:7.0/255.0 alpha:1.0];
-    
-    
     UILabel *label4 = (UILabel *)[cell.contentView viewWithTag:1004];
-    label4.text = @"1,000,000";
-    
     UILabel *label5 = (UILabel *)[cell.contentView viewWithTag:1005];
-    label5.text = @"12%~14%";
-    
-    
+    NSString *imageName = [NSString stringWithFormat:@"%@-icon",[sortedRecord[indexPath.row] objectForKey:@"platform"]];
+    [imageView setImage:[UIImage imageNamed:imageName]];
+    NSString *label1Text = [NSString stringWithFormat:@"%@",[sortedRecord[indexPath.row] objectForKey:@"endDate"]];
+    label1.text = label1Text;
+    NSString *label2Text = [NSString stringWithFormat:@"%@-%@",[sortedRecord[indexPath.row] objectForKey:@"platform"],[sortedRecord[indexPath.row] objectForKey:@"product"]];
+    label2.text = label2Text;
+    NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[sortedRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
+    label4.text = label4Text;
+    NSString *label5Text = [NSString stringWithFormat:@"%.2f~%.2f",[[sortedRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[sortedRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
+    label5.text = label5Text;
+        
     return cell;
 }
 
