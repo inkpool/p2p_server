@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AnalysisViewController : UIViewController
+@interface AnalysisViewController : UIViewController<UIPickerViewDelegate,UIPickerViewDataSource>
 {
     NSMutableDictionary *platformTotalCapital;
+    UIAlertController *myAlert;
     float totalCapital;
 @public
     NSMutableArray *records;//用户所有的投资记录

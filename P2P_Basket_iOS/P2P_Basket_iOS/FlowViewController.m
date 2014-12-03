@@ -257,19 +257,19 @@
         label2.font = [UIFont systemFontOfSize:13];
         [cell.contentView addSubview:label2];
         
-        UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3+37, 40, 15, 16)];
+        UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3+35, 40, 15, 16)];
         label3.text = @"￥";
         label3.font = [UIFont systemFontOfSize:16];
         [cell.contentView addSubview:label3];
         
-        UILabel *label4 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3+55, 40, 80, 16)];
+        UILabel *label4 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3+50, 40, 80, 16)];
         label4.tag = 1004;
         label4.font = [UIFont systemFontOfSize:16];
         [cell.contentView addSubview:label4];
         
-        UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/4*3-2, 45, screen_width/4-10, 15)];
+        UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/4*3-15, 45, screen_width/4, 15)];
         label5.tag = 1005;
-        label5.font = [UIFont systemFontOfSize:13];
+        label5.font = [UIFont systemFontOfSize:10];
         [cell.contentView addSubview:label5];
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -293,9 +293,19 @@
     label2.text = label2Text;
     NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[sortedRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
     label4.text = label4Text;
-    NSString *label5Text = [NSString stringWithFormat:@"%.2f~%.2f",[[sortedRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[sortedRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
-    label5.text = label5Text;
-        
+    if ([[sortedRecord[indexPath.row] objectForKey:@"minRate"] floatValue] == 0 ) {
+        NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[sortedRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
+        label5.text = label5Text;
+    }
+    else if ([[sortedRecord[indexPath.row] objectForKey:@"maxRate"] floatValue] == 0) {
+        NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[sortedRecord[indexPath.row] objectForKey:@"minRate"] floatValue]];
+        label5.text = label5Text;
+    }
+    else {
+        NSString *label5Text = [NSString stringWithFormat:@"%.2f%%~%.2f%%",[[sortedRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[sortedRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
+        label5.text = label5Text;
+    }
+    
     return cell;
 }
 
