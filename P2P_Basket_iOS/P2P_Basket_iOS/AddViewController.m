@@ -64,7 +64,7 @@
     [self.view addSubview:cateLabel];
     
     UILabel *anualPercentLabel = [[UILabel alloc]initWithFrame:CGRectMake(screen_width/10, naviHeight+screen_width/10+labelHeight*2, labelWidth, labelHeight)];
-    anualPercentLabel.text=@"年化收益率\n";
+    anualPercentLabel.text=@"年收益率\n";
     [self.view addSubview:anualPercentLabel];
     
     UILabel *principalLabel = [[UILabel alloc]initWithFrame:CGRectMake(screen_width/10, naviHeight+screen_width/10+labelHeight*3, labelWidth, labelHeight)];
