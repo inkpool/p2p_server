@@ -9,7 +9,9 @@
 #import "LeftSliderController.h"
 
 @interface LeftSliderController ()
-
+{
+    NSArray *plateformArray;//从platformSet提取出所有的平台名称
+}
 @end
 
 @implementation LeftSliderController
@@ -32,7 +34,7 @@
     
 
     //添加一个tableView
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 80, screen_width, screen_height-160)];
     //tableView.backgroundView = backView;
     tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     tableView.backgroundColor=[UIColor clearColor];
@@ -68,7 +70,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section {
-    return 8;
+    return [platformSet count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -84,45 +86,50 @@
                 initWithStyle:UITableViewCellStyleValue1
                 reuseIdentifier:TableSampleIdentifier];
     }
+    plateformArray = [platformSet allObjects];
+    cell.textLabel.text = plateformArray[indexPath.row];
+    cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-icon",plateformArray[indexPath.row]]];
+    cell.backgroundColor=[UIColor clearColor];
     
-    NSUInteger row = [indexPath row];
     
-    switch(row)
-    {
-        case 4:
-            {
-                cell.textLabel.text = @"账户设置";
-                UIImage *image = [UIImage imageNamed:@"homepage"];
-                cell.imageView.image = image;
-                cell.backgroundColor=[UIColor clearColor];
-                break;
-            }
-        case 5:
-            {
-                cell.textLabel.text = @"云端备份";
-                UIImage *image = [UIImage imageNamed:@"homepage"];
-                cell.imageView.image = image;
-                cell.backgroundColor=[UIColor clearColor];
-                break;
-            }
-        case 6:
-            {
-                cell.textLabel.text = @"用户反馈";
-                UIImage *image = [UIImage imageNamed:@"homepage"];
-                cell.imageView.image = image;
-                cell.backgroundColor=[UIColor clearColor];
-                break;
-            }
-        case 7:
-            {
-                cell.textLabel.text = @"联系我们";
-                UIImage *image = [UIImage imageNamed:@"homepage"];
-                cell.imageView.image = image;
-                cell.backgroundColor=[UIColor clearColor];
-                break;
-            }
-        default: cell.backgroundColor=[UIColor clearColor];break;
-    }
+//    NSUInteger row = [indexPath row];
+//    
+//    switch(row)
+//    {
+//        case 4:
+//            {
+//                cell.textLabel.text = @"账户设置";
+//                UIImage *image = [UIImage imageNamed:@"homepage"];
+//                cell.imageView.image = image;
+//                cell.backgroundColor=[UIColor clearColor];
+//                break;
+//            }
+//        case 5:
+//            {
+//                cell.textLabel.text = @"云端备份";
+//                UIImage *image = [UIImage imageNamed:@"homepage"];
+//                cell.imageView.image = image;
+//                cell.backgroundColor=[UIColor clearColor];
+//                break;
+//            }
+//        case 6:
+//            {
+//                cell.textLabel.text = @"用户反馈";
+//                UIImage *image = [UIImage imageNamed:@"homepage"];
+//                cell.imageView.image = image;
+//                cell.backgroundColor=[UIColor clearColor];
+//                break;
+//            }
+//        case 7:
+//            {
+//                cell.textLabel.text = @"联系我们";
+//                UIImage *image = [UIImage imageNamed:@"homepage"];
+//                cell.imageView.image = image;
+//                cell.backgroundColor=[UIColor clearColor];
+//                break;
+//            }
+//        default: cell.backgroundColor=[UIColor clearColor];break;
+//    }
     return cell;
 }
 

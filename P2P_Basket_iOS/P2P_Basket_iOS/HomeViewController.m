@@ -46,7 +46,8 @@
     [left_bt addSubview:left_view];
     
     UILabel *left_label1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, screen_width/7-10, 16)];
-    left_label1.text = [NSString stringWithFormat:@"%d",[expiringRecord count]];
+    left_label1.tag = 111;
+    left_label1.text = [NSString stringWithFormat:@"%ld",[expiringRecord count]];
     left_label1.textAlignment = UITextAlignmentCenter;
     left_label1.textColor = [UIColor whiteColor];
     [left_view addSubview:left_label1];
@@ -68,7 +69,8 @@
     [right_bt addSubview:right_view];
     
     UILabel *right_label1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, screen_width/7-10, 16)];
-    right_label1.text = [NSString stringWithFormat:@"%d",[expireRecord count]];
+    right_label1.tag = 112;
+    right_label1.text = [NSString stringWithFormat:@"%ld",[expireRecord count]];
     right_label1.textAlignment = UITextAlignmentCenter;
     right_label1.textColor = [UIColor whiteColor];
     [right_view addSubview:right_label1];

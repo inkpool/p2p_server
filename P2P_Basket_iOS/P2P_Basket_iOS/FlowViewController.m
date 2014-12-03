@@ -16,9 +16,6 @@
 {
     CGFloat screen_width;//屏幕宽
     CGFloat screen_height;//屏幕高
-    NSInteger button_flag;//记录此前哪个button被选中
-    NSMutableDictionary *triangle_flag;//记录三角的朝向
-    NSArray *sortedRecord;//保存用户投资记录排序后的结果
 }
 
 - (void)viewDidLoad {
@@ -213,7 +210,6 @@
 }
 
 
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -235,6 +231,13 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
+//        //投资开始日期
+//        UILabel *label7 = [[UILabel alloc] initWithFrame:CGRectMake(15, 13, screen_width/3-25, 15)];
+//        label7.tag = 1006;
+//        label7.font = [UIFont systemFontOfSize:15];
+//        [cell.contentView addSubview:label7];
+
+        //投资结束日期
         UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15, 13, screen_width/3-25, 15)];
         label1.tag = 1001;
         label1.font = [UIFont systemFontOfSize:15];
@@ -274,6 +277,7 @@
     }
     
     //写入数据
+//    UILabel *label7 = (UILabel *)[cell.contentView viewWithTag:1006];
     UILabel *label1 = (UILabel *)[cell.contentView viewWithTag:1001];
     UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1002];
     UILabel *label2 = (UILabel *)[cell.contentView viewWithTag:1003];
@@ -281,6 +285,8 @@
     UILabel *label5 = (UILabel *)[cell.contentView viewWithTag:1005];
     NSString *imageName = [NSString stringWithFormat:@"%@-icon",[sortedRecord[indexPath.row] objectForKey:@"platform"]];
     [imageView setImage:[UIImage imageNamed:imageName]];
+//    NSString *label7Text = [NSString stringWithFormat:@"%@",[sortedRecord[indexPath.row] objectForKey:@"startDate"]];
+//    label7.text = label7Text;
     NSString *label1Text = [NSString stringWithFormat:@"%@",[sortedRecord[indexPath.row] objectForKey:@"endDate"]];
     label1.text = label1Text;
     NSString *label2Text = [NSString stringWithFormat:@"%@-%@",[sortedRecord[indexPath.row] objectForKey:@"platform"],[sortedRecord[indexPath.row] objectForKey:@"product"]];

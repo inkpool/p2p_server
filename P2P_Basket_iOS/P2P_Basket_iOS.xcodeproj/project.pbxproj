@@ -70,6 +70,7 @@
 		1D0CC4921A2DF8B3004E7EE1 /* Example2PieView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example2PieView.m; sourceTree = "<group>"; };
 		1D0CC4931A2DF8B3004E7EE1 /* MyPieElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPieElement.h; sourceTree = "<group>"; };
 		1D0CC4941A2DF8B3004E7EE1 /* MyPieElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPieElement.m; sourceTree = "<group>"; };
+		1D5285161A2F054000989CAC /* UIViewPassValueDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewPassValueDelegate.h; sourceTree = "<group>"; };
 		1D5C9C211A0B5FE0007CFFF9 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		1D5C9C221A0B5FE0007CFFF9 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		1D5C9C241A0B5FF8007CFFF9 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -283,6 +284,7 @@
 				E608615819FFEDC800EBDBE1 /* AppDelegate.m */,
 				1DF0BDEF1A10550A00E491D6 /* RootViewController.h */,
 				1DF0BDF01A10550A00E491D6 /* RootViewController.m */,
+				1D5285161A2F054000989CAC /* UIViewPassValueDelegate.h */,
 				1D5C9C241A0B5FF8007CFFF9 /* Main.storyboard */,
 				E608616019FFEDC800EBDBE1 /* Images.xcassets */,
 				E608616219FFEDC800EBDBE1 /* LaunchScreen.xib */,

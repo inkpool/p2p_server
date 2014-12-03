@@ -458,6 +458,7 @@
 -(void)confirmPressed{
     RecordDB *myRecordDB = [[RecordDB alloc]init];
     [myRecordDB insertRecord:platformField.text secondPara:productField.text thirdPara:[capitalField.text floatValue] forthPara:[minRateField.text floatValue] fifthPara:[maxRateField.text floatValue] sixthPara:1 seventhPara:startimeField.text eighthPara:endtimeField.text];
+    [delegate refreshTableView];
     [self.navigationController popToRootViewControllerAnimated:YES];
 
 }

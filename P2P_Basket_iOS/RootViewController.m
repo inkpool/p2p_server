@@ -126,6 +126,11 @@ static RootViewController *sharedRC;
 - (void)initChildControllers {
     //初始化“更多”功能界面所在的ViewController
     LeftSliderController *leftSC = [[LeftSliderController alloc] init];
+    leftSC->platformSet = [NSMutableSet set];
+    for (int i = 0; i < [records count]; i++) {
+        //platformSet保存用户投资过的平台的名称,set是单值对象的集合，自动删除重复的对象
+        [leftSC->platformSet addObject:[records[i] objectForKey:@"platform"]];
+    }
     [self addChildViewController:leftSC];
     [_leftSideView addSubview:leftSC.view];
     
@@ -150,6 +155,75 @@ static RootViewController *sharedRC;
     [tbc.navigationItem.leftBarButtonItem setAction:@selector(leftBarButtonItemPressed)];
     
     [tbc.navigationItem.rightBarButtonItem setAction:@selector(rightBarButtonItemPressed)];
+}
+
+#pragma mark -
+#pragma mark UIViewPassValueDelegate
+- (void)refreshTableView {
+    //添加新的投资后刷新主页和流水界面
+    [self initRecord];
+    //NSLog(@"records:%@",records);
+    UITabBarController *tbc = [nc.childViewControllers firstObject];
+    HomeViewController *homeViewController = tbc.viewControllers[0];
+    homeViewController->records = records;
+    homeViewController->expireRecord = expireRecord;
+    homeViewController->expiringRecord = expiringRecord;
+    [homeViewController->tableView reloadData];
+    
+    UILabel *label1 = (UILabel *)[homeViewController.view viewWithTag:111];
+    label1.text = [NSString stringWithFormat:@"%ld",[homeViewController->expiringRecord count]];
+    UILabel *label2 = (UILabel *)[homeViewController.view viewWithTag:112];
+    label2.text = [NSString stringWithFormat:@"%ld",[homeViewController->expireRecord count]];
+    
+    FlowViewController *flowViewController = tbc.viewControllers[3];
+    flowViewController->records = records;
+    
+    if (flowViewController->button_flag == 0) {
+        flowViewController->sortedRecord = flowViewController->records;
+    }
+    else if (flowViewController->button_flag == 101) {//按投资时间降序
+        if ([[flowViewController->triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",flowViewController->button_flag*10]] isEqualToString:@"1"]) {
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            //NSLog(@"sortedRecord:%@",sortedRecord);
+        }
+        else {//按投资时间升序
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:YES];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+        }
+    }
+    else if (flowViewController->button_flag == 102) {//按投资金额降序
+        if ([[flowViewController->triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",flowViewController->button_flag*10]] isEqualToString:@"1"]) {
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"capital" ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            
+        }
+        else {//按投资金额升序
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"capital" ascending:YES];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+        }
+    }
+    else {//按年化收益率降序
+        if ([[flowViewController->triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",flowViewController->button_flag*10]] isEqualToString:@"1"]) {
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"maxRate" ascending:NO];
+            NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"minRate" ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,secondDescriptor,nil];
+            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            
+        }
+        else {//按年化收益率升序
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"maxRate" ascending:YES];
+            NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"minRate" ascending:YES];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,secondDescriptor,nil];
+            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+        }
+    }
+    
+    [flowViewController->tableView reloadData];
 }
 
 #pragma mark -
@@ -187,6 +261,7 @@ static RootViewController *sharedRC;
     
     //添加“新建投资”页面
     AddViewController *aDV = [[AddViewController alloc]init];
+    aDV->delegate = self;
     [nc pushViewController:aDV animated:YES];
 }
 

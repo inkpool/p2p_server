@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIViewPassValueDelegate.h"
 
 @interface AddViewController : UIViewController<UITextFieldDelegate, UIPickerViewDelegate,UIPickerViewDataSource>
 {
@@ -16,6 +17,8 @@
     NSInteger currentTextTag;
     UIDatePicker *startTimePicker,*endTimePicker;
     UIAlertController *myAlert;
+@public
+    NSObject<UIViewPassValueDelegate> *delegate;//在AddViewController中添加新的投资后，要刷新主页和流水界面的tableVIew
 }
 
 
