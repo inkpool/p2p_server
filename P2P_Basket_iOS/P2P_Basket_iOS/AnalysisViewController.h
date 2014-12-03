@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface AnalysisViewController : UIViewController
-
+{
+    NSMutableDictionary *platformTotalCapital;
+    float totalCapital;
+@public
+    NSMutableArray *records;//用户所有的投资记录
+}
 @end

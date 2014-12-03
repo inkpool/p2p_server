@@ -13,6 +13,7 @@
 #include "RecordDB.h"
 #import "HomeViewController.h"
 #import "FlowViewController.h"
+#import "AnalysisViewController.h"
 
 #define RCloseDuration 0.3f
 #define ROpenDuration 0.4f
@@ -143,6 +144,8 @@ static RootViewController *sharedRC;
     homeViewController->expiringRecord = expiringRecord;
     FlowViewController *flowViewController = tbc.viewControllers[3];
     flowViewController->records = records;
+    AnalysisViewController *analysisViewController = tbc.viewControllers[2];
+    analysisViewController->records = records;
     
     [tbc.navigationItem.leftBarButtonItem setAction:@selector(leftBarButtonItemPressed)];
     
