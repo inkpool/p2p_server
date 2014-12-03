@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout 
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:background="#46527b">
+        <TextView android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2014-8-25"
+            android:textColor="#ffffff"
+            android:textSize="80px"
+            android:layout_marginLeft="50px"
+            android:layout_marginTop="30px"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当日收益"
+                android:textColor="#ffffff"
+                android:textSize="60px"
+                android:layout_marginLeft="50px"
+                android:layout_marginTop="20px"/>
+            <TextView android:id="@+id/today_earnings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20.95"
+                android:textColor="#ffffff"
+                android:textSize="80px"
+                android:layout_marginLeft="128px"
+                android:layout_marginTop="20px"/>
+            <TextView android:id="@+id/t_d_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="±1"
+                android:textColor="#ffffff"
+                android:textSize="60px"
+                android:layout_marginTop="20px"/>
+        </LinearLayout>
+         <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="50px"
+                 android:layout_marginTop="20px"
+                 android:text="均年化收益"
+                 android:textColor="#ffffff"
+                 android:textSize="60px" />
+
+            <TextView android:id="@+id/average_earnings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8.5"
+                android:textColor="#ffffff"
+                android:textSize="80px"
+                android:layout_marginLeft="70px"
+                android:layout_marginTop="20px"/>
+            <TextView android:id="@+id/a_d_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="±1.2%"
+                android:textColor="#ffffff"
+                android:textSize="60px"
+                android:layout_marginTop="20px"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="在投总额"
+                android:textColor="#ffffff"
+                android:textSize="60px"
+                android:layout_marginLeft="50px"
+                android:layout_marginTop="20px"/>
+            <TextView android:id="@+id/total_earnings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="135600.58"
+                android:textColor="#ffffff"
+                android:textSize="80px"
+                android:layout_marginLeft="128px"
+                android:layout_marginTop="20px"
+                android:layout_marginBottom="30px"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TabHost android:id="@+id/tabhost"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+         <!-- <LinearLayout android:orientation="vertical" 
+            android:layout_width="fill_parent" 
+            android:layout_height="50px"> 
+        </LinearLayout> -->
+        <!-- TabWidget的id属性必须为 @android:id/tabs-->              
+            <TabWidget android:id="@android:id/tabs" 
+                android:layout_width="fill_parent"  
+                android:layout_height="wrap_content" 
+                /> 
+            <!-- FrameLayout的id属性必须为 @android:id/tabcontent-->  
+             <FrameLayout android:id="@android:id/tabcontent" 
+                 android:layout_width="fill_parent" 
+                 android:layout_height="fill_parent">
+               <LinearLayout 
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="80px"
+                   android:layout_marginLeft="30px">
+                 <ListView android:id="@+id/view1" 
+                     android:layout_marginTop="80px"
+                    android:layout_width="fill_parent" 
+                    android:layout_height="fill_parent"/>  
+               </LinearLayout>   
+               <LinearLayout 
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="160px"
+                   android:layout_marginLeft="30px">  
+                <ListView android:id="@+id/view2" 
+                    android:layout_width="fill_parent" 
+                    android:layout_height="fill_parent"/>   
+                    </LinearLayout> 
+             <!-- 
+             <LinearLayout  
+                 android:id="@+id/tab1"  
+                 android:orientation="vertical"
+                 android:layout_width="fill_parent"  
+                 android:layout_height="fill_parent" >  
+             </LinearLayout> 
+	         <ListView  
+                 android:id="@+id/list_view2"  
+                 android:layout_width="fill_parent"  
+                 android:layout_height="fill_parent" >  
+             </ListView>   -->
+             </FrameLayout> 
+    </TabHost>
+        
+</LinearLayout>
