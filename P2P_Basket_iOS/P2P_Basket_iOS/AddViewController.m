@@ -72,9 +72,6 @@
     [self.view addSubview:principalLabel];
     
     
-    
-    
-    
     UILabel *methodLabel = [[UILabel alloc]initWithFrame:CGRectMake(screen_width/10, naviHeight+screen_width/10+labelHeight*4, labelWidth, labelHeight)];
     methodLabel.text=@"计息方式\n";
     [self.view addSubview:methodLabel];
@@ -199,46 +196,127 @@
     
     NSLog(@"textFieldShouldBeginEditing");
     
-    UIPickerView *pickView=[[UIPickerView alloc]initWithFrame:CGRectMake(0, screen_height*0.8, screen_width, screen_height*0.2)];
-    pickView.backgroundColor=[UIColor grayColor];
+    myAlert=[UIAlertController alertControllerWithTitle:nil
+                                                message:@"请选择\n\n\n\r\r\r\r\r\r\r"
+                                         preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIPickerView *pickView=[[UIPickerView alloc]initWithFrame:CGRectMake(-15, 0, 0, 0)];
     pickView.showsSelectionIndicator = YES;
     
+    [myAlert.view addSubview:pickView];
     
-    UIToolbar *toolBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, screen_height*0.8, screen_width,30)];
-    toolBar.backgroundColor=[UIColor greenColor];
-    toolBar.barStyle = UIBarStyleDefault;
-    toolBar.tag=888;
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                        NSLog(@"The \"Okay/Cancel\" alert action sheet's cancel action occured.");
+    }];
     
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStyleDone target: self action: @selector(donePressed:)];
+    UIAlertAction *destructiveAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+
+        
+        NSLog(@"The \"Okay/Cancel\" alert action sheet's destructive action occured.");
+        switch (textField.tag) {
+            case 101:
+                textField.text=[platformArray objectAtIndex:[pickView selectedRowInComponent:0]];
+                break;
+            case 102:
+            {
+                textField.text=[productArray objectAtIndex:[pickView selectedRowInComponent:0]];
+                platformDB *myPlatformDB = [[platformDB alloc]init];
+                NSMutableArray *rateMutableArray=[myPlatformDB getRates:platformField.text secondPara:productField.text];
+                NSArray *rateArray = [rateMutableArray copy];
+                if([[rateArray objectAtIndex:0] isEqualToString:[rateArray objectAtIndex:1]])
+                {
+                    if([[rateArray objectAtIndex:0] isEqualToString:@"0.0"])
+                    {
+                        minRateField.text=@"";
+                        minRateField.placeholder=@"请输入";
+                    }
+                    else
+                    {
+                        minRateField.text=[rateArray objectAtIndex:0];
+                    }
+                    
+                    minRateField.textAlignment=NSTextAlignmentCenter;
+                    [maxRateField removeFromSuperview];
+                    UILabel *minLabel=(UILabel*)[self.view viewWithTag:403];
+                    minLabel.text=@"%";
+                    UILabel *maxLabel=(UILabel*)[self.view viewWithTag:404];
+                    maxLabel.text=nil;
+                }else{
+                    [self.view addSubview:maxRateField];
+                    minRateField.text=[rateArray objectAtIndex:0];
+                    minRateField.textAlignment=NSTextAlignmentCenter;
+                    maxRateField.text=[rateArray objectAtIndex:1];
+                    maxRateField.textAlignment=NSTextAlignmentCenter;
+                    UILabel *minLabel=(UILabel*)[self.view viewWithTag:403];
+                    minLabel.text=@"%~";
+                    UILabel *maxLabel=(UILabel*)[self.view viewWithTag:404];
+                    maxLabel.text=@"%";
+                }
+                //自动填写开始时间和结束时间
+                NSDateFormatter *formater = [[ NSDateFormatter alloc] init];
+                NSDate *curDate = [NSDate date];//获取当前日期
+                [formater setDateFormat:@"yyyy-MM-dd"];//这里去掉 具体时间 保留日期
+                NSString * curTime = [formater stringFromDate:curDate];
+                startimeField.text=curTime;
+                
+                //获取预设投资时间
+                NSInteger duration=[[myPlatformDB getDuration:platformField.text secondPara:productField.text]intValue];
+                
+                NSCalendar *gregorian = [[NSCalendar alloc]
+                                         initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+                NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+                [offsetComponents setMonth:duration];
+                // Calculate when, according to Tom Lehrer, World War III will end
+                NSDate *endDate = [gregorian dateByAddingComponents:offsetComponents
+                                                                    toDate:curDate options:0];
+                endtimeField.text=[formater stringFromDate:endDate];
+            }
+            break;
+            case 106:
+            {
+                textField.text=[cal_typeArray objectAtIndex:[pickView selectedRowInComponent:0]];
+            }
+            break;
+            case 107:
+            {
+                NSDateFormatter *formater = [[ NSDateFormatter alloc] init];
+                [formater setDateFormat:@"yyyy-MM-dd"];
+                textField.text=[formater stringFromDate:startTimePicker.date];
+            }
+            break;
+            case 108:
+            {
+                NSDateFormatter *formater = [[ NSDateFormatter alloc] init];
+                [formater setDateFormat:@"yyyy-MM-dd"];
+                textField.text=[formater stringFromDate:endTimePicker.date];
+            }
+            break;
+            default:break;
+        }
+
+    }];
     
-    UIBarButtonItem *leftButton  = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target: self action: @selector(newPressed:)];
+    [myAlert addAction:cancelAction];
+    [myAlert addAction:destructiveAction];
+    
 
     switch (textField.tag) {
         case 101:
         {
             NSLog(@"1111");
             pickView.tag=201;
-            rightButton.tag=301;
-            leftButton.tag=301;
             //查询数据，赋值pick数组
             platformDB *myPlatformDB = [[platformDB alloc]init];
             NSMutableArray *platformMutableArray=[myPlatformDB getField:@"platform"];
             platformArray = [platformMutableArray copy];
             pickView.delegate=self;
-            [self.view addSubview:pickView];
-            UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-            NSArray *toolbarItems = [NSArray arrayWithObjects:leftButton,spaceItem, rightButton, nil];
-            [toolBar setItems:toolbarItems];
-            [self.view addSubview:toolBar];
-
+            [self presentViewController:myAlert animated:YES completion:nil];
         }
         break;
         case 102:
         {
             NSLog(@"textField值为%@",platformField.text);
             pickView.tag=202;
-            rightButton.tag=302;
-            leftButton.tag=302;
             if(platformField.text.length==0){
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
                                                                 message:@"请先选择平台。"
@@ -252,11 +330,7 @@
                 NSMutableArray *productMutableArray=[myPlatformDB getProductFromOnePlatform:platformField.text];
                 productArray = [productMutableArray copy];
                 pickView.delegate=self;
-                [self.view addSubview:pickView];
-                UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-                NSArray *toolbarItems = [NSArray arrayWithObjects:leftButton,spaceItem, rightButton, nil];
-                [toolBar setItems:toolbarItems];
-                [self.view addSubview:toolBar];
+                [self presentViewController:myAlert animated:YES completion:nil];
             }
         }
         break;
@@ -292,37 +366,30 @@
         {
             cal_typeArray=[NSArray arrayWithObjects:@"到期还本息",@"每月还本息", nil];
             pickView.tag=206;
-            rightButton.tag=306;
-            leftButton.tag=306;
             pickView.delegate=self;
-            [self.view addSubview:pickView];
-            UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-            NSArray *toolbarItems = [NSArray arrayWithObjects:leftButton,spaceItem, rightButton, nil];
-            [toolBar setItems:toolbarItems];
-            [self.view addSubview:toolBar];
-            //textField.keyboardType=UIKeyboardTypeDecimalPad;
+            [self presentViewController:myAlert animated:YES completion:nil];
             return NO;
         }
         break;
         case 107:
         {
             
-//            NSDateFormatter *formater = [[ NSDateFormatter alloc] init];
-//            NSDate *curDate = [NSDate date];//获取当前日期
-//            [formater setDateFormat:@"yyyy-MM-dd"];//这里去掉 具体时间 保留日期
-//            NSString * curTime = [formater stringFromDate:curDate];
-//            textField.text=curTime;
-//            return NO;
-            startTimePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0,0.6*screen_height,0.0,0.0)];
+            startTimePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0,0,0.0,0.0)];
             startTimePicker.datePickerMode=UIDatePickerModeDate;
-            [self.view addSubview:startTimePicker];
+            [myAlert.view addSubview:startTimePicker];
+            [self presentViewController:myAlert animated:YES completion:nil];
             
+            return NO;
             
         }
         break;
         case 108:
         {
+            endTimePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0,0,0.0,0.0)];
+            endTimePicker.datePickerMode=UIDatePickerModeDate;
             
+            [myAlert.view addSubview:endTimePicker];
+            [self presentViewController:myAlert animated:YES completion:nil];
             return NO;
         }
         break;
@@ -388,79 +455,10 @@
 
 #pragma mark - Button Pressed
 
--(void)donePressed:(id)sender{
-    NSLog(@"Done pressed.");
-    NSInteger i = [sender tag]; //30x是按钮的tag
-    UIPickerView *pickerView=(UIPickerView*)[self.view viewWithTag:i-100];
-    NSInteger row =[pickerView selectedRowInComponent:0];
-    if(i==(long)301)
-    {
-        NSString *selected = [platformArray objectAtIndex:row];
-        UITextField *intoTextField=(UITextField*)[self.view viewWithTag:i-200];
-        intoTextField.text=selected;
-    }
-    
-    if(i==(long)302)
-    {
-        NSString *selected = [productArray objectAtIndex:row];
-        UITextField *intoTextField=(UITextField*)[self.view viewWithTag:i-200];
-        intoTextField.text=selected;
-        
-        platformDB *myPlatformDB = [[platformDB alloc]init];
-        NSMutableArray *rateMutableArray=[myPlatformDB getRates:platformField.text secondPara:productField.text];
-        NSArray *rateArray = [rateMutableArray copy];
-        if([[rateArray objectAtIndex:0] isEqualToString:[rateArray objectAtIndex:1]])
-        {
-            minRateField.text=[rateArray objectAtIndex:0];
-            minRateField.textAlignment=NSTextAlignmentCenter;
-            [maxRateField removeFromSuperview];
-            //maxRateField.text=nil;
-            UILabel *minLabel=(UILabel*)[self.view viewWithTag:403];
-            minLabel.text=@"%";
-            UILabel *maxLabel=(UILabel*)[self.view viewWithTag:404];
-            maxLabel.text=nil;
-        }else{
-            [self.view addSubview:maxRateField];
-            minRateField.text=[rateArray objectAtIndex:0];
-            minRateField.textAlignment=NSTextAlignmentCenter;
-            maxRateField.text=[rateArray objectAtIndex:1];
-            maxRateField.textAlignment=NSTextAlignmentCenter;
-            UILabel *minLabel=(UILabel*)[self.view viewWithTag:403];
-            minLabel.text=@"%~";
-            UILabel *maxLabel=(UILabel*)[self.view viewWithTag:404];
-            maxLabel.text=@"%";
-            
-            
-        }
-        
-        NSLog(@"min%@,max%@",[rateArray objectAtIndex:0],[rateArray objectAtIndex:1]);
-    }
-    
-    if(i==(long)306)
-    {
-        cal_typeField.text=[cal_typeArray objectAtIndex:row];
-    }
-    
-    
-    
-    //获得toolbar
-    UIToolbar *toolBar=(UIToolbar*)[self.view viewWithTag:888];
-    
-    //完成功能，消除pickerView和toolbar
-    [pickerView removeFromSuperview];
-    [toolBar removeFromSuperview];
-    
-    
-}
-
--(void)newPressed:(id)sender{
-    NSLog(@"New pressed.");
-    
-}
-
 -(void)confirmPressed{
     RecordDB *myRecordDB = [[RecordDB alloc]init];
-    [myRecordDB insertRecord:@"呵呵" secondPara:@"测试" thirdPara:1000 forthPara:7 fifthPara:10 sixthPara:1 seventhPara:@"2011-01-01" eighthPara:@"2012-01-01"];
+    [myRecordDB insertRecord:platformField.text secondPara:productField.text thirdPara:[capitalField.text floatValue] forthPara:[minRateField.text floatValue] fifthPara:[maxRateField.text floatValue] sixthPara:1 seventhPara:startimeField.text eighthPara:endtimeField.text];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 
 }
 

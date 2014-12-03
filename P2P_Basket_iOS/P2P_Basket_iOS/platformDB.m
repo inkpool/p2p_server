@@ -227,14 +227,70 @@
     
 }
 
--(NSMutableArray*)getDuration:(NSString *)field1 secondPara:(NSString*)field2
-{
+//-(NSMutableArray*)getDuration:(NSString *)field1 secondPara:(NSString*)field2
+//{
+//    //检查有没有将数据库复制到沙盒library
+//    [self copyDatabaseIfNeeded];
+//    
+//    NSMutableArray * resultArray=[[NSMutableArray alloc]initWithCapacity:0];
+//    
+//    NSLog(@"传入参数为%@ %@",field1,field2);
+//    sqlite3 *sqlite = nil;
+//    sqlite3_stmt *stmt=nil;
+//    
+//    //数据库路径
+//    NSString *filePath = [NSHomeDirectory() stringByAppendingFormat:@"/Library/p2p_basket.sqlite"];
+//    
+//    //查看沙盒路径
+//    //NSLog(@"%@",NSHomeDirectory());
+//    
+//    int result = sqlite3_open([filePath UTF8String], &sqlite);
+//    if(result != SQLITE_OK)
+//    {
+//        NSLog(@"SQLite DB open error.");
+//        return resultArray;
+//    }
+//    
+//    //组合而成的sql语句，占位符坑爹啊！
+//    NSString *sql;
+//    sql=[sql initWithFormat:@"SELECT duration FROM productT WHERE platform=%@ AND product=%@",field1,field2];
+//    
+//    //编译SQL语句
+//    result = sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
+//    if( result != SQLITE_OK){
+//        return resultArray;
+//    }
+//    //向SQL语句上的占位符绑定数据
+//    //sqlite3_bind_text(stmt, 1,"product",-1,nil);
+//    
+//    result = sqlite3_step(stmt);
+//    
+//    while(result== SQLITE_ROW){
+//        //第一个值
+//        char *field_res = (char *)sqlite3_column_text(stmt, 0);
+//        NSString *field_NSres = [NSString stringWithCString:field_res encoding:NSUTF8StringEncoding];
+//        [resultArray addObject:field_NSres];
+//        NSLog(@"所查字段为 %@",field_NSres);
+//        
+//        
+//        result = sqlite3_step(stmt);
+//        
+//    }
+//    
+//    sqlite3_finalize(stmt);
+//    sqlite3_close(sqlite);
+//    
+//    return resultArray;
+//    
+//}
+
+-(NSString*)getDuration:(NSString*)platform secondPara:(NSString*)product{
+    
+    NSString* resultString;
     //检查有没有将数据库复制到沙盒library
     [self copyDatabaseIfNeeded];
     
-    NSMutableArray * resultArray=[[NSMutableArray alloc]initWithCapacity:0];
-    
-    NSLog(@"传入参数为%@ %@",field1,field2);
+    NSLog(@"传入参数为%@ %@",platform,product);
     sqlite3 *sqlite = nil;
     sqlite3_stmt *stmt=nil;
     
@@ -248,17 +304,17 @@
     if(result != SQLITE_OK)
     {
         NSLog(@"SQLite DB open error.");
-        return resultArray;
+        return resultString;
     }
     
     //组合而成的sql语句，占位符坑爹啊！
     NSString *sql;
-    sql=[sql initWithFormat:@"SELECT duration FROM productT WHERE platform=%@ AND product=%@",field1,field2];
+    sql=[[NSString alloc]initWithFormat:@"SELECT duration FROM productT WHERE platform=\"%@\" AND product=\"%@\"",platform,product];
     
     //编译SQL语句
     result = sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
     if( result != SQLITE_OK){
-        return resultArray;
+        return resultString;
     }
     //向SQL语句上的占位符绑定数据
     //sqlite3_bind_text(stmt, 1,"product",-1,nil);
@@ -268,11 +324,8 @@
     while(result== SQLITE_ROW){
         //第一个值
         char *field_res = (char *)sqlite3_column_text(stmt, 0);
-        NSString *field_NSres = [NSString stringWithCString:field_res encoding:NSUTF8StringEncoding];
-        [resultArray addObject:field_NSres];
-        NSLog(@"所查字段为 %@",field_NSres);
-        
-        
+        resultString = [NSString stringWithCString:field_res encoding:NSUTF8StringEncoding];
+        NSLog(@"所查字段为 %@",resultString);
         result = sqlite3_step(stmt);
         
     }
@@ -280,8 +333,15 @@
     sqlite3_finalize(stmt);
     sqlite3_close(sqlite);
     
-    return resultArray;
+    return resultString;
+
+
+}
+-(NSString*)getCalType:(NSString*)platform secondPara:(NSString*)product{
+    NSString *resultString;
     
+    
+    return resultString;
 }
 
 

@@ -14,7 +14,8 @@
 -(void)copyDatabaseIfNeeded;
 -(NSMutableArray*)getField:(NSString *)field;
 -(NSMutableArray*)getProductFromOnePlatform:(NSString *)field;
-
+-(NSString*)getDuration:(NSString*)platform secondPara:(NSString*)product;
+-(NSString*)getCalType:(NSString*)platform secondPara:(NSString*)product;
 //获取利率，最高利率和最低利率，传入参数为平台和产品名称
 -(NSMutableArray*)getRates:(NSString *)field1 secondPara:(NSString*)field2;
 

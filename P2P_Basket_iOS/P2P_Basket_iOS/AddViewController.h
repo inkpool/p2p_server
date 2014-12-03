@@ -15,6 +15,7 @@
     NSArray *platformArray,*productArray,*cal_typeArray;
     NSInteger currentTextTag;
     UIDatePicker *startTimePicker,*endTimePicker;
+    UIAlertController *myAlert;
 }
 
 
