@@ -4,11 +4,137 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <TextView 
-        android:id="@+id/test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="zxc"/>
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        >
+        
+        <RelativeLayout
+            android:id="@+id/invest_time" 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_centerInParent="true"
+                >
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/water_list_sort_01"
+                    android:textColor="@color/tab_text_chosen"
+                    android:gravity="center_vertical|center_horizontal"
+                    />
+                
+                <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/water_arrow_down_chosen"/>
+                
+            </LinearLayout>
+            
+            <ImageView 
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:background="@drawable/water_small_line_gray"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+            
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/invest_money" 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_centerInParent="true"
+                >
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/water_list_sort_02"
+                    android:textColor="@color/light_black"
+                    android:gravity="center_vertical|center_horizontal"
+                    />
+                
+                <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/water_arrow_down"/>
+            </LinearLayout>
+            
+            <ImageView 
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:background="@drawable/water_small_line_gray"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+            
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/invest_profit" 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            
+            
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_centerInParent="true"
+                >
+                
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/water_list_sort_03"
+                    android:textColor="@color/light_black"
+                    android:gravity="center_vertical|center_horizontal"
+                    />
+                
+                <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/water_arrow_down"/>
+            </LinearLayout>
+            
+        </RelativeLayout>
+    </LinearLayout>
+    <ImageView
+		android:id="@+id/tab_line"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@drawable/tab_line"/>
+    <ListView
+	        android:id="@+id/water_list_view"
+	        android:background="@color/tab_bg"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="5"
+	        android:scrollbars="none"
+	        android:paddingTop="5dp"
+	        android:paddingBottom="10dp"
+	        android:paddingLeft="25dp"
+	        android:paddingRight="25dp" >
+	    </ListView>
     
 
 </LinearLayout>

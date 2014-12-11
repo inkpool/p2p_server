@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -37,6 +38,8 @@ public class MainActivity extends Activity implements OnClickListener{
     private LinearLayout tabMore;
     
     private FragmentManager fragmentManager;
+    
+    private TextView title;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,8 @@ public class MainActivity extends Activity implements OnClickListener{
         switch (index)  
         {  
         case 0:   
+        	((Button)findViewById(R.id.new_item)).setVisibility(View.VISIBLE);
+        	title.setText(R.string.tab_index);
             ((ImageView)tabIndex.findViewById(R.id.tab_index_icon)).setImageResource(R.drawable.index_focus);
             ((TextView)tabIndex.findViewById(R.id.tab_index_text)).setTextColor(getResources().getColor(R.color.tab_text_chosen));
             if (indexFragment == null)  
@@ -69,6 +74,8 @@ public class MainActivity extends Activity implements OnClickListener{
             }  
             break;  
         case 1:  
+        	((Button)findViewById(R.id.new_item)).setVisibility(View.GONE);
+        	title.setText(R.string.tab_water);
         	((ImageView)tabWater.findViewById(R.id.tab_water_icon)).setImageResource(R.drawable.water_focus);
             ((TextView)tabWater.findViewById(R.id.tab_water_text)).setTextColor(getResources().getColor(R.color.tab_text_chosen));  
             if (waterFragment == null)  
@@ -81,6 +88,7 @@ public class MainActivity extends Activity implements OnClickListener{
             }  
             break;  
         case 2:  
+        	title.setText(R.string.tab_analyze);
         	((ImageView)tabAnalyze.findViewById(R.id.tab_analyze_icon)).setImageResource(R.drawable.analyze_focus);
             ((TextView)tabAnalyze.findViewById(R.id.tab_analyze_text)).setTextColor(getResources().getColor(R.color.tab_text_chosen));  
             if (analyzeFragment == null)  
@@ -92,7 +100,8 @@ public class MainActivity extends Activity implements OnClickListener{
                 transaction.show(analyzeFragment);  
             }  
             break;  
-        case 3:  
+        case 3: 
+        	title.setText(R.string.tab_platform);
         	((ImageView)tabPlatform.findViewById(R.id.tab_platform_icon)).setImageResource(R.drawable.platform_focus); 
             ((TextView)tabPlatform.findViewById(R.id.tab_platform_text)).setTextColor(getResources().getColor(R.color.tab_text_chosen)); 
             if (platformFragment == null)  
@@ -105,6 +114,7 @@ public class MainActivity extends Activity implements OnClickListener{
             }  
             break;
 		case 4:  
+			title.setText(R.string.tab_more);
 	    	((ImageView)tabMore.findViewById(R.id.tab_more_icon)).setImageResource(R.drawable.more_focus);  
             ((TextView)tabMore.findViewById(R.id.tab_more_text)).setTextColor(getResources().getColor(R.color.tab_text_chosen));
 	        if (moreFragment == null)  
@@ -166,6 +176,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		tabAnalyze = (LinearLayout) findViewById(R.id.tab_analyze);
 		tabPlatform = (LinearLayout) findViewById(R.id.tab_platform);
 		tabMore = (LinearLayout) findViewById(R.id.tab_more);
+		
+		title = (TextView) findViewById(R.id.main_tab_banner_title);
 		
 		tabIndex.setOnClickListener(this);
 		tabWater.setOnClickListener(this);

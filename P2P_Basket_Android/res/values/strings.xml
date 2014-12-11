@@ -11,6 +11,13 @@
     <string name="tab_button01">已经到期</string>
     <string name="tab_button02">即将到期</string>
     
+    <string name="list_time">到期</string>
+    <string name="list_money">￥</string>
+    
+    <string name="water_list_sort_01">投资时间</string>
+    <string name="water_list_sort_02">投资金额</string>
+    <string name="water_list_sort_03">年化收益率</string>
+    
     <string name="tab_index">主页</string>
     <string name="tab_water">流水</string>
     <string name="tab_analyze">分析</string>

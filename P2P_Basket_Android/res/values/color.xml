@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white">#ffffff</color>
-    <color name="black">#464646</color>    
-    <color name="tab_text_chosen">#4990C8</color>
+    <color name="black">#464646</color>
+    <color name="light_black">#333333</color>
+    
+        
+    <color name="tab_text_chosen">#7fc0e9</color>
     <color name="tab_text">#A1A1A1</color>
     <color name="tab_bg">#F7F7F7</color>
     <color name="banner_bg">#232736</color>
     <color name="index_info_bg">#46527B</color>
+    <color name="company01">#0492D9</color>
+    <color name="company02">#E95404</color>
+    
     
 </resources>
