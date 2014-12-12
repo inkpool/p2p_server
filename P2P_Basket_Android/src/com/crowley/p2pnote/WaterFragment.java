@@ -11,6 +11,7 @@ import com.crowley.p2pnote.ui.listAdapter;
 import android.R.array;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,31 @@ public class WaterFragment extends Fragment{
         listView=(ListView) view.findViewById(R.id.water_list_view);
         getData();
         list_adapter=new listAdapter(this.getActivity(), dataList, R.layout.index_listview_item, new String[]{"time","item_icon","item_name","item_money","item_profit"}, new int[]{R.id.time,R.id.item_icon,R.id.item_name,R.id.item_money,R.id.item_profit});
+        
+        /*SimpleAdapter.ViewBinder binder = new SimpleAdapter.ViewBinder() {
+        	@Override
+        	public boolean setViewValue(View view, Object object, String value) {
+        		if (view.equals((TextView) view.findViewById(R.id.item_name))){
+        			TextView ricetta = (TextView) view.findViewById(R.id.item_name);
+        			Log.i("m_info",(String) ricetta.getText());
+        			if(((String) ricetta.getText())=="陆金所-富赢人生"){
+        				ricetta.setText("陆金所-富赢人生");
+        				ricetta.setTextColor(getResources().getColor(R.color.company02));
+        				return true;
+        			}else if(((String) ricetta.getText())=="人人贷-优选计划"){
+        				ricetta.setText("人人贷-优选计划");
+        				ricetta.setTextColor(getResources().getColor(R.color.company01));
+        				return true;
+        			}else{
+        				return false;
+        			}
+        		}else{
+        			return false;
+        		}
+        	}
+        };
+        	            
+        list_adapter.setViewBinder(binder); */       
         listView.setAdapter(list_adapter);
         
 		return view;

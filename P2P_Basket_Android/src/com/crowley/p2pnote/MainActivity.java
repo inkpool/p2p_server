@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -40,6 +41,8 @@ public class MainActivity extends Activity implements OnClickListener{
     private FragmentManager fragmentManager;
     
     private TextView title;
+    
+    private Button newItem;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +180,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		tabPlatform = (LinearLayout) findViewById(R.id.tab_platform);
 		tabMore = (LinearLayout) findViewById(R.id.tab_more);
 		
+		newItem = (Button) findViewById(R.id.new_item);
+		
 		title = (TextView) findViewById(R.id.main_tab_banner_title);
 		
 		tabIndex.setOnClickListener(this);
@@ -184,6 +189,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		tabAnalyze.setOnClickListener(this);
 		tabPlatform.setOnClickListener(this);
 		tabMore.setOnClickListener(this);
+		newItem.setOnClickListener(this);
 	}
 
 
@@ -206,7 +212,10 @@ public class MainActivity extends Activity implements OnClickListener{
             break; 
         case R.id.tab_more:  
             setTabSelection(4);  
-            break;   
+            break;             
+        case R.id.new_item:
+        	Intent intent=new Intent(this,NewItemActivity.class);
+            startActivity(intent);
         default:  
             break;  
         }  
