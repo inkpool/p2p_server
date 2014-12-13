@@ -7,10 +7,14 @@
 //
 
 #import "LeftSliderController.h"
+#import "CustomCellBackground.h"
+#import "AboutUsViewController.h"
 
 @interface LeftSliderController ()
 {
-    NSArray *plateformArray;//从platformSet提取出所有的平台名称
+    NSArray *menu;
+    CGFloat screen_width;
+    CGFloat screen_height;
 }
 @end
 
@@ -19,22 +23,33 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //打算模仿QQ侧边栏来做sidebar
-    
     //获取屏幕分辨率
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
-    CGFloat screen_width = size.width;
-    CGFloat screen_height = size.height;
+    screen_width = size.width;
+    screen_height = size.height;
+    
+    menu = [NSArray arrayWithObjects:@"云备份",@"检查更新",@"用户反馈",@"关于我们",@"密码设置",@"好友分享",nil];
     
     //添加一个背景图片
     UIImageView *backView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     backView.image = [UIImage imageNamed:@"background.jpg"];
     [self.view addSubview:backView];
     
-
-    //添加一个tableView
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 80, screen_width, screen_height-160)];
+    //添加图像视图和用户名称Label
+    UIButton *portraitButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/3-25, screen_height/15, 50, 50)];
+    [portraitButton setImage:[UIImage imageNamed:@"portrait_default"] forState:UIControlStateNormal];
+    [portraitButton addTarget:self action:@selector(portraitButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:portraitButton];
+    UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3-25, screen_height/15+55, 50, 15)];
+    userNameLabel.text = @"登录";
+    userNameLabel.font = [UIFont systemFontOfSize:13];
+    userNameLabel.textColor = [UIColor whiteColor];
+    userNameLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:userNameLabel];
+    
+    //添加一个tableView，显示菜单
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, screen_height/5+10, screen_width/3*2, 300)];
     //tableView.backgroundView = backView;
     tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     tableView.backgroundColor=[UIColor clearColor];
@@ -42,8 +57,30 @@
     [self.view addSubview:tableView];
     tableView.delegate=self;
     tableView.dataSource=self;
+    [self.view addSubview:tableView];
     
+    //显示账户管理和退出登录的button
+    UIImageView *manageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/6-40, screen_height/5+320, 25, 25)];
+    manageImageView.image = [UIImage imageNamed:@"account_management"];
+    [self.view addSubview:manageImageView];
+    UIButton *manageButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/6-12, screen_height/5+320, 55, 25)];
+    [manageButton setTitle:@"账户管理" forState:UIControlStateNormal];
+    [manageButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    manageButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [self.view addSubview:manageButton];
     
+    UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3-3, screen_height/5+320+4, 1, 17)];
+    separateView.image = [UIImage imageNamed:@"vertical_line"];
+    [self.view addSubview:separateView];
+    
+    UIImageView *signOutImageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3+screen_width/3-3-screen_width/6-43, screen_height/5+320, 25, 25)];
+    signOutImageView.image = [UIImage imageNamed:@"sign_out"];
+    [self.view addSubview:signOutImageView];
+    UIButton *signOutButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/3+screen_width/3-3-screen_width/6-43+28, screen_height/5+320, 55, 25)];
+    [signOutButton setTitle:@"退出账号" forState:UIControlStateNormal];
+    [signOutButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    signOutButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [self.view addSubview:signOutButton];
     
 }
 
@@ -52,25 +89,38 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - TableView delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     //这个方法用来告诉表格有几个分组
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section {
-    return [platformSet count];
+    return 3;
+}
+
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    return @" ";
+//}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 10;
+}
+
+-(UIView*) tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 10)];
+    if(section == 1) {
+        headerView.backgroundColor = [UIColor clearColor];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 4.5, screen_width/3*2-10, 2)];
+        imageView.image = [UIImage imageNamed:@"horiz_line"];
+        [headerView addSubview:imageView];
+        
+    }
+    
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -86,54 +136,61 @@
                 initWithStyle:UITableViewCellStyleValue1
                 reuseIdentifier:TableSampleIdentifier];
     }
-    plateformArray = [platformSet allObjects];
-    cell.textLabel.text = plateformArray[indexPath.row];
-    cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-icon",plateformArray[indexPath.row]]];
-    cell.backgroundColor=[UIColor clearColor];
+    cell.textLabel.text = menu[indexPath.section*3+indexPath.row];
+    cell.textLabel.textColor = [UIColor whiteColor];
     
+    cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"menu_icon_%d",indexPath.section*3+indexPath.row+1]];
+    CGSize itemSize = CGSizeMake(30, 30);
+    UIGraphicsBeginImageContext(itemSize);
+    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+    [cell.imageView.image drawInRect:imageRect];
+    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+//    cell.imageView.frame = CGRectMake(0, 0, 10, 10);
     
-//    NSUInteger row = [indexPath row];
-//    
-//    switch(row)
-//    {
-//        case 4:
-//            {
-//                cell.textLabel.text = @"账户设置";
-//                UIImage *image = [UIImage imageNamed:@"homepage"];
-//                cell.imageView.image = image;
-//                cell.backgroundColor=[UIColor clearColor];
-//                break;
-//            }
-//        case 5:
-//            {
-//                cell.textLabel.text = @"云端备份";
-//                UIImage *image = [UIImage imageNamed:@"homepage"];
-//                cell.imageView.image = image;
-//                cell.backgroundColor=[UIColor clearColor];
-//                break;
-//            }
-//        case 6:
-//            {
-//                cell.textLabel.text = @"用户反馈";
-//                UIImage *image = [UIImage imageNamed:@"homepage"];
-//                cell.imageView.image = image;
-//                cell.backgroundColor=[UIColor clearColor];
-//                break;
-//            }
-//        case 7:
-//            {
-//                cell.textLabel.text = @"联系我们";
-//                UIImage *image = [UIImage imageNamed:@"homepage"];
-//                cell.imageView.image = image;
-//                cell.backgroundColor=[UIColor clearColor];
-//                break;
-//            }
-//        default: cell.backgroundColor=[UIColor clearColor];break;
-//    }
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    cell.backgroundColor = [UIColor clearColor];
+    cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cellSelected"]];
+    
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 40;
+}//返回cell的高度
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger num = indexPath.section*3 + indexPath.row;
+    switch (num) {
+        case 0:
+            
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:{
+            NSLog(@"about us!!!!");
+            AboutUsViewController *aboutUs = [[AboutUsViewController alloc] init];
+            UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:aboutUs];
+            [self presentModalViewController:navC animated:YES];
+            break;
+        }
+        case 4:
+            break;
+        case 5:
+            break;
+        default:
+            break;
+    }
+    
+}
 
+#pragma mark - ButtonPressedAction
+- (void)portraitButtonPressed {
+    
+}
 
 @end
