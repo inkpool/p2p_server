@@ -9,8 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface LeftSliderController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-{
-@public
-    NSMutableSet *platformSet;//用户所有的投资记录
-}
+
 @end

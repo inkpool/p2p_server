@@ -13,6 +13,7 @@
 {
     CGFloat screen_width;//屏幕宽
     CGFloat screen_height;//屏幕高
+    NSDictionary *platformColor;
     
 }
 
@@ -33,6 +34,17 @@
     
     flag = 1;//初始显示即将到期
 
+    platformColor = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      [UIColor colorWithRed:205.0/255.0 green:0.0/255.0 blue:17.0/255.0 alpha:1],@"爱投资",
+                                      [UIColor colorWithRed:28.0/255.0 green:154.0/255.0 blue:39.0/255.0 alpha:1],@"点融网",
+                                      [UIColor colorWithRed:28.0/255.0 green:171.0/255.0 blue:224.0/255.0 alpha:1],@"积木盒子",
+                                      [UIColor colorWithRed:193.0/255.0 green:61.0/255.0 blue:18.0/255.0 alpha:1],@"陆金所",
+                                      [UIColor colorWithRed:10.0/255.0 green:74.0/255.0 blue:144.0/255.0 alpha:1],@"人人贷",
+                                      [UIColor colorWithRed:237.0/255.0 green:175.0/255.0 blue:79.0/255.0 alpha:1],@"盛融在线",
+                                      [UIColor colorWithRed:15.0/255.0 green:117.0/255.0 blue:203.0/255.0 alpha:1],@"鑫合汇",
+                                      [UIColor colorWithRed:238.0/255.0 green:108.0/255.0 blue:15.0/255.0 alpha:1],@"有利网",
+                                      nil];
+    
     //left_bt上显示一个UIView(红色背景，红色背景上又一个Label，显示到期项目的个数)，
     //一个Label（显示“已经到期”），right_bt类似
     //左UIButton
@@ -215,6 +227,7 @@
         label1.text = label1Text;
         NSString *label2Text = [NSString stringWithFormat:@"%@-%@",[expiringRecord[indexPath.row] objectForKey:@"platform"],[expiringRecord[indexPath.row] objectForKey:@"product"]];
         label2.text = label2Text;
+        label2.textColor = [platformColor objectForKey:[expiringRecord[indexPath.row] objectForKey:@"platform"]];
         NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[expiringRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
         label4.text = label4Text;
         if ([[expiringRecord[indexPath.row] objectForKey:@"minRate"] floatValue] == 0 ) {
@@ -237,6 +250,7 @@
         label1.text = label1Text;
         NSString *label2Text = [NSString stringWithFormat:@"%@-%@",[expireRecord[indexPath.row] objectForKey:@"platform"],[expireRecord[indexPath.row] objectForKey:@"product"]];
         label2.text = label2Text;
+        label2.textColor = [platformColor objectForKey:[expireRecord[indexPath.row] objectForKey:@"platform"]];
         NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[expireRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
         label4.text = label4Text;
         if ([[expireRecord[indexPath.row] objectForKey:@"minRate"] floatValue] == 0 ) {

@@ -2,8 +2,45 @@
 <resources>
 
     <string name="app_name">网贷篮子</string>
+    
+    <string name="new_item">新的投资</string>
+    <string name="basic_info01">当日收益</string>
+    <string name="basic_info02">均年化收益</string>
+    <string name="basic_info03">在投总额</string>
+    <string name="addMinus">±</string>
+    <string name="tab_button01">已经到期</string>
+    <string name="tab_button02">即将到期</string>
+    
+    <string name="list_time">到期</string>
+    <string name="list_money">￥</string>
+    
+    <string name="water_list_sort_01">投资时间</string>
+    <string name="water_list_sort_02">投资金额</string>
+    <string name="water_list_sort_03">年化收益率</string>
+    
+    <string name="new_item_title">新的投资</string>
+    <string name="new_item_info01">投资平台</string>
+    <string name="new_item_info02">投资类型</string>
+    <string name="new_item_info03">本金</string>
+    <string name="new_item_info04">年化收益率</string>
+    <string name="new_item_info05">计息方式</string>
+    <string name="new_item_info06">计息时间</string>
+    <string name="new_item_info07">结束时间</string>
+    
+    
+    <string name="tab_index">主页</string>
+    <string name="tab_water">流水</string>
+    <string name="tab_analyze">分析</string>
+    <string name="tab_platform">平台</string>
+    <string name="tab_more">更多</string>
+    
     <string name="hello_world">Hello world!</string>
-    <drawable name="press">#fdfdfe</drawable>
-    <drawable name="normal">#eeeeee</drawable>
+    <string name="action_settings">Settings</string>
+    
+    <string name="company_name01">人人贷</string>
+    <string name="company_name02">陆金所</string>
+    
+    <string name="sure">确认</string>
+    <string name="cancel">取消</string>
 
 </resources>

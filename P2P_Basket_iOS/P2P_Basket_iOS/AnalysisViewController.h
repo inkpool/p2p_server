@@ -7,13 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CorePlot-CocoaTouch.h"
 
-@interface AnalysisViewController : UIViewController<UIPickerViewDelegate,UIPickerViewDataSource>
+@interface AnalysisViewController : UIViewController<UIPickerViewDelegate,UIPickerViewDataSource,CPTPlotDataSource,CPTPieChartDelegate>
 {
     NSMutableDictionary *platformTotalCapital;
     UIAlertController *myAlert;
-    float totalCapital;
+    
 @public
     NSMutableArray *records;//用户所有的投资记录
 }
+
+@property(retain,nonatomic)CPTXYGraph *graph;
+@property(retain,nonatomic)CPTPieChart *piePlot;
+
 @end
