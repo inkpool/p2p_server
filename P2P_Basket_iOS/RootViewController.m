@@ -14,11 +14,11 @@
 #import "HomeViewController.h"
 #import "FlowViewController.h"
 #import "AnalysisViewController.h"
+#import "PlatformViewController.h"
 
 #define RCloseDuration 0.3f
 #define ROpenDuration 0.4f
 #define RContentScale 0.85f
-#define RContentOffset 220.0f
 #define RJudgeOffset 100.0f
 
 @interface RootViewController ()
@@ -30,6 +30,7 @@
     UIPanGestureRecognizer *_panGestureRec;
     NSMutableArray *expireRecord;//已到期的投资记录
     NSMutableArray *expiringRecord;//即将到期的投资记录
+    float RContentOffset;
 }
 
 @end
@@ -44,6 +45,13 @@ static RootViewController *sharedRC;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //获取屏幕分辨率
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    CGSize size = rect.size;
+    CGFloat screen_width = size.width;
+    
+    RContentOffset = screen_width/3*2;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -126,11 +134,7 @@ static RootViewController *sharedRC;
 - (void)initChildControllers {
     //初始化“更多”功能界面所在的ViewController
     LeftSliderController *leftSC = [[LeftSliderController alloc] init];
-    leftSC->platformSet = [NSMutableSet set];
-    for (int i = 0; i < [records count]; i++) {
-        //platformSet保存用户投资过的平台的名称,set是单值对象的集合，自动删除重复的对象
-        [leftSC->platformSet addObject:[records[i] objectForKey:@"platform"]];
-    }
+    
     [self addChildViewController:leftSC];
     [_leftSideView addSubview:leftSC.view];
     
@@ -151,6 +155,13 @@ static RootViewController *sharedRC;
     flowViewController->records = records;
     AnalysisViewController *analysisViewController = tbc.viewControllers[2];
     analysisViewController->records = records;
+    PlatformViewController *platformViewController = tbc.viewControllers[1];
+    platformViewController->platformSet = [NSMutableSet set];
+    for (int i = 0; i < [records count]; i++) {
+        //platformSet保存用户投资过的平台的名称,set是单值对象的集合，自动删除重复的对象
+        [platformViewController->platformSet addObject:[records[i] objectForKey:@"platform"]];
+    }
+    
     
     [tbc.navigationItem.leftBarButtonItem setAction:@selector(leftBarButtonItemPressed)];
     

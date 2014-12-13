@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PlatformViewController : UIViewController
-
+@interface PlatformViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+{
+@public
+    NSMutableSet *platformSet;//用户所有投资过的平台记录
+}
 @end
