@@ -11,10 +11,10 @@
         android:background="@color/banner_bg">
         
         <ImageButton 
-            android:id="@+id/back"
+            android:id="@+id/menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/back"
+            android:background="@drawable/menu_icon"
             android:layout_alignParentLeft="true"
         	android:layout_centerVertical="true" 
         	android:layout_marginLeft="15dp"/>
@@ -35,8 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
         	android:layout_centerVertical="true" 
-        	android:layout_marginRight="15dp" 
-            android:text="@string/new_item"
+        	android:layout_marginRight="15dp"
+            android:text="更多分析"
             android:textColor="@color/white"
             android:textSize="15sp"/>                
     </RelativeLayout>
