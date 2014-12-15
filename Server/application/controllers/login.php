@@ -13,8 +13,8 @@ class Login extends CI_Controller {
 	
 	public function index()
 	{
-		$user_name=$this->input->get('user_name');
-		$password=$this->input->get('password');
+		$user_name=$this->input->post('user_name');
+		$password=$this->input->post('password');
 		$this->db->select('password')->from('my_users')->where('user_name',$user_name);
 		$num=$this->db->count_all_results();
 		if($num)
@@ -37,8 +37,8 @@ class Login extends CI_Controller {
 	//http://128.199.226.246/beerich/index.php/login/register
 	public function register()
 	{
-		$user_name=$this->input->get('user_name');
-		$password=$this->input->get('password');
+		$user_name=$this->input->post('user_name');
+		$password=$this->input->post('password');
 		$this->db->select('password')->from('my_users')->where('user_name',$user_name);
 		$num=$this->db->count_all_results();
 		if($num)
