@@ -46,7 +46,7 @@
 //    nameLabel.text = @"网贷篮子";
 //    [self.view addSubview:nameLabel];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 140, screen_width-20, 215)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 140, screen_width-20, 215) ];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.scrollEnabled = NO;

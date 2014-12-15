@@ -20,14 +20,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
+    //navigationItem左按钮
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@" 返回" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelPressed)];
+    self.navigationItem.leftBarButtonItem = backItem;
     
-    UIButton *item = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [item setTitle:@"返回" forState:UIControlStateNormal];
-    [item setFrame:CGRectMake(0, 0, 60, 35)];
-    [item addTarget:self action:@selector(cancelPressed) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:item];
-    self.navigationItem.leftBarButtonItem = rightItem;
+//    UIButton *item = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [item setTitle:@"返回" forState:UIControlStateNormal];
+//    [item setFrame:CGRectMake(0, 0, 60, 35)];
+//    [item addTarget:self action:@selector(cancelPressed) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:item];
+//    self.navigationItem.leftBarButtonItem = rightItem;
     
     
     

@@ -13,7 +13,9 @@
     NSArray *pickerArray1;
     NSArray *pickerArray2;
     NSArray *platformName;
-    NSInteger flag;
+    NSInteger flag1;
+    NSInteger flag2;
+    NSMutableArray *colorArray;
     float totalCapital;
 }
 @end
@@ -23,7 +25,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    flag = -1;//记录用户点击选择的扇区
+    flag1 = -1;//记录用户点击选择的扇区
+    flag2 = 0;//饼图刷新时不再变换颜色
+    colorArray = [[NSMutableArray alloc] init];
     
     //获取屏幕分辨率
     CGRect rect = [[UIScreen mainScreen] bounds];
@@ -39,10 +43,7 @@
 //    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 64+10, screen_width/2, 15)];
 //    dateLabel.text = nowDate;
 //    [self.view addSubview:dateLabel];
-
-    
-    
-    
+ 
     //添加选择按钮
     UIButton *chooseButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/3, screen_height/5*4+5, screen_width/3, 20)];
     chooseButton.tag = 101;
@@ -106,17 +107,17 @@
     self.piePlot.sliceDirection = CPTPieDirectionCounterClockwise;
     //饼图的重心
     self.piePlot.centerAnchor =CGPointMake(0.5,0.5);
-    //设置饼图的阴影
-    self.piePlot.shadowColor = [UIColor blackColor].CGColor;
-    self.piePlot.shadowOffset = CGSizeMake(0.5, 0.5);
-    self.piePlot.shadowOpacity = 0.3f;
-    
-    // 3 - Create gradient
-    CPTGradient *overlayGradient = [[CPTGradient alloc] init];
-    overlayGradient.gradientType = CPTGradientTypeRadial;
-    overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.0] atPosition:0.9];
-    overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.4] atPosition:1.0];
-    self.piePlot.overlayFill = [CPTFill fillWithGradient:overlayGradient];
+//    //设置饼图的阴影
+//    self.piePlot.shadowColor = [UIColor blackColor].CGColor;
+//    self.piePlot.shadowOffset = CGSizeMake(0.5, 0.5);
+//    self.piePlot.shadowOpacity = 0.3f;
+//    
+//    // 3 - Create gradient
+//    CPTGradient *overlayGradient = [[CPTGradient alloc] init];
+//    overlayGradient.gradientType = CPTGradientTypeRadial;
+//    overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.0] atPosition:0.9];
+//    overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.4] atPosition:1.0];
+//    self.piePlot.overlayFill = [CPTFill fillWithGradient:overlayGradient];
     
     
     //设置文字顺着图形的方向
@@ -151,7 +152,7 @@
 
 - (void)initArray {
     pickerArray1 = [NSArray arrayWithObjects:@"平台占比",@"收益额占比",@"收益率占比",nil];
-    pickerArray2 = [NSArray arrayWithObjects:@"1月内",@"半年内",@"1年内",@"全部",nil];
+    pickerArray2 = [NSArray arrayWithObjects:@"全部",@"1年内",@"半年内",@"1月内",nil];
     
     totalCapital = 0.0;
     platformTotalCapital = [NSMutableDictionary dictionary];
@@ -173,13 +174,13 @@
     platformName = [platformTotalCapital allKeys];
 }
 
-- (UIColor*)randomColor
-{
-    CGFloat hue = ( arc4random() % 256 / 256.0 );  //  0.0 to 1.0
-    CGFloat saturation = ( arc4random() % 128 / 256.0 ) + 0.5;  //  0.5 to 1.0, away from white
-    CGFloat brightness = ( arc4random() % 128 / 256.0 ) + 0.5;  //  0.5 to 1.0, away from black
-    return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
-}
+//- (UIColor*)randomColor
+//{
+//    CGFloat hue = ( arc4random() % 256 / 256.0 );  //  0.0 to 1.0
+//    CGFloat saturation = ( arc4random() % 128 / 256.0 ) + 0.5;  //  0.5 to 1.0, away from white
+//    CGFloat brightness = ( arc4random() % 128 / 256.0 ) + 0.5;  //  0.5 to 1.0, away from black
+//    return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
+//}
 
 - (void)chooseButtonPressed {
     myAlert=[UIAlertController alertControllerWithTitle:nil
@@ -192,7 +193,7 @@
     [myAlert.view addSubview:pickView];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        NSLog(@"The \"Okay/Cancel\" alert action sheet's cancel action occured.");
+        
     }];
     
     UIAlertAction *destructiveAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
@@ -237,20 +238,34 @@
     UILabel *proportionLable = (UILabel *)[self.view viewWithTag:102];
     float num = [[platformTotalCapital valueForKey:platformName[idx]] floatValue];
     proportionLable.text = [NSString stringWithFormat:@"%.1f%%",num/totalCapital*100];
-    flag = idx;
+    flag1 = idx;
     [plot reloadData];
 }
 
 
 //对于饼图，我们可以把某块扇形“切除”下来，以此突出该扇形区域。这需要实现数据源方法radialOffsetForPieChart:recordIndex: 方法。以下代码将饼图中第2块扇形“剥离”10个像素点
 -(CGFloat)radialOffsetForPieChart:(CPTPieChart*)piePlot recordIndex:(NSUInteger)index{
-    if (index == flag) {
+    if (index == flag1) {
         return 5;
     }
     return 0;
 }
 
-
+-(CPTFill *)sliceFillForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)index {
+//    CGFloat hue = ( arc4random() % 256 / 256.0 );  //  0.0 to 1.0
+//    CGFloat saturation = ( arc4random() % 128 / 256.0 ) + 0.5;  //  0.5 to 1.0, away from white
+//    CGFloat brightness = ( arc4random() % 128 / 256.0 ) + 0.5;  //  0.5 to 1.0, away from black
+//    return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
+    CPTColor *color;
+    if (flag2 < [platformTotalCapital count]) {
+        color = [CPTColor colorWithComponentRed:arc4random()%255/255.0  green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1];
+        [colorArray addObject:color];
+        flag2++;
+    } else {
+        color = colorArray[index];
+    }
+    return [CPTFill fillWithColor:color];
+}
 
 
 #pragma mark - PickerView Delegate

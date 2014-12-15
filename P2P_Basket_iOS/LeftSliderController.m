@@ -9,6 +9,8 @@
 #import "LeftSliderController.h"
 #import "CustomCellBackground.h"
 #import "AboutUsViewController.h"
+#import "FeedbackViewController.h"
+#import "LoginAndRegisterViewController.h"
 
 @interface LeftSliderController ()
 {
@@ -59,15 +61,16 @@
     tableView.dataSource=self;
     [self.view addSubview:tableView];
     
-    //显示账户管理和退出登录的button
-    UIImageView *manageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/6-40, screen_height/5+320, 25, 25)];
-    manageImageView.image = [UIImage imageNamed:@"account_management"];
-    [self.view addSubview:manageImageView];
-    UIButton *manageButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/6-12, screen_height/5+320, 55, 25)];
-    [manageButton setTitle:@"账户管理" forState:UIControlStateNormal];
-    [manageButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
-    manageButton.titleLabel.font = [UIFont systemFontOfSize:13];
-    [self.view addSubview:manageButton];
+    //显示账户注册和退出登录的button
+    UIImageView *registerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/6-40, screen_height/5+320, 25, 25)];
+    registerImageView.image = [UIImage imageNamed:@"account_management"];
+    [self.view addSubview:registerImageView];
+    UIButton *registerButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/6-12, screen_height/5+320, 55, 25)];
+    [registerButton setTitle:@"账户注册" forState:UIControlStateNormal];
+    [registerButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [registerButton addTarget:self action:@selector(registerButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    registerButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [self.view addSubview:registerButton];
     
     UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3-3, screen_height/5+320+4, 1, 17)];
     separateView.image = [UIImage imageNamed:@"vertical_line"];
@@ -140,7 +143,7 @@
     cell.textLabel.textColor = [UIColor whiteColor];
     
     cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"menu_icon_%d",indexPath.section*3+indexPath.row+1]];
-    CGSize itemSize = CGSizeMake(30, 30);
+    CGSize itemSize = CGSizeMake(20, 20);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
     [cell.imageView.image drawInRect:imageRect];
@@ -169,10 +172,13 @@
             break;
         case 1:
             break;
-        case 2:
+        case 2:{
+            FeedbackViewController *feedbackVC = [[FeedbackViewController alloc] init];
+            UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:feedbackVC];
+            [self presentModalViewController:navC animated:YES];
             break;
+        }
         case 3:{
-            NSLog(@"about us!!!!");
             AboutUsViewController *aboutUs = [[AboutUsViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:aboutUs];
             [self presentModalViewController:navC animated:YES];
@@ -190,7 +196,17 @@
 
 #pragma mark - ButtonPressedAction
 - (void)portraitButtonPressed {
-    
+    LoginAndRegisterViewController *registerVC = [[LoginAndRegisterViewController alloc] init];
+    registerVC->isLogin = YES;
+    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:registerVC];
+    [self presentModalViewController:navC animated:YES];
+}
+
+- (void)registerButtonPressed {
+    LoginAndRegisterViewController *registerVC = [[LoginAndRegisterViewController alloc] init];
+    registerVC->isLogin = NO;
+    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:registerVC];
+    [self presentModalViewController:navC animated:YES];
 }
 
 @end
