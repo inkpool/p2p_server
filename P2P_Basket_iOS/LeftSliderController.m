@@ -176,6 +176,27 @@
             FeedbackViewController *feedbackVC = [[FeedbackViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:feedbackVC];
             [self presentModalViewController:navC animated:YES];
+            
+//            Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+//            if (mailClass !=nil) {
+//                if ([mailClass canSendMail]) {
+//                    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+//                    picker.mailComposeDelegate = self;
+//                    [picker setSubject:@"“违章查询助手”：违章提示信息"];
+////                    NSString *emailBody = bodyStr;
+////                    [picker setMessageBody:emailBody isHTML:NO];
+//                    [self presentModalViewController:picker animated:YES];
+//                }
+//                else{//设备不支持发动邮件功能
+//                    [self alertWithTitle:@"提示" msg:@"对不起，您还没有设置邮件账户！"];
+//                }
+//                
+//            }
+//            else {
+//                [self alertWithTitle:@"提示" msg:@"当前系统版本不支持应用内发送邮件功能，您可以使用mailto方法代替！"];
+//            }
+
+            
             break;
         }
         case 3:{
@@ -207,6 +228,42 @@
     registerVC->isLogin = NO;
     UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:registerVC];
     [self presentModalViewController:navC animated:YES];
+}
+
+#pragma mark -
+#pragma mark MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    NSString *title = @"邮件发送提醒";
+    NSString *msg;
+    switch (result){
+        case MFMailComposeResultCancelled:
+            msg = @"邮件已被取消";
+            break;
+        case MFMailComposeResultSaved:
+            msg = @"邮件保存成功";
+            [self alertWithTitle:title msg:msg];
+            break;
+        case MFMailComposeResultSent:
+            msg = @"邮件发送成功";
+            [self alertWithTitle:title msg:msg];
+            break;
+        case MFMailComposeResultFailed:
+            msg =@"邮件发送失败";
+            [self alertWithTitle:title msg:msg];
+            break;
+    }
+    
+    [self dismissModalViewControllerAnimated:YES];
+}//邮箱关闭，MFMailComposeViewControllerDelegate协议要实现的方法
+
+- (void) alertWithTitle: (NSString *)_title_ msg: (NSString *)msg{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:_title_
+                                                    message:msg
+                                                   delegate:nil
+                                          cancelButtonTitle:@"提示"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 @end

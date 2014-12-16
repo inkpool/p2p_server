@@ -88,7 +88,6 @@ static RootViewController *sharedRC;
     RecordDB *recordDB = [[RecordDB alloc] init];
     [recordDB copyDatabaseIfNeeded];
     records = [recordDB getAllRecord];
-
     expireRecord = [[NSMutableArray alloc] init];
     expiringRecord = [[NSMutableArray alloc] init];
     
@@ -109,7 +108,9 @@ static RootViewController *sharedRC;
         flag1 = ([nowComps year]-[endComps year])*10000 + ([nowComps month]-[endComps month])*100 + ([nowComps day]-[endComps day]);
         flag2 = ([nowComps year]-[endComps year])*10000 + ([nowComps month]-[endComps month])*100 + ([nowComps day]+10-[endComps day]);//小于10天即为即将到期
         if (flag1 > 0) {
-            [expireRecord addObject:records[i]];//已到期
+            if ([[records[i] objectForKey:@"state"] integerValue] == 0) {
+                [expireRecord addObject:records[i]];//已到期，需要处理
+            }
         }
         if (flag1 < 0 && flag2 > 0) {
             [expiringRecord addObject:records[i]];//即将到期

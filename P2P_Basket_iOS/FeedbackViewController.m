@@ -8,8 +8,11 @@
 
 #import "FeedbackViewController.h"
 
-@interface FeedbackViewController ()
 
+@interface FeedbackViewController ()
+{
+    CGFloat screen_width;
+}
 @end
 
 @implementation FeedbackViewController
@@ -18,9 +21,9 @@
     [super viewDidLoad];
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
-    CGFloat screen_width = size.width;
+    screen_width = size.width;
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:225.0/255.0 alpha:1];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;//半透明
     //添加标题
     UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 55, 44)];
@@ -32,20 +35,21 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@" 返回" style:UIBarButtonItemStyleBordered target:self action:@selector(backItemPressed)];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    
-    textView=[[UITextView alloc]initWithFrame:CGRectMake(10, 80, screen_width-20, 80)];
-    textView.backgroundColor = [UIColor grayColor];//设置它的背景颜色
-    textView.font = [UIFont systemFontOfSize:15];
-    textView.text = @"请输入您遇到的问题或建议，我们将不断改进";//设置它显示的内容
-    textView.returnKeyType = UIReturnKeyDefault;//返回键的类型
-    textView.keyboardType = UIKeyboardTypeDefault;//键盘类型
-//    suggestion.scrollEnabled = YES;//是否可以拖动
-//    suggestion.autoresizingMask = UIViewAutoresizingFlexibleHeight;//自适应高度
-    textView.layer.cornerRadius = 6;
-    textView.layer.masksToBounds = YES;
+    self.automaticallyAdjustsScrollViewInsets = NO;//避免textView上面出现大段空白
+    textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 80, screen_width-20, 150)];
     textView.delegate = self;
-    
+    textView.scrollEnabled = YES;
+    textView.font = [UIFont systemFontOfSize:14];
+    textView.backgroundColor = [UIColor whiteColor];
+    //设置圆边角
+    textView.layer.borderColor = [UIColor grayColor].CGColor;
+    textView.layer.borderWidth =1.0;
+    textView.layer.cornerRadius =5.0;
     [self.view addSubview:textView];
+    
+    NSLog(@"%f",[[NSDate date] timeIntervalSince1970]);
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,6 +62,7 @@
 
 - (void)backItemPressed
 {
+    NSLog(@"%@",textView.text);
     [self dismissModalViewControllerAnimated:YES];
 }
 
