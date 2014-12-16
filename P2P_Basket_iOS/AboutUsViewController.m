@@ -36,7 +36,7 @@
     titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
     self.navigationItem.titleView = titleLabel;
     //navigationItem左按钮
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@" 返回" style:UIBarButtonItemStyleBordered target:self action:@selector(backItemPressed)];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@" 返回" style:UIBarButtonItemStylePlain target:self action:@selector(backItemPressed)];
     self.navigationItem.leftBarButtonItem = backItem;
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80, 70, 70)];

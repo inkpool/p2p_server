@@ -11,5 +11,8 @@
 #import <MessageUI/MFMailComposeViewController.h>
 
 @interface LeftSliderController : UIViewController<UITableViewDelegate, UITableViewDataSource,MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
-
+{
+@public
+    NSMutableArray *records;//用户所有的投资记录
+}
 @end

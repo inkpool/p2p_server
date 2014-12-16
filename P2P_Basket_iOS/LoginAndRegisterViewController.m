@@ -36,7 +36,7 @@
     titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
     self.navigationItem.titleView = titleLabel;
     //navigationItem左按钮
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@" 返回" style:UIBarButtonItemStyleBordered target:self action:@selector(backItemPressed)];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@" 返回" style:UIBarButtonItemStylePlain target:self action:@selector(backItemPressed)];
     self.navigationItem.leftBarButtonItem = backItem;
     
     //获取屏幕分辨率
@@ -96,7 +96,6 @@
     [buttonLayer setCornerRadius:5.0];
     [buttonLayer setBorderWidth:1.5];
     [buttonLayer setBorderColor:[[UIColor grayColor] CGColor]];
-//    [self.view insertSubview:downButton atIndex:upButton.tag];
     [self.view addSubview:button];
 }
 
@@ -128,7 +127,6 @@
 
 - (void)buttonPressed {
     userEmail = emailField.text;
-    NSLog(@"boooooo:%d",[self isValidateEmail:userEmail]);
     if ([self isValidateEmail:userEmail]) {//用户输入的邮箱合法
         userPassword = passwordField.text;
         NSLog(@"%@,%@",userEmail,userPassword);
@@ -161,29 +159,6 @@
                                               otherButtonTitles: nil];
         [alert show];
     }
-    
-    
-    //获取数据
-//    NSString *URLTmp = @"http://128.199.226.246/beerich/index.php/login/register";
-//    NSString *URLTmp1 = [URLTmp stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];//转码成UTF-8否则可能会出现错误
-//    URLTmp = URLTmp1;
-//    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString: URLTmp]];
-//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"Success: %@", operation.responseString);
-//        
-//        NSString *requestTmp = [NSString stringWithString:operation.responseString];
-//        NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
-//        //系统自带JSON解析
-//        resultDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"Failure: %@", error);
-//    }];
-//    [operation start];
-//    error_code
-//    error_message
-    
     
 }
 
