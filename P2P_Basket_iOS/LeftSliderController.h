@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface LeftSliderController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface LeftSliderController : UIViewController<UITableViewDelegate, UITableViewDataSource,MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
 
 @end

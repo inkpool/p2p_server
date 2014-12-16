@@ -124,6 +124,8 @@ fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)sta
         int calType = sqlite3_column_int(stmt, 6);
         char *startDate = (char *)sqlite3_column_text(stmt, 7);
         char *endDate = (char *)sqlite3_column_text(stmt, 8);
+        long int timeStamp = sqlite3_column_int(stmt, 9);
+        int state = sqlite3_column_int(stmt, 10);
         
         NSString *platformString = [NSString stringWithCString:platform encoding:NSUTF8StringEncoding];
         NSString *productString = [NSString stringWithCString:product encoding:NSUTF8StringEncoding];
@@ -133,9 +135,11 @@ fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)sta
         NSNumber *calTypeNumber = [[NSNumber alloc] initWithInt:calType];
         NSString *startDateString = [NSString stringWithCString:startDate encoding:NSUTF8StringEncoding];
         NSString *endDateString = [NSString stringWithCString:endDate encoding:NSUTF8StringEncoding];
+        NSNumber *timeStampNumber = [[NSNumber alloc] initWithInt:timeStamp];
+        NSNumber *stateNumber = [[NSNumber alloc] initWithInt:state];
         
         //NSLog(@"平台：%@\n产品：%@\n金额：%@\n最小利率：%@\n最大利率：%@\n类型：%@\n开始时间：%@\n结束时间：%@\n\n\n",platformString,productString,capitalNumber,minRateNumber,maxRateNumber,calTypeNumber,startDateString,endDateString);
-        NSDictionary *investment = [NSDictionary dictionaryWithObjectsAndKeys:platformString,@"platform",productString,@"product",capitalNumber,@"capital",minRateNumber,@"minRate",maxRateNumber,@"maxRate",calTypeNumber,@"calType",startDateString,@"startDate",endDateString,@"endDate",nil];
+        NSDictionary *investment = [NSDictionary dictionaryWithObjectsAndKeys:platformString,@"platform",productString,@"product",capitalNumber,@"capital",minRateNumber,@"minRate",maxRateNumber,@"maxRate",calTypeNumber,@"calType",startDateString,@"startDate",endDateString,@"endDate",timeStampNumber,@"timeStamp",stateNumber,@"state",nil];
         [records addObject:investment];
         
         result = sqlite3_step(stmt);

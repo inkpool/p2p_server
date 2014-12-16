@@ -31,8 +31,10 @@
 		1D6DBD231A3EFEF80081F516 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD181A3EFEF80081F516 /* AFURLRequestSerialization.m */; };
 		1D6DBD241A3EFEF80081F516 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD1A1A3EFEF80081F516 /* AFURLResponseSerialization.m */; };
 		1D6DBD251A3EFEF80081F516 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD1C1A3EFEF80081F516 /* AFURLSessionManager.m */; };
+		1D6DBD271A3F172F0081F516 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D6DBD261A3F172F0081F516 /* MessageUI.framework */; };
 		1D78F4A31A0D1581009ED28B /* menu-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D78F4A21A0D1581009ED28B /* menu-icon@2x.png */; };
 		1D78F4A51A0D168E009ED28B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D78F4A41A0D168E009ED28B /* QuartzCore.framework */; };
+		1D817EE11A4045D400D1F914 /* p2p_basket.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1D817EE01A4045D400D1F914 /* p2p_basket.sqlite */; };
 		1D84F5341A3BDC1300413A76 /* golden_eggs.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1D84F5331A3BDC1300413A76 /* golden_eggs.jpg */; };
 		1D84F5371A3BE3BE00413A76 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D84F5361A3BE3BE00413A76 /* AboutUsViewController.m */; };
 		1D84F53D1A3BF29A00413A76 /* wechat-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D84F53C1A3BF29A00413A76 /* wechat-icon.png */; };
@@ -60,7 +62,6 @@
 		1DB339221A3A9C19002CAD78 /* register.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB339211A3A9C19002CAD78 /* register.png */; };
 		1DB339241A3AA1ED002CAD78 /* account_management.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB339231A3AA1ED002CAD78 /* account_management.png */; };
 		1DB339281A3AA636002CAD78 /* sign_out.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB339271A3AA636002CAD78 /* sign_out.png */; };
-		1DBED6891A2D55BB007939CF /* p2p_basket.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1DBED6881A2D55BB007939CF /* p2p_basket.sqlite */; };
 		1DCB79681A3993BF00E4372B /* CustomCellBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCB79671A3993BF00E4372B /* CustomCellBackground.m */; };
 		1DED79D91A287A4A00A054DB /* 爱投资-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D11A287A4A00A054DB /* 爱投资-icon.png */; };
 		1DED79DA1A287A4A00A054DB /* 点融网-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D21A287A4A00A054DB /* 点融网-icon.png */; };
@@ -212,8 +213,10 @@
 		1D6DBD1A1A3EFEF80081F516 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		1D6DBD1B1A3EFEF80081F516 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		1D6DBD1C1A3EFEF80081F516 /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		1D6DBD261A3F172F0081F516 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		1D78F4A21A0D1581009ED28B /* menu-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-icon@2x.png"; sourceTree = "<group>"; };
 		1D78F4A41A0D168E009ED28B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		1D817EE01A4045D400D1F914 /* p2p_basket.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = p2p_basket.sqlite; sourceTree = "<group>"; };
 		1D84F5331A3BDC1300413A76 /* golden_eggs.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = golden_eggs.jpg; sourceTree = "<group>"; };
 		1D84F5351A3BE3BE00413A76 /* AboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutUsViewController.h; sourceTree = "<group>"; };
 		1D84F5361A3BE3BE00413A76 /* AboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
@@ -245,7 +248,6 @@
 		1DB339211A3A9C19002CAD78 /* register.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = register.png; sourceTree = "<group>"; };
 		1DB339231A3AA1ED002CAD78 /* account_management.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account_management.png; sourceTree = "<group>"; };
 		1DB339271A3AA636002CAD78 /* sign_out.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sign_out.png; sourceTree = "<group>"; };
-		1DBED6881A2D55BB007939CF /* p2p_basket.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = p2p_basket.sqlite; sourceTree = "<group>"; };
 		1DCB79661A3993BF00E4372B /* CustomCellBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellBackground.h; sourceTree = "<group>"; };
 		1DCB79671A3993BF00E4372B /* CustomCellBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellBackground.m; sourceTree = "<group>"; };
 		1DED79D11A287A4A00A054DB /* 爱投资-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "爱投资-icon.png"; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D6DBD271A3F172F0081F516 /* MessageUI.framework in Frameworks */,
 				E6B2DBC61A2226F50086F403 /* libsqlite3.dylib in Frameworks */,
 				1D78F4A51A0D168E009ED28B /* QuartzCore.framework in Frameworks */,
 				1D5FB60C1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a in Frameworks */,
@@ -499,6 +502,7 @@
 		1D78F4A61A0D1693009ED28B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1D6DBD261A3F172F0081F516 /* MessageUI.framework */,
 				1D5FB60B1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a */,
 				E6B2DBC51A2226F50086F403 /* libsqlite3.dylib */,
 				1D78F4A41A0D168E009ED28B /* QuartzCore.framework */,
@@ -546,7 +550,7 @@
 		E608614719FFEDC800EBDBE1 = {
 			isa = PBXGroup;
 			children = (
-				1DBED6881A2D55BB007939CF /* p2p_basket.sqlite */,
+				1D817EE01A4045D400D1F914 /* p2p_basket.sqlite */,
 				1D6DBD091A3EFEF80081F516 /* AFNetworking */,
 				1D5FB5BC1A3829F000DB12B7 /* CorePlotHeaders */,
 				E608615219FFEDC800EBDBE1 /* P2P_Basket_iOS */,
@@ -702,7 +706,6 @@
 				1D5FB5B61A38266500DB12B7 /* horiz_line.png in Resources */,
 				E608616419FFEDC800EBDBE1 /* LaunchScreen.xib in Resources */,
 				1DA23D4E1A3EDD6500116632 /* menu_icon_2.png in Resources */,
-				1DBED6891A2D55BB007939CF /* p2p_basket.sqlite in Resources */,
 				1DA23D461A3EDD3C00116632 /* menu_icon_6.png in Resources */,
 				E608616119FFEDC800EBDBE1 /* Images.xcassets in Resources */,
 				1DED79DE1A287A4A00A054DB /* 盛融在线-icon.png in Resources */,
@@ -721,6 +724,7 @@
 				1DA23D431A3EDD3C00116632 /* menu_icon_4@2x.png in Resources */,
 				1DB3391D1A3A970C002CAD78 /* portrait_default.png in Resources */,
 				1D5FB5B81A38266500DB12B7 /* triangle_gray_1.png in Resources */,
+				1D817EE11A4045D400D1F914 /* p2p_basket.sqlite in Resources */,
 				1DED79DC1A287A4A00A054DB /* 陆金所-icon.png in Resources */,
 				1DED79DF1A287A4A00A054DB /* 鑫合汇-icon.png in Resources */,
 				1DA23D481A3EDD3C00116632 /* Oval 53.png in Resources */,
