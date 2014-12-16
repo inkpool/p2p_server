@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D02FCFF1A404E5700C09982 /* CloudBackupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D02FCFE1A404E5700C09982 /* CloudBackupViewController.m */; };
 		1D05728C1A3D801100A1DB63 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D05728B1A3D801100A1DB63 /* FeedbackViewController.m */; };
 		1D5C9C231A0B5FE0007CFFF9 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5C9C221A0B5FE0007CFFF9 /* HomeViewController.m */; };
 		1D5C9C251A0B5FF8007CFFF9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D5C9C241A0B5FF8007CFFF9 /* Main.storyboard */; };
@@ -96,6 +97,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1D02FCFD1A404E5700C09982 /* CloudBackupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudBackupViewController.h; sourceTree = "<group>"; };
+		1D02FCFE1A404E5700C09982 /* CloudBackupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudBackupViewController.m; sourceTree = "<group>"; };
 		1D05728A1A3D801100A1DB63 /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
 		1D05728B1A3D801100A1DB63 /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		1D5285161A2F054000989CAC /* UIViewPassValueDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewPassValueDelegate.h; sourceTree = "<group>"; };
@@ -443,12 +446,14 @@
 				1DCB79671A3993BF00E4372B /* CustomCellBackground.m */,
 				1D666CFD1A10C843004DC666 /* LeftSliderController.h */,
 				1D666CFE1A10C843004DC666 /* LeftSliderController.m */,
+				1D6DBD061A3EECE30081F516 /* LoginAndRegisterViewController.h */,
+				1D6DBD071A3EECE30081F516 /* LoginAndRegisterViewController.m */,
+				1D02FCFD1A404E5700C09982 /* CloudBackupViewController.h */,
+				1D02FCFE1A404E5700C09982 /* CloudBackupViewController.m */,
 				1D84F5351A3BE3BE00413A76 /* AboutUsViewController.h */,
 				1D84F5361A3BE3BE00413A76 /* AboutUsViewController.m */,
 				1D05728A1A3D801100A1DB63 /* FeedbackViewController.h */,
 				1D05728B1A3D801100A1DB63 /* FeedbackViewController.m */,
-				1D6DBD061A3EECE30081F516 /* LoginAndRegisterViewController.h */,
-				1D6DBD071A3EECE30081F516 /* LoginAndRegisterViewController.m */,
 			);
 			name = Side;
 			path = ..;
@@ -780,6 +785,7 @@
 				E608615619FFEDC800EBDBE1 /* main.m in Sources */,
 				1DCB79681A3993BF00E4372B /* CustomCellBackground.m in Sources */,
 				1D6DBD231A3EFEF80081F516 /* AFURLRequestSerialization.m in Sources */,
+				1D02FCFF1A404E5700C09982 /* CloudBackupViewController.m in Sources */,
 				1D6DBD1D1A3EFEF80081F516 /* AFHTTPRequestOperation.m in Sources */,
 				1D6DBD241A3EFEF80081F516 /* AFURLResponseSerialization.m in Sources */,
 				1D989AB11A10F6750092EED1 /* PlatformViewController.m in Sources */,

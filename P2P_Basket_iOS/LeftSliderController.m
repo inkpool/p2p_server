@@ -11,6 +11,7 @@
 #import "AboutUsViewController.h"
 #import "FeedbackViewController.h"
 #import "LoginAndRegisterViewController.h"
+#import "CloudBackupViewController.h"
 
 @interface LeftSliderController ()
 {
@@ -167,9 +168,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger num = indexPath.section*3 + indexPath.row;
     switch (num) {
-        case 0:
-            
+        case 0:{
+            CloudBackupViewController *cloudBackupVC = [[CloudBackupViewController alloc] init];
+            cloudBackupVC->records = records;
+            UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:cloudBackupVC];
+            [self presentModalViewController:navC animated:YES];
             break;
+        }
         case 1:
             break;
         case 2:{

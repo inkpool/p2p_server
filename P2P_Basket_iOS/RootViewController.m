@@ -135,7 +135,7 @@ static RootViewController *sharedRC;
 - (void)initChildControllers {
     //初始化“更多”功能界面所在的ViewController
     LeftSliderController *leftSC = [[LeftSliderController alloc] init];
-    
+    leftSC->records = records;
     [self addChildViewController:leftSC];
     [_leftSideView addSubview:leftSC.view];
     
