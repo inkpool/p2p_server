@@ -25,10 +25,10 @@
     CGFloat screen_width = size.width;
     CGFloat screen_height = size.height;
     
+    NSLog(@"%d\n%f\n%d",screen_width,screen_height,44*[platformSet count]);
+    
     //添加一个tableView
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 80, screen_width, screen_height-160)];
-    //tableView.backgroundView = backView;
-    tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, screen_width, 44*[platformSet count])];
     tableView.backgroundColor=[UIColor clearColor];
     //tableView.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:tableView];
@@ -73,5 +73,9 @@
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44;
+}
 
 @end

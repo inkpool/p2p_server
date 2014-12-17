@@ -172,7 +172,7 @@
             CloudBackupViewController *cloudBackupVC = [[CloudBackupViewController alloc] init];
             cloudBackupVC->records = records;
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:cloudBackupVC];
-            [self presentModalViewController:navC animated:YES];
+            [self presentViewController:navC animated:YES completion:nil];
             break;
         }
         case 1:
@@ -180,14 +180,14 @@
         case 2:{
             FeedbackViewController *feedbackVC = [[FeedbackViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:feedbackVC];
-            [self presentModalViewController:navC animated:YES];
+            [self presentViewController:navC animated:YES completion:nil];
             
             break;
         }
         case 3:{
             AboutUsViewController *aboutUs = [[AboutUsViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:aboutUs];
-            [self presentModalViewController:navC animated:YES];
+            [self presentViewController:navC animated:YES completion:nil];
             break;
         }
         case 4:
@@ -205,14 +205,14 @@
     LoginAndRegisterViewController *registerVC = [[LoginAndRegisterViewController alloc] init];
     registerVC->isLogin = YES;
     UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:registerVC];
-    [self presentModalViewController:navC animated:YES];
+    [self presentViewController:navC animated:YES  completion:nil];
 }
 
 - (void)registerButtonPressed {
     LoginAndRegisterViewController *registerVC = [[LoginAndRegisterViewController alloc] init];
     registerVC->isLogin = NO;
     UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:registerVC];
-    [self presentModalViewController:navC animated:YES];
+    [self presentViewController:navC animated:YES  completion:nil];
 }
 
 

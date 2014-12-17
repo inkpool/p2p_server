@@ -151,7 +151,7 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
 - (void)backItemPressed
 {
     NSLog(@"%@",textView.text);
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)buttonPressed:(id)sender{
@@ -229,7 +229,7 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
             [picker setSubject:subjectString];
             NSString *emailBody = textView.text;
             [picker setMessageBody:emailBody isHTML:NO];
-            [self presentModalViewController:picker animated:YES];
+            [self presentViewController:picker animated:YES completion:nil];
         }
         else{//设备不支持发动邮件功能
             [self alertWithTitle:@"提示" msg:@"对不起，您还没有设置邮件账户！"];
@@ -325,7 +325,7 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
             break;
     }
     
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }//邮箱关闭，MFMailComposeViewControllerDelegate协议要实现的方法
 
 - (void) alertWithTitle: (NSString *)_title_ msg: (NSString *)msg{

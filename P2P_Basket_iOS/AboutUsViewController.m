@@ -64,7 +64,7 @@
 
 - (void)backItemPressed
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - TableView delegate methods

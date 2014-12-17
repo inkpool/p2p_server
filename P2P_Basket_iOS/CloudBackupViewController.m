@@ -75,7 +75,7 @@
 
 - (void)backItemPressed
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)upButtonPressed {

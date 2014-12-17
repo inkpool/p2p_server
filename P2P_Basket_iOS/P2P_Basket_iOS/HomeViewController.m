@@ -23,7 +23,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self showData];
     
     //获取屏幕分辨率

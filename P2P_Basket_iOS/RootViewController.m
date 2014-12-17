@@ -31,6 +31,7 @@
     NSMutableArray *expireRecord;//已到期的投资记录
     NSMutableArray *expiringRecord;//即将到期的投资记录
     float RContentOffset;
+    CGFloat screen_width;
 }
 
 @end
@@ -49,7 +50,7 @@ static RootViewController *sharedRC;
     //获取屏幕分辨率
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
-    CGFloat screen_width = size.width;
+    screen_width = size.width;
     
     RContentOffset = screen_width/3*2;
     
@@ -146,7 +147,7 @@ static RootViewController *sharedRC;
 
     //NavigationItem：点击左按钮，显示“更多”功能界面；点击右按钮，显示添加“新的投资”的界面
     UITabBarController *tbc = [nc.childViewControllers firstObject];
-    
+    tbc.delegate = self;
     //向HomeViewController、FlowViewController传递数据库中用户所有的投资记录
     HomeViewController *homeViewController = tbc.viewControllers[0];
     homeViewController->records = records;
@@ -156,6 +157,7 @@ static RootViewController *sharedRC;
     flowViewController->records = records;
     AnalysisViewController *analysisViewController = tbc.viewControllers[2];
     analysisViewController->records = records;
+    analysisViewController->_mainContentView = _mainContentView;
     PlatformViewController *platformViewController = tbc.viewControllers[1];
     platformViewController->platformSet = [NSMutableSet set];
     for (int i = 0; i < [records count]; i++) {
@@ -397,7 +399,19 @@ static RootViewController *sharedRC;
     _mainContentView.layer.shadowOpacity = 0.8f;//设置阴影的不透明度
 }
 
+#pragma mark -
+#pragma mark UITabBarControllerDelegate
 
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    //点击进入分析界面后，柱状图可以拖动，为了避免和_panGestureRec冲突，分析界面不要响应拖动事件，而在分析界面内重新规定
+    if ([viewController isKindOfClass:[AnalysisViewController class]]) {
+        
+        [_mainContentView removeGestureRecognizer:_panGestureRec];
+    } else {
+        [_mainContentView addGestureRecognizer:_panGestureRec];
+    }
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

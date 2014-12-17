@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "UIViewPassValueDelegate.h"
 
-@interface RootViewController : UIViewController<UIViewPassValueDelegate>
+@interface RootViewController : UIViewController<UIViewPassValueDelegate,UITabBarControllerDelegate>
 {
     UINavigationController *nc;
     NSMutableArray *records;//用户所有的投资记录
