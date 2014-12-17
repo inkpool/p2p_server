@@ -67,9 +67,10 @@ fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)sta
         return -1;
     }
     
+    NSInteger state = 0;
+    long int timeStamp = [[NSDate date] timeIntervalSince1970];
     //组合而成的sql语句，占位符坑爹啊！
-    NSString *sql=[[NSString alloc]initWithFormat:@"INSERT INTO recordT VALUES(NULL,\"%@\",\"%@\",%f,%f,%f,%ld,\"%@\",\"%@\")",platform,product,capital,minRate,maxRate,calType,startDate,endDate];
-    
+    NSString *sql=[[NSString alloc]initWithFormat:@"INSERT INTO recordT VALUES(NULL,\"%@\",\"%@\",%f,%f,%f,%d,\"%@\",\"%@\",%ld,%d)",platform,product,capital,minRate,maxRate,calType,startDate,endDate,timeStamp,state];
     //编译SQL语句
     result = sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
     if( result != SQLITE_OK){

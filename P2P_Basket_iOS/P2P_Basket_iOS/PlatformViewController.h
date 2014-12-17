@@ -10,6 +10,7 @@
 
 @interface PlatformViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 {
+    UITableView *tableView;
 @public
     NSMutableSet *platformSet;//用户所有投资过的平台记录
 }
