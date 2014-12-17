@@ -7,10 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MessageUI/MessageUI.h>
-#import <MessageUI/MFMailComposeViewController.h>
 
-@interface LeftSliderController : UIViewController<UITableViewDelegate, UITableViewDataSource,MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
+@interface LeftSliderController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 {
 @public
     NSMutableArray *records;//用户所有的投资记录

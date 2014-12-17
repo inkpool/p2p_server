@@ -12,9 +12,12 @@
 @interface FeedbackViewController ()
 {
     CGFloat screen_width;
+    CGFloat screen_height;
     BOOL flag1;//记录“建议”标签是否被点击
     BOOL flag2;
     BOOL flag3;
+    int prewTag;
+    float prewMoveY;
 }
 @end
 
@@ -25,10 +28,16 @@
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
     screen_width = size.width;
+    screen_height = size.height;
     
     flag1 = FALSE;
     flag2 = FALSE;
     flag3 = FALSE;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector (keyboardDidShow:)
+name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息UIKeyboardDidShowNotification时，就会调用keyboardDidShow方法
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector (keyboardDidHide:)
+                                                 name: UIKeyboardDidHideNotification object:nil];//接收到系统发出的消息UIKeyboardDidHideNotification时，就会调用keyboardDidHide方法
     
     self.view.backgroundColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:225.0/255.0 alpha:1];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;//半透明
@@ -84,7 +93,6 @@
     [button3 setTitleColor:[UIColor colorWithRed:40.0/255.0 green:131.0/255.0 blue:254.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
     button3.tag = 103;
     [button3 addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    //给registerButton添加边框
     CALayer * buttonLayer3 = [button3 layer];
     [buttonLayer3 setMasksToBounds:YES];
     [buttonLayer3 setCornerRadius:5.0];
@@ -93,7 +101,7 @@
     [self.view addSubview:button3];
     
     self.automaticallyAdjustsScrollViewInsets = NO;//避免textView上面出现大段空白
-    textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 64+10+15+25+10, screen_width-20, 150)];
+    textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 64+10+15+25+10, screen_width-20, screen_height/3.5)];
     textView.delegate = self;
     textView.scrollEnabled = YES;
     textView.font = [UIFont systemFontOfSize:14];
@@ -104,8 +112,31 @@
     textView.layer.cornerRadius =5.0;
     [self.view addSubview:textView];
     
-    NSLog(@"%f",[[NSDate date] timeIntervalSince1970]);
+    UIToolbar * topView = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, screen_width, 30)];
+//    [topView setBarStyle:UIBarStyleBlackTranslucent];
+    [topView setBackgroundColor:[UIColor colorWithRed:201.0/255.0 green:205.0/255.0 blue:216.0/255.0 alpha:1]];
+    UIBarButtonItem * btnSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(1, 1, 28, 28);
+    [btn addTarget:self action:@selector(dismissKeyBoard) forControlEvents:UIControlEventTouchUpInside];
+    [btn setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithCustomView:btn];
+    NSArray * buttonsArray = [NSArray arrayWithObjects:btnSpace,doneBtn,nil];
+    [topView setItems:buttonsArray];
+    [textView setInputAccessoryView:topView];
+    
+    UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/2-40, 124+screen_height/3.5+20, 80, 30)];
+    [sendButton setTitle:@"发送" forState:UIControlStateNormal];
+    [sendButton setTitleColor:[UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [sendButton setTitleColor:[UIColor colorWithRed:40.0/255.0 green:131.0/255.0 blue:254.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
+    [sendButton addTarget:self action:@selector(sendButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    CALayer * buttonLayer4 = [sendButton layer];
+    [buttonLayer4 setMasksToBounds:YES];
+    [buttonLayer4 setCornerRadius:5.0];
+    [buttonLayer4 setBorderWidth:1.5];
+    [buttonLayer4 setBorderColor:[[UIColor grayColor] CGColor]];
+    [self.view addSubview:sendButton];
     
 }
 
@@ -167,6 +198,9 @@
     }
 }
 
+- (void)dismissKeyBoard {
+    [textView resignFirstResponder];
+}
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -174,6 +208,133 @@
     [textView resignFirstResponder];
 }
 
+- (void)sendButtonPressed {
+    Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+    if (mailClass !=nil) {
+        if ([mailClass canSendMail]) {
+            MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+            picker.mailComposeDelegate = self;
+            [picker setToRecipients:[NSArray arrayWithObjects:@"978717070@qq.com",
+                                     @"xuemochi@gmail.com", nil]];
+            NSMutableString *subjectString = [[NSMutableString alloc] initWithString:@"反馈："];
+            if (flag1) {
+                [subjectString appendString:@" 建议 "];
+            }
+            if (flag2) {
+                [subjectString appendString:@" 出错 "];
+            }
+            if (flag3) {
+                [subjectString appendString:@" 帮助 "];
+            }
+            [picker setSubject:subjectString];
+            NSString *emailBody = textView.text;
+            [picker setMessageBody:emailBody isHTML:NO];
+            [self presentModalViewController:picker animated:YES];
+        }
+        else{//设备不支持发动邮件功能
+            [self alertWithTitle:@"提示" msg:@"对不起，您还没有设置邮件账户！"];
+        }
+        
+    }
+    else {
+        [self alertWithTitle:@"提示" msg:@"当前系统版本不支持应用内发送邮件功能，您可以使用mailto方法代替！"];
+    }
+}
 
+#pragma mark -
+#pragma mark Notification
+
+-(void) keyboardDidShow: (NSNotification *)notif {
+    ////防止UITextView被键盘挡住
+    NSDictionary* info = [notif userInfo];
+    NSValue* aValue = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGSize keyboardSize = [aValue CGRectValue].size;
+    
+    //防止UITextView被键盘挡住
+    CGRect textFrame =  textView.frame;
+    float textY = textFrame.origin.y+textFrame.size.height;
+    float bottomY = self.view.frame.size.height-textY;
+    if(bottomY>=keyboardSize.height)  //判断当前的高度是否已经有216，如果超过了就不需要再移动主界面的View高度
+    {
+        prewTag = -1;
+        return;
+    }
+    prewTag = textView.tag;
+    float moveY = keyboardSize.height-bottomY;
+    prewMoveY = moveY;
+    NSTimeInterval animationDuration = 0.30f;
+    CGRect frame = self.view.frame;
+    frame.origin.y -=moveY;//view的Y轴上移
+    frame.size.height +=moveY; //View的高度增加
+    self.view.frame = frame;
+    [UIView beginAnimations:@"ResizeView" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    self.view.frame = frame;
+    [UIView commitAnimations];//设置调整界面的动画效果
+    
+}
+
+-(void) keyboardDidHide: (NSNotification *)notif {
+    /**
+     结束编辑UITextView的方法，让原来的界面还原高度
+     */
+    if(prewTag == -1) //当编辑的View不是需要移动的View
+    {
+        return;
+    }
+    float moveY ;
+    NSTimeInterval animationDuration = 0.30f;
+    CGRect frame = self.view.frame;
+    if(prewTag == textView.tag) //当结束编辑的View的TAG是上次的就移动
+    {   //还原界面
+        moveY =  prewMoveY;
+        frame.origin.y +=moveY;
+        frame.size. height -=moveY;
+        self.view.frame = frame;
+    }
+    //self.view移回原位置
+    [UIView beginAnimations:@"ResizeView" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    self.view.frame = frame;
+    [UIView commitAnimations];
+    [textView resignFirstResponder];
+    
+}
+
+#pragma mark -
+#pragma mark MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    NSString *title = @"邮件发送提醒";
+    NSString *msg;
+    switch (result){
+        case MFMailComposeResultCancelled:
+            msg = @"邮件已被取消";
+            break;
+        case MFMailComposeResultSaved:
+            msg = @"邮件保存成功";
+            [self alertWithTitle:title msg:msg];
+            break;
+        case MFMailComposeResultSent:
+            msg = @"邮件发送成功";
+            [self alertWithTitle:title msg:msg];
+            break;
+        case MFMailComposeResultFailed:
+            msg =@"邮件发送失败";
+            [self alertWithTitle:title msg:msg];
+            break;
+    }
+    
+    [self dismissModalViewControllerAnimated:YES];
+}//邮箱关闭，MFMailComposeViewControllerDelegate协议要实现的方法
+
+- (void) alertWithTitle: (NSString *)_title_ msg: (NSString *)msg{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:_title_
+                                                    message:msg
+                                                   delegate:nil
+                                          cancelButtonTitle:@"提示"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 
 @end

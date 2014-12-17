@@ -27,9 +27,9 @@
     //添加标题
     UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 55, 44)];
     if (isLogin) {
-        titleLabel.text = @"账户登录";
+        titleLabel.text = @"账号登录";
     } else {
-        titleLabel.text = @"账户注册";
+        titleLabel.text = @"账号注册";
     }
     
     titleLabel.textColor = [UIColor whiteColor];
@@ -52,7 +52,7 @@
     CGFloat labelWidth=screen_width/6;
     
     UILabel *emailLable = [[UILabel alloc]initWithFrame:CGRectMake(screen_width/10, naviHeight+screen_width/10, labelWidth, labelHeight)];
-    emailLable.text=@"名字：\n";
+    emailLable.text=@"账号：\n";
 //    emailLable.backgroundColor = [UIColor blueColor];
     [self.view addSubview:emailLable];
     
