@@ -13,5 +13,6 @@
     UITableView *tableView;
 @public
     NSMutableSet *platformSet;//用户所有投资过的平台记录
+    NSMutableArray *records;//用户所有的投资记录
 }
 @end

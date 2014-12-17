@@ -159,6 +159,7 @@ static RootViewController *sharedRC;
     analysisViewController->records = records;
     analysisViewController->_mainContentView = _mainContentView;
     PlatformViewController *platformViewController = tbc.viewControllers[1];
+    platformViewController->records = records;
     platformViewController->platformSet = [NSMutableSet set];
     for (int i = 0; i < [records count]; i++) {
         //platformSet保存用户投资过的平台的名称,set是单值对象的集合，自动删除重复的对象
