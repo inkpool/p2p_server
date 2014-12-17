@@ -59,13 +59,13 @@
     UILabel *left_label1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, screen_width/7-10, 16)];
     left_label1.tag = 111;
     left_label1.text = [NSString stringWithFormat:@"%ld",[expiringRecord count]];
-    left_label1.textAlignment = UITextAlignmentCenter;
+    left_label1.textAlignment = NSTextAlignmentCenter;
     left_label1.textColor = [UIColor whiteColor];
     [left_view addSubview:left_label1];
     
     UILabel *left_label2 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/18+screen_width/6, 12, screen_width/4, 26)];
     left_label2.text = @"即将到期";
-    left_label2.textAlignment = UITextAlignmentCenter;
+    left_label2.textAlignment = NSTextAlignmentCenter;
     [left_bt addSubview:left_label2];
     
     //右UIButton
@@ -82,13 +82,13 @@
     UILabel *right_label1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, screen_width/7-10, 16)];
     right_label1.tag = 112;
     right_label1.text = [NSString stringWithFormat:@"%ld",[expireRecord count]];
-    right_label1.textAlignment = UITextAlignmentCenter;
+    right_label1.textAlignment = NSTextAlignmentCenter;
     right_label1.textColor = [UIColor whiteColor];
     [right_view addSubview:right_label1];
     
     UILabel *right_label2 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/18+screen_width/6, 12, screen_width/4, 26)];
     right_label2.text = @"已经到期";
-    right_label2.textAlignment = UITextAlignmentCenter;
+    right_label2.textAlignment = NSTextAlignmentCenter;
     [right_bt addSubview:right_label2];
     
     //给左右UIButton添加事件响应

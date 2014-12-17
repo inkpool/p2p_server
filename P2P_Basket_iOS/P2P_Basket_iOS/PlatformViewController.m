@@ -7,6 +7,7 @@
 //
 
 #import "PlatformViewController.h"
+#import "PlatformDetailViewController.h"
 
 @interface PlatformViewController ()
 {
@@ -25,10 +26,13 @@
     CGFloat screen_width = size.width;
     CGFloat screen_height = size.height;
     
-    NSLog(@"%d\n%f\n%d",screen_width,screen_height,44*[platformSet count]);
-    
     //添加一个tableView
-    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, screen_width, 44*[platformSet count])];
+    tableView = [[UITableView alloc] init];
+    if (44*[platformSet count] < screen_height-64-49) {
+        tableView.frame = CGRectMake(0, 64, screen_width, 44*[platformSet count]);
+    } else {
+        tableView.frame = CGRectMake(0, 64, screen_width, screen_height-64-49);
+    }
     tableView.backgroundColor=[UIColor clearColor];
     //tableView.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
     [self.view addSubview:tableView];
@@ -64,11 +68,12 @@
         cell = [[UITableViewCell alloc]
                 initWithStyle:UITableViewCellStyleValue1
                 reuseIdentifier:TableSampleIdentifier];
+        plateformArray = [platformSet allObjects];
+        cell.textLabel.text = plateformArray[indexPath.row];
+        cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-icon",plateformArray[indexPath.row]]];
+        cell.backgroundColor=[UIColor clearColor];
     }
-    plateformArray = [platformSet allObjects];
-    cell.textLabel.text = plateformArray[indexPath.row];
-    cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-icon",plateformArray[indexPath.row]]];
-    cell.backgroundColor=[UIColor clearColor];
+    
     
     return cell;
 }
@@ -77,5 +82,21 @@
 {
     return 44;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSMutableArray *platformRecords = [[NSMutableArray alloc] init];//对应平台的所有投资记录
+    PlatformDetailViewController *platformDetailVC = [[PlatformDetailViewController alloc] init];
+    platformDetailVC->platformName = plateformArray[indexPath.row];
+    for (int i = 0; i < [records count]; i++) {
+        if ([[records[i] objectForKey:@"platform"] isEqualToString:plateformArray[indexPath.row]]) {
+            [platformRecords addObject:records[i]];
+        }
+    }
+    platformDetailVC->records = platformRecords;
+    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:platformDetailVC];
+    [self presentViewController:navC animated:YES completion:nil];
+    
+}
+
 
 @end
