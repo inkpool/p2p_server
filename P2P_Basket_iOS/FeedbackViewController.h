@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface FeedbackViewController : UIViewController<UITextViewDelegate>
+@interface FeedbackViewController : UIViewController<UITextViewDelegate,MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
 {
     UITextView *textView;
 }
