@@ -40,6 +40,13 @@
     <string name="company_name01">人人贷</string>
     <string name="company_name02">陆金所</string>
     
+    <string name="left_menu_01">数据云备份</string>
+    <string name="left_menu_02">检查更新</string>
+    <string name="left_menu_03">用户反馈</string>
+    <string name="left_menu_04">关于网贷篮子</string>
+    <string name="left_menu_05">安全设置</string>
+    <string name="left_menu_06">分享给好友</string>
+    
     <string name="sure">确认</string>
     <string name="cancel">取消</string>
 
