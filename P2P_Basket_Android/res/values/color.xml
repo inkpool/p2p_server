@@ -10,8 +10,15 @@
     <color name="tab_bg">#F7F7F7</color>
     <color name="banner_bg">#232736</color>
     <color name="index_info_bg">#46527B</color>
-    <color name="company01">#0492D9</color>
-    <color name="company02">#E95404</color>
+    <color name="company01">#E94F0F</color>
+    <color name="company02">#01649F</color>
+    <color name="company03">#14BDE8</color>
+    <color name="company04">#046832</color>
+    <color name="company05">#0081CD</color>
+    <color name="company06">#D50409</color>
+    <color name="company07">#EC7B00</color>
+    <color name="company08">#D4180F</color>
+    <color name="company09">#689F38</color>
     
     
 </resources>

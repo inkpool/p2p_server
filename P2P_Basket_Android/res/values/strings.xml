@@ -52,8 +52,8 @@
     <string name="select_type">请选择投资类型</string>
     <string name="select_earning">请选择收益率类型</string>
     <string name="select_method">请选择计息方式</string>
-    <string name="select_earning_item01">固定收益率</string>
-    <string name="select_earning_item02">浮动收益率</string>
+    <string name="select_earning_item01">浮动收益率</string>
+    <string name="select_earning_item02">固定收益率</string>
     <string name="select_method_item01">计息方式1</string>
     <string name="select_method_item02">计息方式2</string>
     <string name="select_method_item03">计息方式3</string>
