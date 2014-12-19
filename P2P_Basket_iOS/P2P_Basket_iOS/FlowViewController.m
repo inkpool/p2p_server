@@ -48,7 +48,7 @@
     
     //添加上面的选择菜单
     UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 64, screen_width/3, 36)];
-    [button1 setTitle:@"投资时间    " forState:UIControlStateNormal];
+    [button1 setTitle:@"到期时间    " forState:UIControlStateNormal];
     button1.titleLabel.font = [UIFont systemFontOfSize:14];
     [button1 setTitleColor:[UIColor colorWithRed:89.0/255.0 green:89.0/255.0 blue:89.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [button1 addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];

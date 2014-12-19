@@ -26,18 +26,22 @@
     CGFloat screen_width = size.width;
     CGFloat screen_height = size.height;
     
+    plateformArray = [platformSet allObjects];
+    
     //添加一个tableView
-    tableView = [[UITableView alloc] init];
-    if (44*[platformSet count] < screen_height-64-49) {
-        tableView.frame = CGRectMake(0, 64, screen_width, 44*[platformSet count]);
-    } else {
-        tableView.frame = CGRectMake(0, 64, screen_width, screen_height-64-49);
-    }
-    tableView.backgroundColor=[UIColor clearColor];
-    //tableView.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
-    [self.view addSubview:tableView];
-    tableView.delegate=self;
-    tableView.dataSource=self;
+    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, screen_width, 44*[platformSet count])];
+//    if (44*[platformSet count] < screen_height-64-49) {
+//        tableView.frame = CGRectMake(0, 64, screen_width, 44*[platformSet count]);
+//    } else {
+//        tableView.frame = CGRectMake(0, 64, screen_width, screen_height-64-49);
+//    }
+    myTableView.backgroundColor=[UIColor clearColor];
+    [self setExtraCellLineHidden: myTableView];
+    myTableView.showsVerticalScrollIndicator = NO;
+    myTableView.delegate=self;
+    myTableView.dataSource=self;
+    [self.view addSubview:myTableView];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,24 +60,22 @@
     return [platformSet count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView
-         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *TableSampleIdentifier = @"CellIdentifier";
+    static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:
-                             TableSampleIdentifier];
+                             CellIdentifier];
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc]
                 initWithStyle:UITableViewCellStyleValue1
-                reuseIdentifier:TableSampleIdentifier];
-        plateformArray = [platformSet allObjects];
-        cell.textLabel.text = plateformArray[indexPath.row];
-        cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-icon",plateformArray[indexPath.row]]];
+                reuseIdentifier:CellIdentifier];
         cell.backgroundColor=[UIColor clearColor];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    
+    cell.textLabel.text = plateformArray[indexPath.row];
+    cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-icon",plateformArray[indexPath.row]]];
     
     return cell;
 }
@@ -87,6 +89,7 @@
     NSMutableArray *platformRecords = [[NSMutableArray alloc] init];//对应平台的所有投资记录
     PlatformDetailViewController *platformDetailVC = [[PlatformDetailViewController alloc] init];
     platformDetailVC->platformName = plateformArray[indexPath.row];
+    platformDetailVC->preTableView = tableView;
     for (int i = 0; i < [records count]; i++) {
         if ([[records[i] objectForKey:@"platform"] isEqualToString:plateformArray[indexPath.row]]) {
             [platformRecords addObject:records[i]];
@@ -95,8 +98,15 @@
     platformDetailVC->records = platformRecords;
     UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:platformDetailVC];
     [self presentViewController:navC animated:YES completion:nil];
-    
 }
 
+
+-(void)setExtraCellLineHidden: (UITableView *)tableView
+{//消除 UITableView多余的空白行
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor clearColor];
+    [tableView setTableFooterView:view];
+    
+}
 
 @end

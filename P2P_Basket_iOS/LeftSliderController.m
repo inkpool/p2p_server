@@ -12,6 +12,7 @@
 #import "FeedbackViewController.h"
 #import "LoginAndRegisterViewController.h"
 #import "CloudBackupViewController.h"
+#import "PasswordViewController.h"
 
 @interface LeftSliderController ()
 {
@@ -57,7 +58,6 @@
     tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     tableView.backgroundColor=[UIColor clearColor];
     //tableView.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
-    [self.view addSubview:tableView];
     tableView.delegate=self;
     tableView.dataSource=self;
     [self.view addSubview:tableView];
@@ -190,8 +190,12 @@
             [self presentViewController:navC animated:YES completion:nil];
             break;
         }
-        case 4:
+        case 4:{
+            PasswordViewController *passwordVC = [[PasswordViewController alloc] init];
+            UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:passwordVC];
+            [self presentViewController:navC animated:YES completion:nil];
             break;
+        }
         case 5:
             break;
         default:

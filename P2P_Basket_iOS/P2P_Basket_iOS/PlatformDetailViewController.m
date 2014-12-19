@@ -85,6 +85,7 @@
 
 - (void)backItemPressed
 {
+//    [preTableView setContentOffset:CGPointMake(0,0) animated:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -123,7 +124,7 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc]
-                initWithStyle:UITableViewCellStyleValue1
+                initWithStyle:UITableViewCellStyleDefault
                 reuseIdentifier:TableSampleIdentifier];
         cell.backgroundColor = [UIColor clearColor];
         UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, screen_width/3, 20)];
@@ -138,6 +139,7 @@
         UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(20, 35, screen_width-20, 20)];
         label3.tag = 1003;
         [cell.contentView addSubview:label3];
+        
     }
     
     UILabel *label1 = (UILabel *)[cell.contentView viewWithTag:1001];
