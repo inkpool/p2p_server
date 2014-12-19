@@ -22,10 +22,11 @@
     <string name="new_item_info01">投资平台</string>
     <string name="new_item_info02">投资类型</string>
     <string name="new_item_info03">本金</string>
-    <string name="new_item_info04">年化收益率</string>
-    <string name="new_item_info05">计息方式</string>
-    <string name="new_item_info06">计息时间</string>
-    <string name="new_item_info07">结束时间</string>
+    <string name="new_item_info04">收益率类型</string>
+    <string name="new_item_info05">年化收益率</string>
+    <string name="new_item_info06">计息方式</string>
+    <string name="new_item_info07">计息时间</string>
+    <string name="new_item_info08">结束时间</string>
     
     
     <string name="tab_index">主页</string>
@@ -48,6 +49,14 @@
     <string name="company_name09">其他</string>
     
     <string name="select_platform">请选择投资平台</string>
+    <string name="select_type">请选择投资类型</string>
+    <string name="select_earning">请选择收益率类型</string>
+    <string name="select_method">请选择计息方式</string>
+    <string name="select_earning_item01">固定收益率</string>
+    <string name="select_earning_item02">浮动收益率</string>
+    <string name="select_method_item01">计息方式1</string>
+    <string name="select_method_item02">计息方式2</string>
+    <string name="select_method_item03">计息方式3</string>
     
     <string name="left_menu_01">数据云备份</string>
     <string name="left_menu_02">检查更新</string>
