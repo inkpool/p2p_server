@@ -11,6 +11,7 @@
 @interface PlatformDetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
 @public
+    UITableView *preTableView;
     NSString *platformName;
     NSMutableArray *records;//对应平台的所有投资记录
 }

@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    self.view.backgroundColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:225.0/255.0 alpha:1];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:225.0/255.0 alpha:1];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;//半透明
     //添加标题
     UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 55, 44)];
@@ -61,8 +61,9 @@
     [self.view addSubview:passwordLabel];
     
     //放置textField
-    emailField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth, naviHeight+screen_width/10, screen_width-labelWidth-screen_width/5, labelHeight)];
-//    emailField.backgroundColor = [UIColor redColor];
+    emailField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth, naviHeight+screen_width/10+3, screen_width-labelWidth-screen_width/5, labelHeight-6)];
+    emailField.backgroundColor = [UIColor whiteColor];
+    emailField.borderStyle = UITextBorderStyleRoundedRect;
     emailField.placeholder=@"请输入您的邮箱";
     emailField.tag=101;
     emailField.delegate=self;
@@ -71,7 +72,9 @@
     [self.view addSubview:emailField];
     
     //放置textField
-    passwordField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth, naviHeight+screen_width/10+labelHeight, screen_width-labelWidth-screen_width/5, labelHeight)];
+    passwordField=[[UITextField alloc]initWithFrame:CGRectMake(screen_width/10+labelWidth, naviHeight+screen_width/10+labelHeight+3, screen_width-labelWidth-screen_width/5, labelHeight-6)];
+    passwordField.backgroundColor = [UIColor whiteColor];
+    passwordField.borderStyle = UITextBorderStyleRoundedRect;
     passwordField.placeholder=@"请输入密码";
     passwordField.tag=102;
     passwordField.delegate=self;

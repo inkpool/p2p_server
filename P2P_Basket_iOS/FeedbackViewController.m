@@ -332,7 +332,7 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:_title_
                                                     message:msg
                                                    delegate:nil
-                                          cancelButtonTitle:@"提示"
+                                          cancelButtonTitle:@"确定"
                                           otherButtonTitles:nil];
     [alert show];
 }

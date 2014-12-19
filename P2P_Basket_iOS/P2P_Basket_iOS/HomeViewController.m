@@ -264,6 +264,7 @@
             NSString *label5Text = [NSString stringWithFormat:@"%.2f%%~%.2f%%",[[expireRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[expireRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
             label5.text = label5Text;
         }
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
   
     return cell;

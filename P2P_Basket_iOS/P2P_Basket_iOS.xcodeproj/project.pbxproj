@@ -24,6 +24,7 @@
 		1D5FB5BB1A38281500DB12B7 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5FB5BA1A38281500DB12B7 /* arrow.png */; };
 		1D5FB60C1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5FB60B1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a */; };
 		1D666CFF1A10C843004DC666 /* LeftSliderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D666CFE1A10C843004DC666 /* LeftSliderController.m */; };
+		1D6A48F61A43C3C600A381C6 /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6A48F51A43C3C600A381C6 /* PasswordViewController.m */; };
 		1D6DBD081A3EECE30081F516 /* LoginAndRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD071A3EECE30081F516 /* LoginAndRegisterViewController.m */; };
 		1D6DBD1D1A3EFEF80081F516 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD0B1A3EFEF80081F516 /* AFHTTPRequestOperation.m */; };
 		1D6DBD1E1A3EFEF80081F516 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD0D1A3EFEF80081F516 /* AFHTTPRequestOperationManager.m */; };
@@ -201,6 +202,8 @@
 		1D5FB60B1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		1D666CFD1A10C843004DC666 /* LeftSliderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftSliderController.h; sourceTree = "<group>"; };
 		1D666CFE1A10C843004DC666 /* LeftSliderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftSliderController.m; sourceTree = "<group>"; };
+		1D6A48F41A43C3C600A381C6 /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
+		1D6A48F51A43C3C600A381C6 /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		1D6DBD061A3EECE30081F516 /* LoginAndRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginAndRegisterViewController.h; sourceTree = "<group>"; };
 		1D6DBD071A3EECE30081F516 /* LoginAndRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginAndRegisterViewController.m; sourceTree = "<group>"; };
 		1D6DBD0A1A3EFEF80081F516 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -455,6 +458,8 @@
 				1D84F5361A3BE3BE00413A76 /* AboutUsViewController.m */,
 				1D05728A1A3D801100A1DB63 /* FeedbackViewController.h */,
 				1D05728B1A3D801100A1DB63 /* FeedbackViewController.m */,
+				1D6A48F41A43C3C600A381C6 /* PasswordViewController.h */,
+				1D6A48F51A43C3C600A381C6 /* PasswordViewController.m */,
 			);
 			name = Side;
 			path = ..;
@@ -789,6 +794,7 @@
 				1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */,
 				1D5C9C231A0B5FE0007CFFF9 /* HomeViewController.m in Sources */,
 				E65EB9001A17AA10004F23B7 /* MoreViewController.m in Sources */,
+				1D6A48F61A43C3C600A381C6 /* PasswordViewController.m in Sources */,
 				1DF0BDF11A10550A00E491D6 /* RootViewController.m in Sources */,
 				1D1362951A41BC79006BE057 /* PlatformViewController.m in Sources */,
 				1D989AAE1A10F6560092EED1 /* AnalysisViewController.m in Sources */,
