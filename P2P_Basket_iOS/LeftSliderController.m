@@ -6,6 +6,7 @@
 //  Copyright (c) 2014年 inkJake. All rights reserved.
 //
 
+#import "AFHTTPRequestOperationManager.h"
 #import "LeftSliderController.h"
 #import "CustomCellBackground.h"
 #import "AboutUsViewController.h"
@@ -22,11 +23,25 @@
 }
 @end
 
+static LeftSliderController *sharedLSC;
+
 @implementation LeftSliderController
++ (LeftSliderController *)sharedViewController
+{//单例
+    return sharedLSC;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedLSC = self;
+    });
+    
+    NSLog(@"2:%@",sharedLSC);
+    
+    [self connectedToNetWork];//监测网络连接情况
     //获取屏幕分辨率
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
@@ -170,7 +185,6 @@
     switch (num) {
         case 0:{
             CloudBackupViewController *cloudBackupVC = [[CloudBackupViewController alloc] init];
-            cloudBackupVC->records = records;
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:cloudBackupVC];
             [self presentViewController:navC animated:YES completion:nil];
             break;
@@ -217,6 +231,28 @@
     registerVC->isLogin = NO;
     UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:registerVC];
     [self presentViewController:navC animated:YES  completion:nil];
+}
+
+#pragma mark -
+#pragma mark NetworkConnected
+
+- (void) connectedToNetWork {
+    //检测网络是否可以连接
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                networkConnected = YES;
+                NSLog(@"network:YES");
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+            default:
+                networkConnected = NO;
+                NSLog(@"network:NO");
+                break;
+        }
+    }];
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
 }
 
 

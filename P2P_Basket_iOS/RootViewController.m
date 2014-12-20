@@ -36,13 +36,7 @@
 
 @end
 
-static RootViewController *sharedRC;
 @implementation RootViewController
-
-+ (id)sharedRootController
-{//单例
-    return sharedRC;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -53,11 +47,6 @@ static RootViewController *sharedRC;
     screen_width = size.width;
     
     RContentOffset = screen_width/3*2;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedRC = self;
-    });
     
     ifActivated=0;
     
@@ -137,6 +126,7 @@ static RootViewController *sharedRC;
     //初始化“更多”功能界面所在的ViewController
     LeftSliderController *leftSC = [[LeftSliderController alloc] init];
     leftSC->records = records;
+    NSLog(@"1:%@",leftSC);
     [self addChildViewController:leftSC];
     [_leftSideView addSubview:leftSC.view];
     
@@ -176,7 +166,7 @@ static RootViewController *sharedRC;
 #pragma mark -
 #pragma mark UIViewPassValueDelegate
 - (void)refresh1 {
-    //添加新的投资后刷新主页和流水界面，以及分析界面的分析图，以及分析界面的分析图
+    //添加新的投资后刷新主页和流水界面，分析界面的分析图，以及云备份功能模块获取的用户投资记录
     [self initRecord];
     //NSLog(@"records:%@",records);
     UITabBarController *tbc = [nc.childViewControllers firstObject];
@@ -191,6 +181,9 @@ static RootViewController *sharedRC;
     analysisVC->records = records;
     [analysisVC->piePlot reloadData];
     [analysisVC->barPlot reloadData];
+    
+    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
+    leftSliderC->records = records;
     
     FlowViewController *flowViewController = tbc.viewControllers[3];
     flowViewController->records = records;
@@ -241,7 +234,7 @@ static RootViewController *sharedRC;
 }
 
 - (void)refresh2 {
-    //在流水界面删除投资记录后刷新主页，以及分析界面的分析图
+    //在流水界面删除投资记录后刷新主页，分析界面的分析图，以及云备份功能模块获取的用户投资记录
     [self initRecord];
     UITabBarController *tbc = [nc.childViewControllers firstObject];
     HomeViewController *homeViewController = tbc.viewControllers[0];
@@ -250,6 +243,10 @@ static RootViewController *sharedRC;
     homeViewController->expiringRecord = expiringRecord;
     [homeViewController->tableView reloadData];
     [homeViewController showData];//重新显示统计数据
+    
+    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
+    leftSliderC->records = records;
+    
     AnalysisViewController *analysisVC = tbc.viewControllers[2];
     analysisVC->records = records;
     [analysisVC initArray2];

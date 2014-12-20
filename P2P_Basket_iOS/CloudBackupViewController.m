@@ -8,6 +8,7 @@
 
 #import "CloudBackupViewController.h"
 #import "AFHTTPRequestOperationManager.h"
+#import "LeftSliderController.h"
 
 @interface CloudBackupViewController ()
 {
@@ -79,27 +80,37 @@
 }
 
 - (void)upButtonPressed {
-//    [self connectedToNetWork];
-//    NSLog(@"networkConnected:%d\n",networkConnected);
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
-    for (int i = 0; i < [records count]; i++) {
-        [manager POST:@"http://128.199.226.246/beerich/index.php/sync"
-           parameters:@{@"user_name":@"xuxin@qq.com",@"platform":[records[i] objectForKey:@"platform"],
-                        @"product":[records[i] objectForKey:@"product"],
-                            @"capital":[records[i] objectForKey:@"capital"],
-                            @"minRate":[records[i] objectForKey:@"minRate"],
-                            @"maxRate":[records[i] objectForKey:@"maxRate"],
-                            @"calType":[records[i] objectForKey:@"calType"],
-                            @"startDate":[records[i] objectForKey:@"startDate"],
-                            @"endDate":[records[i] objectForKey:@"endDate"],
-                            @"state":[records[i] objectForKey:@"state"],
-                            @"add_time":[records[i] objectForKey:@"timeStamp"]}
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                  NSLog(@"JSON#######: %@", responseObject);
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  NSLog(@"Error######: %@", error);
-              }];
+    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
+    records = leftSliderC->records;
+    if (leftSliderC->networkConnected) {//网络已连接
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
+        for (int i = 0; i < [records count]; i++) {
+            [manager POST:@"http://128.199.226.246/beerich/index.php/sync"
+               parameters:@{@"user_name":@"xuxin@qq.com",@"platform":[records[i] objectForKey:@"platform"],
+                            @"product":[records[i] objectForKey:@"product"],
+                                @"capital":[records[i] objectForKey:@"capital"],
+                                @"minRate":[records[i] objectForKey:@"minRate"],
+                                @"maxRate":[records[i] objectForKey:@"maxRate"],
+                                @"calType":[records[i] objectForKey:@"calType"],
+                                @"startDate":[records[i] objectForKey:@"startDate"],
+                                @"endDate":[records[i] objectForKey:@"endDate"],
+                                @"state":[records[i] objectForKey:@"state"],
+                                @"add_time":[records[i] objectForKey:@"timeStamp"]}
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      NSLog(@"JSON#######: %@", responseObject);
+                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      NSLog(@"Error######: %@", error);
+                  }];
+        }
+    }//end if (leftSliderC->networkConnected)
+    else {//网络未连接
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"连接错误"
+                                                        message:@"无法连接服务器，请检查您的网络连接是否正常"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [alert show];
     }
 }
 
@@ -107,37 +118,5 @@
     
 }
 
-- (void) connectedToNetWork {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:@"http:www.baidu.com"
-       parameters:@{}
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSLog(@"JSON#######: %@", responseObject);
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              NSLog(@"Error######: %@", error);
-          }];
-    // 开启检测
-    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-    [manager.reachabilityManager  setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        switch (status) {
-            case AFNetworkReachabilityStatusReachableViaWWAN:{
-                networkConnected = YES;
-                break;
-            }
-            case AFNetworkReachabilityStatusReachableViaWiFi:{
-                networkConnected = YES;
-                break;
-            }
-            case AFNetworkReachabilityStatusNotReachable:{
-                networkConnected = NO;
-                break;
-            }
-            default:
-                break;
-        }
-        
-    }];
-
-}
 
 @end

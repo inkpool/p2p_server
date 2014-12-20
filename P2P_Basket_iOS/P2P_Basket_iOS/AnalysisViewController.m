@@ -322,11 +322,11 @@
     
     [myAlert.view addSubview:pickView];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         
     }];
     
-    UIAlertAction *destructiveAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+    UIAlertAction *destructiveAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         UIButton *chooseButton = (UIButton *)[self.view viewWithTag:101];
         index1 = [pickView selectedRowInComponent:0];//（投资额，收益额）
         index3 = [pickView selectedRowInComponent:2];//(饼状图，柱状图)

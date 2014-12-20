@@ -8,11 +8,13 @@
 
 #import "LoginAndRegisterViewController.h"
 #import "AFHTTPRequestOperationManager.h"
+#import "LeftSliderController.h"
 
 @interface LoginAndRegisterViewController ()
 {
     NSString *userEmail;
     NSString *userPassword;
+    BOOL networkConnected;
 }
 
 @end
@@ -21,7 +23,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.view.backgroundColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:225.0/255.0 alpha:1];
     self.view.backgroundColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:225.0/255.0 alpha:1];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;//半透明
     //添加标题
@@ -129,40 +130,56 @@
 }
 
 - (void)buttonPressed {
-    userEmail = emailField.text;
-    if ([self isValidateEmail:userEmail]) {//用户输入的邮箱合法
-        userPassword = passwordField.text;
-        NSLog(@"%@,%@",userEmail,userPassword);
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
-        if (isLogin) {//登录
-            [manager POST:@"http://128.199.226.246/beerich/index.php/login"
-               parameters:@{@"user_name":userEmail,@"password":userPassword}
-                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                      NSLog(@"JSON#######: %@", responseObject);
-                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                      NSLog(@"Error######: %@", error);
-                  }];
+    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
+    if (leftSliderC->networkConnected) {//网络已连接
+        userEmail = emailField.text;
+        if ([self isValidateEmail:userEmail]) {//用户输入的邮箱合法
+            userPassword = passwordField.text;
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            manager.responseSerializer = [AFHTTPResponseSerializer serializer]; //这个决定了下面responseObject返回的类型
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
+            if (isLogin) {//登录
+                [manager POST:@"http://128.199.226.246/beerich/index.php/login"
+                   parameters:@{@"user_name":userEmail,@"password":userPassword}
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          NSLog(@"JSON#######: %@", responseObject);
+                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          NSLog(@"Error######: %@", error);
+                      }];
+            }
+            else {//注册
+                
+                [manager POST:@"http://128.199.226.246/beerich/index.php/login/register"
+                   parameters:@{@"user_name":userEmail,@"password":userPassword}
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          NSLog(@"JSON#######: %@", responseObject);
+                          NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                          NSLog(@"%@",result);
+                          
+                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          NSLog(@"Error######: %@", error);
+                      }];
+                
+            }
         }
-        else {//注册
-            [manager POST:@"http://128.199.226.246/beerich/index.php/login/register"
-               parameters:@{@"user_name":userEmail,@"password":userPassword}
-                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                      NSLog(@"JSON#######: %@", responseObject);
-                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                      NSLog(@"Error######: %@", error);
-                  }];
+        else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"请输入正确格式的邮箱"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles: nil];
+            [alert show];
         }
-    }
-    else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                        message:@"请输入正确格式的邮箱"
+
+    }//end if (leftSliderC->networkConnected)
+    else {//网络未连接
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"连接错误"
+                                                        message:@"无法连接服务器，请检查您的网络连接是否正常"
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles: nil];
         [alert show];
     }
-    
 }
 
 - (BOOL)  isValidateEmail: (NSString *)candidate {
@@ -181,5 +198,8 @@
     [newtxt replaceCharactersInRange:range withString:string];
     return ([newtxt length] <= MAX_CHARS);
 }
+
+
+
 
 @end

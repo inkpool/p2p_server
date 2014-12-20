@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "UIViewPassValueDelegate.h"
 
-@interface FlowViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface FlowViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
 @public
     UITableView *myTableView;

@@ -12,5 +12,9 @@
 {
 @public
     NSMutableArray *records;//用户所有的投资记录
+    BOOL networkConnected;
 }
+
++ (id)sharedViewController;//单例，RootViewController只初始化一次
+
 @end

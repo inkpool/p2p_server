@@ -18,6 +18,8 @@
     CGFloat screen_width;//屏幕宽
     CGFloat screen_height;//屏幕高
     NSDictionary *platformColor;
+    int flag;
+    NSIndexPath *index;
 }
 
 - (void)viewDidLoad {
@@ -342,11 +344,17 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        RecordDB *myRecordDB = [[RecordDB alloc]init];
-        [myRecordDB deleteRecord:[[records[indexPath.row] objectForKey:@"timeStamp"] intValue]];
-        [records removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationTop];
-        [delegate refresh2];
+        flag = indexPath.row;
+        index = indexPath;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"确定要删除所选的投资记录吗？"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"取消"
+                                              otherButtonTitles:@"确定",nil];
+        alert.delegate = self;
+        [alert show];
+        
+        
         
     }
 }
@@ -355,5 +363,16 @@
     return @"删除";
 }
 
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        RecordDB *myRecordDB = [[RecordDB alloc]init];
+        [myRecordDB deleteRecord:[[records[flag] objectForKey:@"timeStamp"] intValue]];
+        [records removeObjectAtIndex:flag];
+        [myTableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationTop];
+        [delegate refresh2];
+    }
+}
 
 @end

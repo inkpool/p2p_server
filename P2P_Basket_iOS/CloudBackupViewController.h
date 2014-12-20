@@ -10,7 +10,6 @@
 
 @interface CloudBackupViewController : UIViewController
 {
-@public
     NSMutableArray *records;//用户所有的投资记录
 }
 @end
