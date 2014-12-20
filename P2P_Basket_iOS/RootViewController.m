@@ -154,6 +154,7 @@ static RootViewController *sharedRC;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
     FlowViewController *flowViewController = tbc.viewControllers[3];
+    flowViewController->delegate = self;
     flowViewController->records = records;
     AnalysisViewController *analysisViewController = tbc.viewControllers[2];
     analysisViewController->records = records;
@@ -174,8 +175,8 @@ static RootViewController *sharedRC;
 
 #pragma mark -
 #pragma mark UIViewPassValueDelegate
-- (void)refreshTableView {
-    //添加新的投资后刷新主页和流水界面
+- (void)refresh1 {
+    //添加新的投资后刷新主页和流水界面，以及分析界面的分析图，以及分析界面的分析图
     [self initRecord];
     //NSLog(@"records:%@",records);
     UITabBarController *tbc = [nc.childViewControllers firstObject];
@@ -184,42 +185,40 @@ static RootViewController *sharedRC;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
     [homeViewController->tableView reloadData];
+    [homeViewController showData];//重新显示统计数据
     
-    UILabel *label1 = (UILabel *)[homeViewController.view viewWithTag:111];
-    label1.text = [NSString stringWithFormat:@"%ld",[homeViewController->expiringRecord count]];
-    UILabel *label2 = (UILabel *)[homeViewController.view viewWithTag:112];
-    label2.text = [NSString stringWithFormat:@"%ld",[homeViewController->expireRecord count]];
+    AnalysisViewController *analysisVC = tbc.viewControllers[2];
+    analysisVC->records = records;
+    [analysisVC->piePlot reloadData];
+    [analysisVC->barPlot reloadData];
     
     FlowViewController *flowViewController = tbc.viewControllers[3];
     flowViewController->records = records;
-    
-    if (flowViewController->button_flag == 0) {
-        flowViewController->sortedRecord = flowViewController->records;
-    }
-    else if (flowViewController->button_flag == 101) {//按投资时间降序
+    flowViewController->delegate = self;
+    if (flowViewController->button_flag == 101) {//按投资时间降序
         if ([[flowViewController->triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",flowViewController->button_flag*10]] isEqualToString:@"1"]) {
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:NO];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
-            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            flowViewController->records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
             //NSLog(@"sortedRecord:%@",sortedRecord);
         }
         else {//按投资时间升序
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:YES];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
-            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            flowViewController->records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
         }
     }
     else if (flowViewController->button_flag == 102) {//按投资金额降序
         if ([[flowViewController->triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",flowViewController->button_flag*10]] isEqualToString:@"1"]) {
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"capital" ascending:NO];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
-            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            flowViewController->records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
             
         }
         else {//按投资金额升序
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"capital" ascending:YES];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
-            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            flowViewController->records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
         }
     }
     else {//按年化收益率降序
@@ -227,19 +226,51 @@ static RootViewController *sharedRC;
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"maxRate" ascending:NO];
             NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"minRate" ascending:NO];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,secondDescriptor,nil];
-            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            flowViewController->records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
             
         }
         else {//按年化收益率升序
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"maxRate" ascending:YES];
             NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"minRate" ascending:YES];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,secondDescriptor,nil];
-            flowViewController->sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            flowViewController->records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
         }
     }
     
-    [flowViewController->tableView reloadData];
+    [flowViewController->myTableView reloadData];
 }
+
+- (void)refresh2 {
+    //在流水界面删除投资记录后刷新主页，以及分析界面的分析图
+    [self initRecord];
+    UITabBarController *tbc = [nc.childViewControllers firstObject];
+    HomeViewController *homeViewController = tbc.viewControllers[0];
+    homeViewController->records = records;
+    homeViewController->expireRecord = expireRecord;
+    homeViewController->expiringRecord = expiringRecord;
+    [homeViewController->tableView reloadData];
+    [homeViewController showData];//重新显示统计数据
+    AnalysisViewController *analysisVC = tbc.viewControllers[2];
+    analysisVC->records = records;
+    [analysisVC initArray2];
+    if (analysisVC->index3!=0) {//显示柱状图
+        analysisVC->xAxis.axisConstraints = nil;//显示x轴label
+        NSMutableArray *labelArray = [NSMutableArray arrayWithCapacity:[analysisVC->platformName count]];
+        float labelLocation = 0.5;
+        for(NSString *label in analysisVC->platformName){
+            CPTAxisLabel *newLabel = [[CPTAxisLabel alloc] initWithText:label textStyle:analysisVC->xAxis.labelTextStyle];
+            newLabel.tickLocation = [[NSNumber numberWithFloat:labelLocation] decimalValue];
+            newLabel.offset = analysisVC->xAxis.labelOffset+analysisVC->xAxis.majorTickLength;
+            newLabel.rotation = M_PI/6;
+            [labelArray addObject:newLabel];
+            labelLocation += 1;
+        }
+        analysisVC->xAxis.axisLabels=[NSSet setWithArray:labelArray];
+    }
+    [analysisVC->piePlot reloadData];
+    [analysisVC->barPlot reloadData];
+}
+
 
 #pragma mark -
 #pragma mark Actions

@@ -156,6 +156,41 @@ fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)sta
     return records;
 }
 
+//删除数据
+- (BOOL) deleteRecord:(long int)timeStamp{
+    sqlite3 *sqlite = nil;
+    sqlite3_stmt *stmt = nil;
+    
+    NSString *filePath = [NSHomeDirectory() stringByAppendingFormat:@"/Library/p2p_basket.sqlite"];
+    
+    //打开数据库
+    int result = sqlite3_open([filePath UTF8String],&sqlite);
+    if (result != SQLITE_OK){
+        NSLog(@"SQLite DB open error.");
+        return NO;
+    }
+
+    //创建表的SQL语句
+    NSString *sql = @"DELETE FROM recordT where timeStamp = ?";
+    //编译SQL语句
+    sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
+    
+    sqlite3_bind_int(stmt, 1, timeStamp);
+    
+    //删除数据
+    result = sqlite3_step(stmt);
+    
+    if( result == SQLITE_ERROR){
+        NSLog(@"删除失败");
+        sqlite3_close(sqlite);
+        return NO;
+    }
+    //关闭数据库句柄
+    sqlite3_finalize(stmt);
+    //关闭数据库
+    sqlite3_close(sqlite);
+    return YES;
+}
 
 @end
 
