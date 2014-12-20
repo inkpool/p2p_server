@@ -7,6 +7,7 @@
 //
 
 #import "FlowViewController.h"
+#import "RecordDB.h"
 
 @interface FlowViewController ()
 
@@ -17,6 +18,8 @@
     CGFloat screen_width;//屏幕宽
     CGFloat screen_height;//屏幕高
     NSDictionary *platformColor;
+    int flag;
+    NSIndexPath *index;
 }
 
 - (void)viewDidLoad {
@@ -33,7 +36,6 @@
     [triangle_flag setValue:@"1" forKey:@"1010"];//初始时三角超下
     [triangle_flag setValue:@"1" forKey:@"1020"];
     [triangle_flag setValue:@"1" forKey:@"1030"];
-    sortedRecord = records;
     
     platformColor = [NSDictionary dictionaryWithObjectsAndKeys:
                      [UIColor colorWithRed:205.0/255.0 green:0.0/255.0 blue:17.0/255.0 alpha:1],@"爱投资",
@@ -105,12 +107,12 @@
     backgroundView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:248.0/255.0 blue:247.0/255.0 alpha:1.0];
     [self.view addSubview:backgroundView];
     
-    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 102, screen_width-15, screen_height-102-49)];
-    tableView.dataSource = self;
-    tableView.delegate = self;
-    tableView.showsVerticalScrollIndicator = NO;
-    tableView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:248.0/255.0 blue:247.0/255.0 alpha:1.0];
-    [self.view addSubview:tableView];
+    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 102, screen_width-15, screen_height-102-49)];
+    myTableView.dataSource = self;
+    myTableView.delegate = self;
+    myTableView.showsVerticalScrollIndicator = NO;
+    myTableView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:248.0/255.0 blue:247.0/255.0 alpha:1.0];
+    [self.view addSubview:myTableView];
     
 }
 
@@ -134,7 +136,6 @@
             UIImageView *pre_triangle = (UIImageView *)[self.view viewWithTag:button_flag*10];
             pre_triangle.image = [UIImage imageNamed:@"triangle_gray_1"];//还原成朝下的灰色三角
             
-
         }
         
         //现在被点击的按钮变为蓝色
@@ -180,26 +181,26 @@
         if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button.tag*10]] isEqualToString:@"1"]) {
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:NO];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
-            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
             //NSLog(@"sortedRecord:%@",sortedRecord);
         }
         else {//按投资时间升序
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:YES];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
-            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
         }
     }
     else if (button.tag == 102) {//按投资金额降序
         if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button.tag*10]] isEqualToString:@"1"]) {
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"capital" ascending:NO];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
-            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
             
         }
         else {//按投资金额升序
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"capital" ascending:YES];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
-            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
         }
     }
     else {//按年化收益率降序
@@ -207,18 +208,18 @@
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"maxRate" ascending:NO];
             NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"minRate" ascending:NO];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,secondDescriptor,nil];
-            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
             
         }
         else {//按年化收益率升序
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"maxRate" ascending:YES];
             NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"minRate" ascending:YES];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,secondDescriptor,nil];
-            sortedRecord = [records sortedArrayUsingDescriptors:sortDescriptors];
+            records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
         }
     }
     
-    [tableView reloadData];
+    [myTableView reloadData];
 }
 
 
@@ -295,27 +296,27 @@
     UILabel *label2 = (UILabel *)[cell.contentView viewWithTag:1003];
     UILabel *label4 = (UILabel *)[cell.contentView viewWithTag:1004];
     UILabel *label5 = (UILabel *)[cell.contentView viewWithTag:1005];
-    NSString *imageName = [NSString stringWithFormat:@"%@-icon",[sortedRecord[indexPath.row] objectForKey:@"platform"]];
+    NSString *imageName = [NSString stringWithFormat:@"%@-icon",[records[indexPath.row] objectForKey:@"platform"]];
     [imageView setImage:[UIImage imageNamed:imageName]];
 //    NSString *label7Text = [NSString stringWithFormat:@"%@",[sortedRecord[indexPath.row] objectForKey:@"startDate"]];
 //    label7.text = label7Text;
-    NSString *label1Text = [NSString stringWithFormat:@"%@",[sortedRecord[indexPath.row] objectForKey:@"endDate"]];
+    NSString *label1Text = [NSString stringWithFormat:@"%@",[records[indexPath.row] objectForKey:@"endDate"]];
     label1.text = label1Text;
-    NSString *label2Text = [NSString stringWithFormat:@"%@-%@",[sortedRecord[indexPath.row] objectForKey:@"platform"],[sortedRecord[indexPath.row] objectForKey:@"product"]];
+    NSString *label2Text = [NSString stringWithFormat:@"%@-%@",[records[indexPath.row] objectForKey:@"platform"],[records[indexPath.row] objectForKey:@"product"]];
     label2.text = label2Text;
-    label2.textColor = [platformColor objectForKey:[sortedRecord[indexPath.row] objectForKey:@"platform"]];
-    NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[sortedRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
+    label2.textColor = [platformColor objectForKey:[records[indexPath.row] objectForKey:@"platform"]];
+    NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[records[indexPath.row] objectForKey:@"capital"] floatValue]];
     label4.text = label4Text;
-    if ([[sortedRecord[indexPath.row] objectForKey:@"minRate"] floatValue] == 0 ) {
-        NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[sortedRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
+    if ([[records[indexPath.row] objectForKey:@"minRate"] floatValue] == 0 ) {
+        NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[records[indexPath.row] objectForKey:@"maxRate"] floatValue]];
         label5.text = label5Text;
     }
-    else if ([[sortedRecord[indexPath.row] objectForKey:@"maxRate"] floatValue] == 0) {
-        NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[sortedRecord[indexPath.row] objectForKey:@"minRate"] floatValue]];
+    else if ([[records[indexPath.row] objectForKey:@"maxRate"] floatValue] == 0) {
+        NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[records[indexPath.row] objectForKey:@"minRate"] floatValue]];
         label5.text = label5Text;
     }
     else {
-        NSString *label5Text = [NSString stringWithFormat:@"%.2f%%~%.2f%%",[[sortedRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[sortedRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
+        NSString *label5Text = [NSString stringWithFormat:@"%.2f%%~%.2f%%",[[records[indexPath.row] objectForKey:@"minRate"] floatValue],[[records[indexPath.row] objectForKey:@"maxRate"] floatValue]];
         label5.text = label5Text;
     }
     
@@ -327,5 +328,51 @@
     return 65;
 }//返回cell的高度
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return TRUE;
+}
+
+//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return YES;
+//}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        flag = indexPath.row;
+        index = indexPath;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"确定要删除所选的投资记录吗？"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"取消"
+                                              otherButtonTitles:@"确定",nil];
+        alert.delegate = self;
+        [alert show];
+        
+        
+        
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return @"删除";
+}
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        RecordDB *myRecordDB = [[RecordDB alloc]init];
+        [myRecordDB deleteRecord:[[records[flag] objectForKey:@"timeStamp"] intValue]];
+        [records removeObjectAtIndex:flag];
+        [myTableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationTop];
+        [delegate refresh2];
+    }
+}
 
 @end

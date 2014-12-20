@@ -24,4 +24,6 @@
     NSMutableArray *expiringRecord;//即将到期的投资记录
 }
 
+- (void)showData;
+
 @end

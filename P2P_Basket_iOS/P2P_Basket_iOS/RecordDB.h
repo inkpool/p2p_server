@@ -15,5 +15,6 @@
 -(NSInteger)insertRecord:(NSString*)platform secondPara:(NSString*)product thirdPara:(float)capital forthPara:(float)minRate
                fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate;
 - (NSMutableArray *)getAllRecord;
+- (BOOL) deleteRecord:(long int)timeStamp;
 @end
 

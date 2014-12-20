@@ -19,7 +19,6 @@
     NSArray *pickerArray2;
     NSArray *pickerArray3;
     NSArray *buttonTitleArray;
-    NSArray *platformName;
     NSInteger flag1;
     NSInteger flag2;
     NSMutableArray *colorArray;
@@ -27,11 +26,9 @@
     float maxCapital;
     NSInteger index1;
     NSInteger index2;
-    NSInteger index3;
     UIPanGestureRecognizer *_panGestureRec;
     UIView *myContentView;
     float RContentOffset;
-    CPTXYAxis *xAxis;
 }
 @end
 
@@ -118,21 +115,21 @@
     
     //*************************************饼状图*************************************************
     //创建饼图对象
-    self.piePlot = [[CPTPieChart alloc]initWithFrame:self.hostView.frame];
+    piePlot = [[CPTPieChart alloc]initWithFrame:self.hostView.frame];
     //设置数据源
-    self.piePlot.dataSource =self;
+    piePlot.dataSource =self;
     //设置饼图半径
-    self.piePlot.pieRadius = screen_width/3.8;
+    piePlot.pieRadius = screen_width/3.8;
     //设置饼图的空心半径
-    self.piePlot.pieInnerRadius = screen_width/8;
+    piePlot.pieInnerRadius = screen_width/8;
     //设置饼图表示符
-    self.piePlot.identifier =@"pie chart";
+    piePlot.identifier =@"pie chart";
     //饼图开始绘制的位置
-    self.piePlot.startAngle = M_PI_4;
+    piePlot.startAngle = M_PI_4;
     //饼图绘制的方向（顺时针/逆时针）
-    self.piePlot.sliceDirection = CPTPieDirectionCounterClockwise;
+    piePlot.sliceDirection = CPTPieDirectionCounterClockwise;
     //饼图的重心
-    self.piePlot.centerAnchor =CGPointMake(0.5,0.5);
+    piePlot.centerAnchor =CGPointMake(0.5,0.5);
 //    //设置饼图的阴影
 //    self.piePlot.shadowColor = [UIColor blackColor].CGColor;
 //    self.piePlot.shadowOffset = CGSizeMake(0.5, 0.5);
@@ -146,13 +143,13 @@
 //    self.piePlot.overlayFill = [CPTFill fillWithGradient:overlayGradient];
     
     //设置文字顺着图形的方向
-    self.piePlot.labelRotationRelativeToRadius = YES;//文字是否顺着图形的方向
+    piePlot.labelRotationRelativeToRadius = YES;//文字是否顺着图形的方向
     //饼图的线条风格
     //self.piePlot.borderLineStyle = [CPTLineStyle lineStyle];
     //设置代理
-    self.piePlot.delegate =self;
+    piePlot.delegate =self;
     //将饼图加到画布上
-    [self.graph addPlot:self.piePlot];
+    [self.graph addPlot:piePlot];
 
     //显示比例
     UILabel *proportionLable = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-30, 60+screen_width/2-10, 60, 20)];
@@ -164,7 +161,7 @@
 
     //****************************柱状图**************************************************
     // set up the plots
-    self.barPlot=[CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:arc4random()%255/255.0  green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1] horizontalBars:NO];
+    barPlot=[CPTBarPlot tubularBarPlotWithColor:[CPTColor colorWithComponentRed:arc4random()%255/255.0  green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1] horizontalBars:NO];
     // set up line style
     CPTMutableLineStyle *barLineStyle=[[CPTMutableLineStyle alloc] init];
     barLineStyle.lineColor=[CPTColor blackColor];
@@ -180,12 +177,12 @@
     self.plotSpace.allowsUserInteraction = NO;
     
     // add plots to graph
-    self.barPlot.dataSource=self;
-    self.barPlot.delegate=self;  // 如果不需要柱状图的选择，这条语句是没必要的
+    barPlot.dataSource=self;
+    barPlot.delegate=self;  // 如果不需要柱状图的选择，这条语句是没必要的
 //    self.barPlot.baseValue=CPTDecimalFromInt(0); // 设定基值，大于该值的从此点向上画，小于该值的反向绘制，即向下画
-    self.barPlot.barWidth=CPTDecimalFromDouble(0.5); // 设定柱图的宽度(0.0~1.0)
-    self.barPlot.barOffset=CPTDecimalFromDouble(0.5); // 柱图每个柱子开始绘制的偏移位置，我们让它绘制在刻度线中间，所以不偏移
-    self.barPlot.lineStyle=barLineStyle;
+    barPlot.barWidth=CPTDecimalFromDouble(0.5); // 设定柱图的宽度(0.0~1.0)
+    barPlot.barOffset=CPTDecimalFromDouble(0.5); // 柱图每个柱子开始绘制的偏移位置，我们让它绘制在刻度线中间，所以不偏移
+    barPlot.lineStyle=barLineStyle;
     
     // 坐标系
     CPTXYAxisSet *axisSet=(CPTXYAxisSet *)self.graph.axisSet;
@@ -227,8 +224,8 @@
         labelLocation += 1;
     }
     xAxis.axisLabels=[NSSet setWithArray:labelArray];
-    [self.graph addPlot:self.barPlot];
-    self.barPlot.hidden = YES;//初始显示饼状图，隐藏柱状图
+    [self.graph addPlot:barPlot];
+    barPlot.hidden = YES;//初始显示饼状图，隐藏柱状图
 }
 
 - (void)didReceiveMemoryWarning {
@@ -325,11 +322,11 @@
     
     [myAlert.view addSubview:pickView];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         
     }];
     
-    UIAlertAction *destructiveAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+    UIAlertAction *destructiveAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         UIButton *chooseButton = (UIButton *)[self.view viewWithTag:101];
         index1 = [pickView selectedRowInComponent:0];//（投资额，收益额）
         index3 = [pickView selectedRowInComponent:2];//(饼状图，柱状图)
@@ -337,20 +334,20 @@
         [chooseButton setTitle:[buttonTitleArray objectAtIndex:index1*8+index3*4+index2] forState:UIControlStateNormal];
         if (index3 == 0) {//饼状图
             UILabel *proportionLable = (UILabel *)[self.view viewWithTag:102];
-            self.piePlot.hidden = NO;
+            piePlot.hidden = NO;
             proportionLable.hidden = NO;
-            self.barPlot.hidden = YES;
+            barPlot.hidden = YES;
             self.graph.axisSet.hidden = YES;
             self.plotSpace.allowsUserInteraction = NO;
             xAxis.axisConstraints=[CPTConstraints constraintWithLowerOffset:-0.0];//不显示x轴的label
             [self initArray2];
-            [self.piePlot reloadData];
+            [piePlot reloadData];
         }
         else {//柱状图
             UILabel *proportionLable = (UILabel *)[self.view viewWithTag:102];
             proportionLable.hidden = YES;
-            self.piePlot.hidden = YES;
-            self.barPlot.hidden = NO;
+            piePlot.hidden = YES;
+            barPlot.hidden = NO;
             self.graph.axisSet.hidden = NO;
             self.plotSpace.allowsUserInteraction = YES;
             xAxis.axisConstraints = nil;//显示x轴label
@@ -367,7 +364,7 @@
                 labelLocation += 1;
             }
             xAxis.axisLabels=[NSSet setWithArray:labelArray];
-            [self.barPlot reloadData];
+            [barPlot reloadData];
         }
         
     }];

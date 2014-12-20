@@ -14,7 +14,8 @@
     CGFloat screen_width;//屏幕宽
     CGFloat screen_height;//屏幕高
     NSDictionary *platformColor;
-    
+    UILabel *left_label1;
+    UILabel *right_label1;
 }
 
 @end
@@ -23,7 +24,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self showData];
     
     //获取屏幕分辨率
     CGRect rect = [[UIScreen mainScreen] bounds];
@@ -56,9 +56,8 @@
     [left_view setUserInteractionEnabled:NO];//防止阻碍left_bt响应用户点击
     [left_bt addSubview:left_view];
     
-    UILabel *left_label1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, screen_width/7-10, 16)];
+    left_label1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, screen_width/7-10, 16)];
     left_label1.tag = 111;
-    left_label1.text = [NSString stringWithFormat:@"%ld",[expiringRecord count]];
     left_label1.textAlignment = NSTextAlignmentCenter;
     left_label1.textColor = [UIColor whiteColor];
     [left_view addSubview:left_label1];
@@ -79,9 +78,8 @@
     [right_view setUserInteractionEnabled:NO];//防止阻碍left_bt响应用户点击
     [right_bt addSubview:right_view];
     
-    UILabel *right_label1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, screen_width/7-10, 16)];
+    right_label1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 2, screen_width/7-10, 16)];
     right_label1.tag = 112;
-    right_label1.text = [NSString stringWithFormat:@"%ld",[expireRecord count]];
     right_label1.textAlignment = NSTextAlignmentCenter;
     right_label1.textColor = [UIColor whiteColor];
     [right_view addSubview:right_label1];
@@ -106,6 +104,7 @@
     tableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:tableView];
     
+    [self showData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -125,6 +124,8 @@
         totalCapital += [[records[i] objectForKey:@"capital"] floatValue];
     }
     totalCapitalLable.text = [NSString stringWithFormat:@"%.2f",totalCapital];
+    left_label1.text = [NSString stringWithFormat:@"%ld",[expiringRecord count]];
+    right_label1.text = [NSString stringWithFormat:@"%ld",[expireRecord count]];
 }
 
 #pragma mark - ButtonPressedAction

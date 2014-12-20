@@ -15,6 +15,4 @@
     NSMutableArray *records;//用户所有的投资记录
 }
 
-+ (id)sharedRootController;//单例，RootViewController只初始化一次
-
 @end
