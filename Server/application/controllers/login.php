@@ -15,11 +15,11 @@ class Login extends CI_Controller {
 	{
 		$user_name=$this->input->post('user_name');
 		$password=$this->input->post('password');
-		$this->db->select('password')->from('my_users')->where('user_name',$user_name);
-		$num=$this->db->count_all_results();
+		$query=$this->db->select('*')->from('my_users')->where('user_name',$user_name);
+		$num=$query->count_all_results();
 		if($num)
 		{
-			$row=$this->db->get()->row();
+			$row=$this->db->select('password')->from('my_users')->where('user_name',$user_name)->get()->row();
 			if(strcmp($password, $row->password))
 			{
 				$this->output(2, 'Password wrong!');
@@ -39,9 +39,9 @@ class Login extends CI_Controller {
 	{
 		$user_name=$this->input->post('user_name');
 		$password=$this->input->post('password');
-		$this->db->select('password')->from('my_users')->where('user_name',$user_name);
-		$num=$this->db->count_all_results();
-		if($num)
+		$query=$this->db->select('*')->from('my_users')->where('user_name',$user_name);
+		$num=$query->count_all_results();
+		if(intval($num))
 		{
 			$this->output(3, 'Username exists.');
 		}
