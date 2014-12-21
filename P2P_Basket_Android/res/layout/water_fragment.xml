@@ -25,7 +25,8 @@
                 android:layout_centerInParent="true"
                 >
                 
-                <TextView 
+                <TextView
+                    android:id="@+id/invest_time_text" 
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/water_list_sort_01"
@@ -34,6 +35,7 @@
                     />
                 
                 <ImageView 
+                    android:id="@+id/invest_time_icon" 
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
@@ -64,6 +66,7 @@
                 >
                 
                 <TextView 
+                    android:id="@+id/invest_money_text" 
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/water_list_sort_02"
@@ -72,6 +75,7 @@
                     />
                 
                 <ImageView 
+                    android:id="@+id/invest_money_icon" 
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
@@ -102,6 +106,7 @@
                 >
                 
                 <TextView 
+                    android:id="@+id/invest_profit_text" 
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/water_list_sort_03"
@@ -110,6 +115,7 @@
                     />
                 
                 <ImageView 
+                    android:id="@+id/invest_profit_icon" 
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"

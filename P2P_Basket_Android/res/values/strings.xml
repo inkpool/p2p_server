@@ -14,7 +14,7 @@
     <string name="list_time">到期</string>
     <string name="list_money">￥</string>
     
-    <string name="water_list_sort_01">投资时间</string>
+    <string name="water_list_sort_01">到期时间</string>
     <string name="water_list_sort_02">投资金额</string>
     <string name="water_list_sort_03">年化收益率</string>
     
@@ -54,9 +54,9 @@
     <string name="select_method">请选择计息方式</string>
     <string name="select_earning_item01">浮动收益率</string>
     <string name="select_earning_item02">固定收益率</string>
-    <string name="select_method_item01">计息方式1</string>
-    <string name="select_method_item02">计息方式2</string>
-    <string name="select_method_item03">计息方式3</string>
+    <string name="select_method_item01">到期还本息</string>
+    <string name="select_method_item02">按月还本息</string>
+    <string name="select_method_item03">按月只还息</string>
     
     <string name="left_menu_01">数据云备份</string>
     <string name="left_menu_02">检查更新</string>

@@ -195,8 +195,8 @@
                 android:background="@color/tab_bg"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical|center_horizontal"
                 >
@@ -209,6 +209,7 @@
                     android:textColor="@color/white"
                     android:background="@drawable/red"
                     android:gravity="center_horizontal|center_vertical"
+                    android:layout_marginRight="5dp"
                     />
                 <TextView 
                     android:id="@+id/tab_button01_title"
@@ -231,8 +232,8 @@
                 android:background="@color/white"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical|center_horizontal"
                 >
@@ -245,6 +246,7 @@
                     android:textColor="@color/white"
                     android:background="@drawable/yellow"
                     android:gravity="center_horizontal|center_vertical"
+                    android:layout_marginRight="5dp"
                     />
                 <TextView 
                     android:id="@+id/tab_button02_title"
