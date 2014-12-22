@@ -46,7 +46,7 @@
 }
 
 - (NSInteger)insertRecord:(NSString*)platform secondPara:(NSString*)product thirdPara:(float)capital forthPara:(float)minRate
-fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate
+fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate
 {
     //检查有没有将数据库复制到沙盒library
     [self copyDatabaseIfNeeded];
@@ -69,8 +69,9 @@ fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)sta
     
     NSInteger state = 0;
     long int timeStamp = [[NSDate date] timeIntervalSince1970];
+    int isDeleted = 0;
     //组合而成的sql语句，占位符坑爹啊！
-    NSString *sql=[[NSString alloc]initWithFormat:@"INSERT INTO recordT VALUES(NULL,\"%@\",\"%@\",%f,%f,%f,%d,\"%@\",\"%@\",%ld,%d)",platform,product,capital,minRate,maxRate,calType,startDate,endDate,timeStamp,state];
+    NSString *sql=[[NSString alloc]initWithFormat:@"INSERT INTO recordT VALUES(NULL,\"%@\",\"%@\",%f,%f,%f,\"%@\",\"%@\",\"%@\",%ld,%d,%d)",platform,product,capital,minRate,maxRate,calType,startDate,endDate,timeStamp,state,isDeleted];
     //编译SQL语句
     result = sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
     if( result != SQLITE_OK){
@@ -93,7 +94,7 @@ fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)sta
 }
 
 //查询数据
-- (NSMutableArray *)getAllRecord {
+- (NSMutableArray *)getAllRecord:(BOOL) flag {
     sqlite3 *sqlite = nil;
     sqlite3_stmt *stmt = nil;
     NSMutableArray *records = [[NSMutableArray alloc] init];
@@ -107,8 +108,13 @@ fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)sta
         return NULL;
     }
     
+    NSString *sql;
     //创建表的SQL语句
-    NSString *sql = @"SELECT * FROM recordT";
+    if (flag) {//读取所有的投资记录
+        sql = @"SELECT * FROM recordT";
+    } else {//读取未被删除的投资记录
+        sql = @"SELECT * FROM recordT WHERE isDeleted = 0";
+    }
     //编译SQL语句
     sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
     
@@ -122,25 +128,27 @@ fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)sta
         float capital = sqlite3_column_double(stmt, 3);
         float minRate = sqlite3_column_double(stmt, 4);
         float maxRate = sqlite3_column_double(stmt, 5);
-        int calType = sqlite3_column_int(stmt, 6);
+        char *calType = (char *)sqlite3_column_text(stmt, 6);
         char *startDate = (char *)sqlite3_column_text(stmt, 7);
         char *endDate = (char *)sqlite3_column_text(stmt, 8);
         long int timeStamp = sqlite3_column_int(stmt, 9);
         int state = sqlite3_column_int(stmt, 10);
+        int isDeleted = sqlite3_column_int(stmt, 11);
         
         NSString *platformString = [NSString stringWithCString:platform encoding:NSUTF8StringEncoding];
         NSString *productString = [NSString stringWithCString:product encoding:NSUTF8StringEncoding];
         NSNumber *capitalNumber = [[NSNumber alloc] initWithFloat:capital];
         NSNumber *minRateNumber = [[NSNumber alloc] initWithFloat:minRate];
         NSNumber *maxRateNumber = [[NSNumber alloc] initWithFloat:maxRate];
-        NSNumber *calTypeNumber = [[NSNumber alloc] initWithInt:calType];
+        NSString *calTypeString = [NSString stringWithCString:calType encoding:NSUTF8StringEncoding];
         NSString *startDateString = [NSString stringWithCString:startDate encoding:NSUTF8StringEncoding];
         NSString *endDateString = [NSString stringWithCString:endDate encoding:NSUTF8StringEncoding];
         NSNumber *timeStampNumber = [[NSNumber alloc] initWithInt:timeStamp];
         NSNumber *stateNumber = [[NSNumber alloc] initWithInt:state];
+        NSNumber *isDeletedNumber = [[NSNumber alloc] initWithInt:isDeleted];
         
         //NSLog(@"平台：%@\n产品：%@\n金额：%@\n最小利率：%@\n最大利率：%@\n类型：%@\n开始时间：%@\n结束时间：%@\n\n\n",platformString,productString,capitalNumber,minRateNumber,maxRateNumber,calTypeNumber,startDateString,endDateString);
-        NSDictionary *investment = [NSDictionary dictionaryWithObjectsAndKeys:platformString,@"platform",productString,@"product",capitalNumber,@"capital",minRateNumber,@"minRate",maxRateNumber,@"maxRate",calTypeNumber,@"calType",startDateString,@"startDate",endDateString,@"endDate",timeStampNumber,@"timeStamp",stateNumber,@"state",nil];
+        NSDictionary *investment = [NSDictionary dictionaryWithObjectsAndKeys:platformString,@"platform",productString,@"product",capitalNumber,@"capital",minRateNumber,@"minRate",maxRateNumber,@"maxRate",calTypeString,@"calType",startDateString,@"startDate",endDateString,@"endDate",timeStampNumber,@"timeStamp",stateNumber,@"state",isDeletedNumber,@"isDeleted",nil];
         [records addObject:investment];
         
         result = sqlite3_step(stmt);
@@ -156,8 +164,8 @@ fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)sta
     return records;
 }
 
-//删除数据
-- (BOOL) deleteRecord:(long int)timeStamp{
+//标记投资为已删除
+- (BOOL) updateRecord:(long int)timeStamp{
     sqlite3 *sqlite = nil;
     sqlite3_stmt *stmt = nil;
     
@@ -171,7 +179,7 @@ fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)sta
     }
 
     //创建表的SQL语句
-    NSString *sql = @"DELETE FROM recordT where timeStamp = ?";
+    NSString *sql = @"UPDATE recordT set isDeleted = 1 where timeStamp = ?";
     //编译SQL语句
     sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
     

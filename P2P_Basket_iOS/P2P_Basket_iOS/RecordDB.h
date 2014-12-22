@@ -13,8 +13,8 @@
 -(NSString *)getDataBasePath;
 -(void)copyDatabaseIfNeeded;
 -(NSInteger)insertRecord:(NSString*)platform secondPara:(NSString*)product thirdPara:(float)capital forthPara:(float)minRate
-               fifthPara:(float)maxRate sixthPara:(NSInteger)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate;
-- (NSMutableArray *)getAllRecord;
-- (BOOL) deleteRecord:(long int)timeStamp;
+               fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate;
+- (NSMutableArray *)getAllRecord:(BOOL) flag;
+- (BOOL) updateRecord:(long int)timeStamp;
 @end
 

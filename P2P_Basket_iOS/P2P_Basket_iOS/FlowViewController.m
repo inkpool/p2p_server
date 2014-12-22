@@ -354,8 +354,6 @@
         alert.delegate = self;
         [alert show];
         
-        
-        
     }
 }
 
@@ -368,7 +366,7 @@
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         RecordDB *myRecordDB = [[RecordDB alloc]init];
-        [myRecordDB deleteRecord:[[records[flag] objectForKey:@"timeStamp"] intValue]];
+        [myRecordDB updateRecord:[[records[flag] objectForKey:@"timeStamp"] intValue]];
         [records removeObjectAtIndex:flag];
         [myTableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationTop];
         [delegate refresh2];

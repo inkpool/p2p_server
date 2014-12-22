@@ -9,10 +9,12 @@
 #import "CloudBackupViewController.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "LeftSliderController.h"
+#import "RecordDB.h"
 
 @interface CloudBackupViewController ()
 {
     BOOL networkConnected;
+    BOOL flag;
 }
 
 @end
@@ -81,10 +83,14 @@
 
 - (void)upButtonPressed {
     LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
-    records = leftSliderC->records;
+    //读取数据库表recordT中用户的所有未删除的投资记录
+    RecordDB *recordDB = [[RecordDB alloc] init];
+    records = [recordDB getAllRecord:YES];//读取所有的数据，包括已被标记为删除的数据
     if (leftSliderC->networkConnected) {//网络已连接
+        flag = TRUE;
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer]; //这个决定了下面responseObject返回的类型
         for (int i = 0; i < [records count]; i++) {
             [manager POST:@"http://128.199.226.246/beerich/index.php/sync"
                parameters:@{@"user_name":@"xuxin@qq.com",@"platform":[records[i] objectForKey:@"platform"],
@@ -99,6 +105,20 @@
                                 @"add_time":[records[i] objectForKey:@"timeStamp"]}
                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
                       NSLog(@"JSON#######: %@", responseObject);
+                      NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                      NSLog(@"_____%@_____",result);
+                      if (!result) {//wifi已连接，但无法访问网络
+                          [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
+                          flag = FALSE;
+                      } else {
+//                          NSString *codeStr = [result substringWithRange:NSMakeRange(14,1)];
+//                          if ([codeStr isEqualToString:@"0"]) {
+//                              [self alertWithTitle:@"提示" withMsg:@"登录成功"];
+//                          }
+//                          else if ([codeStr isEqualToString:@"1"]) {
+//                              [self alertWithTitle:@"提示" withMsg:@"不存在该账号"];
+//                          }
+                      }
                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                       NSLog(@"Error######: %@", error);
                   }];
@@ -118,5 +138,13 @@
     
 }
 
+- (void) alertWithTitle:(NSString *)title withMsg:(NSString *)msg{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:msg
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 
 @end

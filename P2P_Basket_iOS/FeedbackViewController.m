@@ -34,6 +34,25 @@
     flag2 = FALSE;
     flag3 = FALSE;
     
+    NSDictionary* infoDict =[[NSBundle mainBundle] infoDictionary];
+    //应用版本
+    NSString *versionNum =[infoDict objectForKey:@"CFBundleVersion"];
+    NSLog(@"应用版本：%@",versionNum);
+    //设备名称
+    NSString* deviceName = [[UIDevice currentDevice] systemName];
+    NSLog(@"设备名称: %@",deviceName );
+    //手机系统版本
+    NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
+    NSLog(@"手机系统版本: %@", phoneVersion);
+    //手机型号
+    NSString* phoneModel = [[UIDevice currentDevice] model];
+    NSLog(@"手机型号: %@",phoneModel );
+    //地方型号  （国际化区域名称）
+    NSString* localPhoneModel = [[UIDevice currentDevice] localizedModel];
+    NSLog(@"国际化区域名称: %@",localPhoneModel);
+    
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector (keyboardDidShow:)
 name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息UIKeyboardDidShowNotification时，就会调用keyboardDidShow方法
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector (keyboardDidHide:)
