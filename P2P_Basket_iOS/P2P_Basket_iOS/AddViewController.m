@@ -21,7 +21,7 @@
     // Do any additional setup after loading the view.
 
     //navigationItem左按钮
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@" 返回" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelPressed)];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@" 返回" style:UIBarButtonItemStylePlain target:self action:@selector(cancelPressed)];
     self.navigationItem.leftBarButtonItem = backItem;
     
 //    UIButton *item = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -192,10 +192,10 @@
     currentTextTag=textField.tag;
     //NSLog(@"current %ld",currentTextTag);
     //获取屏幕分辨率
-    CGRect rect = [[UIScreen mainScreen] bounds];
-    CGSize size = rect.size;
-    CGFloat screen_width = size.width;
-    CGFloat screen_height = size.height;
+//    CGRect rect = [[UIScreen mainScreen] bounds];
+//    CGSize size = rect.size;
+//    CGFloat screen_width = size.width;
+//    CGFloat screen_height = size.height;
     
     NSLog(@"textFieldShouldBeginEditing");
     
@@ -367,7 +367,7 @@
         break;
         case 106:
         {
-            cal_typeArray=[NSArray arrayWithObjects:@"到期还本息",@"每月还本息", nil];
+            cal_typeArray=[NSArray arrayWithObjects:@"到期还本息",@"按月还本息",@"按月只还息", nil];
             pickView.tag=206;
             pickView.delegate=self;
             [self presentViewController:myAlert animated:YES completion:nil];
@@ -460,10 +460,9 @@
 
 -(void)confirmPressed{
     RecordDB *myRecordDB = [[RecordDB alloc]init];
-    [myRecordDB insertRecord:platformField.text secondPara:productField.text thirdPara:[capitalField.text floatValue] forthPara:[minRateField.text floatValue] fifthPara:[maxRateField.text floatValue] sixthPara:1 seventhPara:startimeField.text eighthPara:endtimeField.text];
+    [myRecordDB insertRecord:platformField.text secondPara:productField.text thirdPara:[capitalField.text floatValue] forthPara:[minRateField.text floatValue] fifthPara:[maxRateField.text floatValue] sixthPara:cal_typeField.text seventhPara:startimeField.text eighthPara:endtimeField.text];
     [delegate refresh1];
     [self.navigationController popToRootViewControllerAnimated:YES];
-
 }
 
 -(void)cancelPressed{

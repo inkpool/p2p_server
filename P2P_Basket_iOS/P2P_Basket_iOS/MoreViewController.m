@@ -22,12 +22,6 @@
     CGFloat screen_width = size.width;
     CGFloat screen_height = size.height;
     
-//    //添加一个背景图片
-//    UIImageView *backView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-//    backView.image = [UIImage imageNamed:@"background.jpg"];
-//    [self.view addSubview:backView];
-    
-    
     //添加一个tableView
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height)];
     //tableView.backgroundView = backView;

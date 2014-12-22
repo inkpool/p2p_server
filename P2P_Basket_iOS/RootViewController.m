@@ -30,6 +30,7 @@
     UIPanGestureRecognizer *_panGestureRec;
     NSMutableArray *expireRecord;//已到期的投资记录
     NSMutableArray *expiringRecord;//即将到期的投资记录
+    NSMutableArray *unExpireRecord;//未到期的投资记录
     float RContentOffset;
     CGFloat screen_width;
 }
@@ -74,12 +75,13 @@
     //1、初始化record，即从数据库recordT表中读出用户所有的投资记录
     //2、找出所有已经到期和即将到期的投资
     
-    //读取数据库表recordT中用户的所有投资记录
+    //读取数据库表recordT中用户的所有未删除的投资记录
     RecordDB *recordDB = [[RecordDB alloc] init];
     [recordDB copyDatabaseIfNeeded];
-    records = [recordDB getAllRecord];
+    records = [recordDB getAllRecord:NO];
     expireRecord = [[NSMutableArray alloc] init];
     expiringRecord = [[NSMutableArray alloc] init];
+    unExpireRecord = [[NSMutableArray alloc] init];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat : @"yyyy-M-d"];
@@ -102,8 +104,11 @@
                 [expireRecord addObject:records[i]];//已到期，需要处理
             }
         }
-        if (flag1 < 0 && flag2 > 0) {
-            [expiringRecord addObject:records[i]];//即将到期
+        if (flag1 <= 0) {
+            [unExpireRecord addObject:records[i]];//未到期
+            if (flag2 >= 0) {
+                [expiringRecord addObject:records[i]];//即将到期
+            }
         }
     }
 
@@ -126,7 +131,6 @@
     //初始化“更多”功能界面所在的ViewController
     LeftSliderController *leftSC = [[LeftSliderController alloc] init];
     leftSC->records = records;
-    NSLog(@"1:%@",leftSC);
     [self addChildViewController:leftSC];
     [_leftSideView addSubview:leftSC.view];
     
@@ -140,9 +144,11 @@
     tbc.delegate = self;
     //向HomeViewController、FlowViewController传递数据库中用户所有的投资记录
     HomeViewController *homeViewController = tbc.viewControllers[0];
-    homeViewController->records = records;
+//    homeViewController->records = records;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
+    homeViewController->unExpireRecord = unExpireRecord;
+    
     FlowViewController *flowViewController = tbc.viewControllers[3];
     flowViewController->delegate = self;
     flowViewController->records = records;
@@ -171,10 +177,11 @@
     //NSLog(@"records:%@",records);
     UITabBarController *tbc = [nc.childViewControllers firstObject];
     HomeViewController *homeViewController = tbc.viewControllers[0];
-    homeViewController->records = records;
+//    homeViewController->records = records;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
-    [homeViewController->tableView reloadData];
+    homeViewController->unExpireRecord = unExpireRecord;
+    [homeViewController->myTableView reloadData];
     [homeViewController showData];//重新显示统计数据
     
     AnalysisViewController *analysisVC = tbc.viewControllers[2];
@@ -238,10 +245,11 @@
     [self initRecord];
     UITabBarController *tbc = [nc.childViewControllers firstObject];
     HomeViewController *homeViewController = tbc.viewControllers[0];
-    homeViewController->records = records;
+//    homeViewController->records = records;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
-    [homeViewController->tableView reloadData];
+    homeViewController->unExpireRecord = unExpireRecord;
+    [homeViewController->myTableView reloadData];
     [homeViewController showData];//重新显示统计数据
     
     LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];

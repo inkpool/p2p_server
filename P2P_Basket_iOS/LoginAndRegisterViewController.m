@@ -143,6 +143,22 @@
                    parameters:@{@"user_name":userEmail,@"password":userPassword}
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           NSLog(@"JSON#######: %@", responseObject);
+                          NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                          NSLog(@"_____%@_____",result);
+                          if (!result) {//wifi已连接，但无法访问网络
+                              [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
+                          } else {
+                              NSString *codeStr = [result substringWithRange:NSMakeRange(14,1)];
+                              if ([codeStr isEqualToString:@"0"]) {
+                                  [self alertWithTitle:@"提示" withMsg:@"登录成功"];
+                              }
+                              else if ([codeStr isEqualToString:@"1"]) {
+                                  [self alertWithTitle:@"提示" withMsg:@"不存在该账号"];
+                              }
+                              else if ([codeStr isEqualToString:@"2"]) {
+                                  [self alertWithTitle:@"提示" withMsg:@"密码错误！"];
+                              }
+                          }
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           NSLog(@"Error######: %@", error);
                       }];
@@ -154,7 +170,18 @@
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           NSLog(@"JSON#######: %@", responseObject);
                           NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-                          NSLog(@"%@",result);
+                          NSLog(@"_____%@_____",result);
+                          if (!result) {//wifi已连接，但无法访问网络
+                              [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
+                          } else {
+                              NSString *codeStr = [result substringWithRange:NSMakeRange(14,1)];
+                              if ([codeStr isEqualToString:@"0"]) {
+                                  [self alertWithTitle:@"提示" withMsg:@"注册成功"];
+                              }
+                              else if ([codeStr isEqualToString:@"3"]) {
+                                  [self alertWithTitle:@"提示" withMsg:@"该账号已被注册"];
+                              }
+                          }
                           
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           NSLog(@"Error######: %@", error);
@@ -163,22 +190,12 @@
             }
         }
         else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                            message:@"请输入正确格式的邮箱"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles: nil];
-            [alert show];
+            [self alertWithTitle:@"提示" withMsg:@"请输入正确格式的邮箱"];
         }
 
     }//end if (leftSliderC->networkConnected)
     else {//网络未连接
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"连接错误"
-                                                        message:@"无法连接服务器，请检查您的网络连接是否正常"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles: nil];
-        [alert show];
+        [self alertWithTitle:@"连接错误" withMsg:@"无法连接服务器，请检查您的网络连接是否正常"];
     }
 }
 
@@ -199,7 +216,14 @@
     return ([newtxt length] <= MAX_CHARS);
 }
 
-
+- (void) alertWithTitle:(NSString *)title withMsg:(NSString *)msg{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:msg
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 
 
 @end

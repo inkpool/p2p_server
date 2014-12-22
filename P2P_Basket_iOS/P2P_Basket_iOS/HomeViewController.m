@@ -16,6 +16,14 @@
     NSDictionary *platformColor;
     UILabel *left_label1;
     UILabel *right_label1;
+    UILabel *incomeLabel;
+    UILabel *interestRateLabel;
+    UILabel *totalCapitalLable;
+    double minTotalInterest;
+    double maxTotalInterest;
+    double minDailyInterest;
+    double maxDailyInterest;
+    double remainCapital;
 }
 
 @end
@@ -32,7 +40,55 @@
     screen_height = size.height;
     
     flag = 1;//初始显示即将到期
+    
+    UIView *upBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, screen_width, screen_height/4)];
+    upBackgroundView.backgroundColor = [UIColor colorWithRed:65.0/255.0 green:83.0/255.0 blue:137.0/255.0 alpha:1];
+    [self.view addSubview:upBackgroundView];
 
+    //显示当天年月日
+    UILabel *myDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, screen_width-30, screen_height/16-10)];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat : @"yyyy-MM-dd"];
+    NSString *nowDate = [formatter stringFromDate:[NSDate date]];
+    myDateLabel.text = nowDate;
+    myDateLabel.font = [UIFont fontWithName:@"Superclarendon" size:28];
+    myDateLabel.textColor = [UIColor whiteColor];
+    [upBackgroundView addSubview:myDateLabel];
+    
+    //当日收益
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15, screen_height/16+5, screen_width/3, screen_height/16-10)];
+    label1.text = @"当日收益";
+    label1.font = [UIFont systemFontOfSize:19];
+    label1.textColor = [UIColor whiteColor];
+    [upBackgroundView addSubview:label1];
+    incomeLabel = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3+10, screen_height/16+5, screen_width-screen_width/3-15, screen_height/16-10)];
+    incomeLabel.textColor = [UIColor whiteColor];
+    incomeLabel.font = [UIFont systemFontOfSize:26];
+    [upBackgroundView addSubview:incomeLabel];
+    
+    //均年化收益
+    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(15, screen_height/8+5, screen_width/3, screen_height/16-10)];
+    label2.text = @"均年化收益";
+    label2.font = [UIFont systemFontOfSize:19];
+    label2.textColor = [UIColor whiteColor];
+    [upBackgroundView addSubview:label2];
+    interestRateLabel = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3+15, screen_height/8+5, screen_width-screen_width/3-20, screen_height/16-10)];
+    interestRateLabel.textColor = [UIColor whiteColor];
+    interestRateLabel.font = [UIFont systemFontOfSize:26];
+    [upBackgroundView addSubview:interestRateLabel];
+    
+    //在投总额
+    UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(15, screen_height/16*3+5, screen_width/3, screen_height/16-10)];
+    label3.text = @"在投总额";
+    label3.font = [UIFont systemFontOfSize:19];
+    label3.textColor = [UIColor whiteColor];
+    [upBackgroundView addSubview:label3];
+    
+    totalCapitalLable = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3+10, screen_height/16*3+5, screen_width-screen_width/3-15, screen_height/16-10)];
+    totalCapitalLable.textColor = [UIColor whiteColor];
+    totalCapitalLable.font = [UIFont systemFontOfSize:26];
+    [upBackgroundView addSubview:totalCapitalLable];
+    
     platformColor = [NSDictionary dictionaryWithObjectsAndKeys:
                                       [UIColor colorWithRed:205.0/255.0 green:0.0/255.0 blue:17.0/255.0 alpha:1],@"爱投资",
                                       [UIColor colorWithRed:28.0/255.0 green:154.0/255.0 blue:39.0/255.0 alpha:1],@"点融网",
@@ -47,7 +103,7 @@
     //left_bt上显示一个UIView(红色背景，红色背景上又一个Label，显示到期项目的个数)，
     //一个Label（显示“已经到期”），right_bt类似
     //左UIButton
-    UIButton *left_bt = [[UIButton alloc] initWithFrame:CGRectMake(0, 64+147, screen_width/2, 50)];
+    UIButton *left_bt = [[UIButton alloc] initWithFrame:CGRectMake(0, 64+screen_height/4, screen_width/2, 50)];
     left_bt.tag = 101;
     
     UIView *left_view = [[UIView alloc] initWithFrame:CGRectMake(screen_width/16, 15, screen_width/7, 20)];
@@ -68,7 +124,7 @@
     [left_bt addSubview:left_label2];
     
     //右UIButton
-    UIButton *right_bt = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/2, 64+147, screen_width/2, 50)];
+    UIButton *right_bt = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/2, 64+screen_height/4, screen_width/2, 50)];
     right_bt.tag = 102;
     right_bt.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];//未选中时浅灰色
     
@@ -98,11 +154,11 @@
     [self.view addSubview:right_bt];
     
     //添加UITableView
-    tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64+147+50, screen_width-15, screen_height-(64+147+50+49)) style:UITableViewStylePlain];
-    tableView.dataSource = self;
-    tableView.delegate = self;
-    tableView.showsVerticalScrollIndicator = NO;
-    [self.view addSubview:tableView];
+    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64+screen_height/4+50, screen_width-15, screen_height-(64+49+screen_height/4+50)) style:UITableViewStylePlain];
+    myTableView.dataSource = self;
+    myTableView.delegate = self;
+    myTableView.showsVerticalScrollIndicator = NO;
+    [self.view addSubview:myTableView];
     
     [self showData];
 }
@@ -119,13 +175,121 @@
     NSString *nowDate = [formatter stringFromDate:[NSDate date]];
     dateLabel.text = nowDate;
     //计算显示在投总额
-    float totalCapital = 0;
-    for (int i = 0; i < [records count]; i++) {
-        totalCapital += [[records[i] objectForKey:@"capital"] floatValue];
-    }
-    totalCapitalLable.text = [NSString stringWithFormat:@"%.2f",totalCapital];
+    float totalCapital = 0.0;//用于计算年化利息和每日预估收益
+    remainCapital = 0.0;//剩余的投资总额（按月还本息：在投总额不断减少）
+    double minAnnualResult = 0.0;
+    double maxAnnualResult = 0.0;
+    double minDailyResult = 0.0;
+    double maxDailyResult = 0.0;
+    for (int i = 0; i < [unExpireRecord count]; i++) {
+        totalCapital += [[unExpireRecord[i] objectForKey:@"capital"] floatValue];
+        [self getInterestWithAmount:[[unExpireRecord[i] objectForKey:@"capital"] floatValue]
+                                    withMinRate:[[unExpireRecord[i] objectForKey:@"minRate"] floatValue]
+                                    withMaxRate:[[unExpireRecord[i] objectForKey:@"maxRate"] floatValue]
+                                  withStartDate:[unExpireRecord[i] objectForKey:@"startDate"]
+                                    withEndDate:[unExpireRecord[i] objectForKey:@"endDate"]
+                                    withCalType:[unExpireRecord[i] objectForKey:@"calType"]
+                                    withNum:i];
+        //某一个投资的年化收益率：minDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue]
+        minAnnualResult += minDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue];
+        maxAnnualResult += maxDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue];
+        minDailyResult += minDailyInterest;
+        maxDailyResult += maxDailyInterest;
+    }//end for
+    totalCapitalLable.text = [NSString stringWithFormat:@"￥%.2f",remainCapital];//显示在投资金总额
+    //年化收益率=实际收益/（投资金额*（期限天数/360））*100%
+    //即 平均每日收益*365/该投资的总额
+    
+    //计算平均年化收益率
+    float annualRate_min = minAnnualResult / [unExpireRecord count];
+    float annualRate_max = maxAnnualResult / [unExpireRecord count];
+    incomeLabel.text = [NSString stringWithFormat:@"￥%.1f ± %.1f",(minDailyResult+maxDailyResult)/2.0,maxDailyResult-(minDailyResult+maxDailyResult)/2.0];
+    interestRateLabel.text = [NSString stringWithFormat:@"%.2f ± %.2f%%",(annualRate_min+annualRate_max)/2.0*100,(annualRate_max - (annualRate_min+annualRate_max)/2.0)*100];
     left_label1.text = [NSString stringWithFormat:@"%ld",[expiringRecord count]];
     right_label1.text = [NSString stringWithFormat:@"%ld",[expireRecord count]];
+}
+
+- (void)getInterestWithAmount:(double)amount withMinRate:(double)minRate withMaxRate:(double)maxRate withStartDate:(NSString*)startDate withEndDate:(NSString*)endDate withCalType:(NSString*)calType withNum:(int)i{
+    minTotalInterest = 0.0;
+    maxTotalInterest = 0.0;
+    minDailyInterest = 0.0;
+    maxDailyInterest = 0.0;
+    if (maxRate == 0.0) {
+        maxRate = minRate;
+    }
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat : @"yyyy-MM-dd"];
+    NSDate *start = [formatter dateFromString:startDate];
+    NSDate *end = [formatter dateFromString:endDate];
+//    NSInteger days = [self getDateSpaceWithStartDate:start withEndDate:end];
+//    NSLog(@"%.2f,%.2f,%.2f,%@,%@,%@",amount,minRate,maxRate,startDate,endDate,calType);
+    //计算计息开始到结束间隔的天数
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    unsigned int unitFlags = NSCalendarUnitDay;
+    NSDateComponents *comps = [gregorian components:unitFlags fromDate:start toDate:end options:0];
+    NSInteger days = [comps day];
+    if (![calType isEqualToString:@"按月还本息"]) {//到期还本息，按月只还息
+        remainCapital += amount;
+        minTotalInterest = amount * minRate / 100 * days / 365;
+        maxTotalInterest = amount * maxRate / 100 * days / 365;
+        minDailyInterest = minTotalInterest/days;
+        maxDailyInterest = maxTotalInterest/days;
+//        NSLog(@"%.2f,%.2f,%d",minTotalInterest,maxTotalInterest,days);
+    } else {//按月还本息(在投的本金越来越少)
+        NSDate *today = [NSDate date];
+        float remain = [self getRemainAmountWithAmount:amount withMinRate:minRate withMaxRate:maxRate withStartDate:start withEndDate:today];
+        remainCapital += remain;
+        [self getAverageMonthPayWithAmount:amount withMinRate:minRate withMaxRate:maxRate withStartDate:start withEndDate:end];
+        minTotalInterest = minTotalInterest*[self getMonthSpaceWithStartDate:start withEndDate:end] - amount;
+        maxTotalInterest = maxTotalInterest*[self getMonthSpaceWithStartDate:start withEndDate:end] - amount;
+        minDailyInterest = minTotalInterest/days;
+        maxDailyInterest = maxTotalInterest/days;
+//        NSLog(@"22222:%.2f,%.2f,%d",minTotalInterest,maxTotalInterest,days);
+    }
+}
+
+- (void)getAverageMonthPayWithAmount:(double)amount withMinRate:(double)minRate withMaxRate:(double)maxRate withStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
+    //计算月还款额
+    float avgMinRate = minRate/100/12;//月利率
+    float avgMaxRate = maxRate/100/12;
+    NSInteger months = [self getMonthSpaceWithStartDate:startDate withEndDate:endDate];
+    // 月均还款本息计算，a×i×（1＋i）^n÷〔（1＋i）^n－1〕
+    //double pow(double x, double y）;计算以x为底数的y次幂
+    minTotalInterest = amount * avgMinRate * pow((1+avgMinRate), months) / (pow((1+avgMinRate), months) - 1);
+    maxTotalInterest = amount * avgMaxRate * pow((1+avgMaxRate), months) / (pow((1+avgMaxRate), months) - 1);
+}
+
+//- (NSInteger)getDateSpaceWithStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
+//    //计算计息开始到结束间隔的天数
+//    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+//    unsigned int unitFlags = NSCalendarUnitDay;
+//    NSDateComponents *comps = [gregorian components:unitFlags fromDate:startDate toDate:startDate options:0];
+//    NSInteger days = [comps day];
+//    NSLog(@"%d",days);
+//    return days;
+//}
+
+- (NSInteger)getMonthSpaceWithStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
+    //计算相隔的月数
+    NSCalendar*calendar = [NSCalendar currentCalendar];
+    NSDateComponents *startComps = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:startDate];
+    NSDateComponents *endComps = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate: endDate];
+    //        NSLog(@"1111:%d",([endComps year]-[startComps year])*12+[endComps month]-[startComps month]);
+    NSInteger months = ([endComps year]-[startComps year])*12+[endComps month]-[startComps month];
+    if (months == 0) {
+        months = 1;
+    }
+    return months;
+}
+
+- (double)getRemainAmountWithAmount:(double)amount withMinRate:(double)minRate withMaxRate:(double)maxRate withStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
+    //计算等额本息的剩余本金
+    double result = amount;
+    NSInteger months = [self getMonthSpaceWithStartDate:startDate withEndDate:endDate];
+    [self getAverageMonthPayWithAmount:amount withMinRate:minRate withMaxRate:maxRate withStartDate:startDate withEndDate:endDate];
+    double pay = (minTotalInterest + maxTotalInterest)/2;
+    result -= pay*months;
+    return result;
 }
 
 #pragma mark - ButtonPressedAction
@@ -137,7 +301,7 @@
     left_bt.backgroundColor = [UIColor whiteColor];//用户选中的为白色
     right_bt.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];//未选中的为浅灰色
     
-    [tableView reloadData];
+    [myTableView reloadData];
 }
 
 - (IBAction)rightButtonPressed {//右变浅灰色
@@ -147,7 +311,7 @@
     left_bt.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
     right_bt.backgroundColor = [UIColor whiteColor];
     
-    [tableView reloadData];
+    [myTableView reloadData];
 }
 
 

@@ -39,8 +39,6 @@ static LeftSliderController *sharedLSC;
         sharedLSC = self;
     });
     
-    NSLog(@"2:%@",sharedLSC);
-    
     [self connectedToNetWork];//监测网络连接情况
     //获取屏幕分辨率
     CGRect rect = [[UIScreen mainScreen] bounds];
@@ -48,7 +46,7 @@ static LeftSliderController *sharedLSC;
     screen_width = size.width;
     screen_height = size.height;
     
-    menu = [NSArray arrayWithObjects:@"云备份",@"检查更新",@"用户反馈",@"关于我们",@"密码设置",@"好友分享",nil];
+    menu = [NSArray arrayWithObjects:@"云同步",@"检查更新",@"用户反馈",@"关于我们",@"密码设置",@"好友分享",nil];
     
     //添加一个背景图片
     UIImageView *backView = [[UIImageView alloc] initWithFrame:self.view.bounds];

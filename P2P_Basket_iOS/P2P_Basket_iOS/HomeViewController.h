@@ -16,12 +16,12 @@
     IBOutlet UILabel *incomeLabel2;
     IBOutlet UILabel *rateLabel1;
     IBOutlet UILabel *rateLable2;
-    IBOutlet UILabel *totalCapitalLable;
 @public
-    UITableView *tableView;//表视图:显示已到期投资和即将到期投资
-    NSMutableArray *records;//用户所有的投资记录
+    UITableView *myTableView;//表视图:显示已到期投资和即将到期投资
+//    NSMutableArray *records;//用户所有的投资记录
     NSMutableArray *expireRecord;//已到期的投资记录
     NSMutableArray *expiringRecord;//即将到期的投资记录
+    NSMutableArray *unExpireRecord;//未到期的投资记录
 }
 
 - (void)showData;
