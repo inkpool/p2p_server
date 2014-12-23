@@ -220,9 +220,6 @@
     maxTotalInterest = 0.0;
     minDailyInterest = 0.0;
     maxDailyInterest = 0.0;
-    if (maxRate == 0.0) {
-        maxRate = minRate;
-    }
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat : @"yyyy-MM-dd"];
     NSDate *start = [formatter dateFromString:startDate];
@@ -400,18 +397,15 @@
         label2.textColor = [platformColor objectForKey:[expiringRecord[indexPath.row] objectForKey:@"platform"]];
         NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[expiringRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
         label4.text = label4Text;
-        if ([[expiringRecord[indexPath.row] objectForKey:@"minRate"] floatValue] == 0 ) {
+        if ([[expiringRecord[indexPath.row] objectForKey:@"minRate"] floatValue] == [[expiringRecord[indexPath.row] objectForKey:@"maxRate"] floatValue] ) {
             NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[expiringRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
-            label5.text = label5Text;
-        }
-        else if ([[expiringRecord[indexPath.row] objectForKey:@"maxRate"] floatValue] == 0) {
-            NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[expiringRecord[indexPath.row] objectForKey:@"minRate"] floatValue]];
             label5.text = label5Text;
         }
         else {
             NSString *label5Text = [NSString stringWithFormat:@"%.2f%%~%.2f%%",[[expiringRecord[indexPath.row] objectForKey:@"minRate"] floatValue],[[expiringRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
             label5.text = label5Text;
         }
+        cell.accessoryType = UITableViewCellAccessoryNone;
         
     } else {
         NSString *imageName = [NSString stringWithFormat:@"%@-icon",[expireRecord[indexPath.row] objectForKey:@"platform"]];
@@ -423,12 +417,8 @@
         label2.textColor = [platformColor objectForKey:[expireRecord[indexPath.row] objectForKey:@"platform"]];
         NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[expireRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
         label4.text = label4Text;
-        if ([[expireRecord[indexPath.row] objectForKey:@"minRate"] floatValue] == 0 ) {
+        if ([[expireRecord[indexPath.row] objectForKey:@"minRate"] floatValue] == [[expireRecord[indexPath.row] objectForKey:@"maxRate"] floatValue] ) {
             NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[expireRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
-            label5.text = label5Text;
-        }
-        else if ([[expireRecord[indexPath.row] objectForKey:@"maxRate"] floatValue] == 0) {
-            NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[expireRecord[indexPath.row] objectForKey:@"minRate"] floatValue]];
             label5.text = label5Text;
         }
         else {

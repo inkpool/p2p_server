@@ -43,6 +43,7 @@
 		1D84F5371A3BE3BE00413A76 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D84F5361A3BE3BE00413A76 /* AboutUsViewController.m */; };
 		1D84F53D1A3BF29A00413A76 /* wechat-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D84F53C1A3BF29A00413A76 /* wechat-icon.png */; };
 		1D84F53F1A3BF33D00413A76 /* weibo-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D84F53E1A3BF33D00413A76 /* weibo-icon.png */; };
+		1D8966FA1A49821800616949 /* DejalActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D8966F91A49821800616949 /* DejalActivityView.m */; };
 		1D8F1BEA1A41209000FA7F91 /* arrow_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D8F1BE91A41209000FA7F91 /* arrow_down.png */; };
 		1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D989AAA1A10F6260092EED1 /* FlowViewController.m */; };
 		1D989AAE1A10F6560092EED1 /* AnalysisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D989AAD1A10F6560092EED1 /* AnalysisViewController.m */; };
@@ -234,6 +235,8 @@
 		1D84F5361A3BE3BE00413A76 /* AboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
 		1D84F53C1A3BF29A00413A76 /* wechat-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wechat-icon.png"; sourceTree = "<group>"; };
 		1D84F53E1A3BF33D00413A76 /* weibo-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weibo-icon.png"; sourceTree = "<group>"; };
+		1D8966F81A49821800616949 /* DejalActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DejalActivityView.h; sourceTree = "<group>"; };
+		1D8966F91A49821800616949 /* DejalActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DejalActivityView.m; sourceTree = "<group>"; };
 		1D8F1BE91A41209000FA7F91 /* arrow_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_down.png; sourceTree = "<group>"; };
 		1D989AA91A10F6260092EED1 /* FlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowViewController.h; sourceTree = "<group>"; };
 		1D989AAA1A10F6260092EED1 /* FlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowViewController.m; sourceTree = "<group>"; };
@@ -446,6 +449,8 @@
 		1D666CFC1A10C798004DC666 /* Side */ = {
 			isa = PBXGroup;
 			children = (
+				1D8966F81A49821800616949 /* DejalActivityView.h */,
+				1D8966F91A49821800616949 /* DejalActivityView.m */,
 				1DCB79661A3993BF00E4372B /* CustomCellBackground.h */,
 				1DCB79671A3993BF00E4372B /* CustomCellBackground.m */,
 				1D666CFD1A10C843004DC666 /* LeftSliderController.h */,
@@ -799,6 +804,7 @@
 				1D1362951A41BC79006BE057 /* PlatformViewController.m in Sources */,
 				1D989AAE1A10F6560092EED1 /* AnalysisViewController.m in Sources */,
 				E608615619FFEDC800EBDBE1 /* main.m in Sources */,
+				1D8966FA1A49821800616949 /* DejalActivityView.m in Sources */,
 				1DCB79681A3993BF00E4372B /* CustomCellBackground.m in Sources */,
 				1D13628F1A41ABC4006BE057 /* PlatformDetailViewController.m in Sources */,
 				1D6DBD231A3EFEF80081F516 /* AFURLRequestSerialization.m in Sources */,

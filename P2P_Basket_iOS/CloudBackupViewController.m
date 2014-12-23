@@ -10,11 +10,13 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "LeftSliderController.h"
 #import "RecordDB.h"
+#import "DejalActivityView.h"
 
 @interface CloudBackupViewController ()
 {
     BOOL networkConnected;
     BOOL flag;
+    int mark;
 }
 
 @end
@@ -86,6 +88,8 @@
     RecordDB *recordDB = [[RecordDB alloc] init];
     records = [recordDB getAllRecord:YES];//读取所有的数据，包括已被标记为删除的数据
     if (leftSliderC->networkConnected) {//网络已连接
+        UIView *viewToUse = self.view;
+        [DejalBezelActivityView activityViewForView:viewToUse withLabel:@"同步中..." width:100];
         flag = TRUE;
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
@@ -106,7 +110,8 @@
                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
                       NSLog(@"JSON#######: %@", operation.responseString);
                       if (!operation.responseString) {
-                          [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
+                          mark = 0;
+                          [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
                           
                       } else {
                           NSString *requestTmp = [NSString stringWithString:operation.responseString];
@@ -140,7 +145,22 @@
     [manager POST:@"http://128.199.226.246/beerich/index.php/sync/cloudAmount"
        parameters:@{@"user_name":@"xuxin@qq.com"}
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSLog(@"JSON#######: %@", responseObject);
+              NSString *requestTmp = [NSString stringWithString:operation.responseString];
+              int intString = [requestTmp intValue];
+              NSLog(@"JSON#######: %d", intString);
+              
+              [manager POST:@"http://128.199.226.246/beerich/index.php/sync/cloudAmount"
+                 parameters:@{@"user_name":@"xuxin@qq.com"}
+                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        NSString *requestTmp = [NSString stringWithString:operation.responseString];
+                        int intString = [requestTmp intValue];
+                        NSLog(@"JSON#######: %d", intString);
+                        
+                        
+                        
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        NSLog(@"Error######: %@", error);
+                    }];
               
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               NSLog(@"Error######: %@", error);
@@ -155,5 +175,28 @@
                                           otherButtonTitles:nil];
     [alert show];
 }
+
+- (void)removeActivityView
+{
+    [DejalBezelActivityView removeViewAnimated:YES];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+    switch (mark) {
+        case 0:
+            [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
+            break;
+//        case 1:
+//            [self alertWithTitle:@"提示" withMsg:@"登录成功"];
+//            break;
+//        case 2:
+//            [self alertWithTitle:@"提示" withMsg:@"不存在该账号"];
+//            break;
+//        case 3:
+//            [self alertWithTitle:@"提示" withMsg:@"密码错误！"];
+//            break;
+        default:
+            break;
+    }
+}
+
 
 @end

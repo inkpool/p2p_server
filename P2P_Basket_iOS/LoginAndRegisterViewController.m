@@ -9,12 +9,16 @@
 #import "LoginAndRegisterViewController.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "LeftSliderController.h"
+#import "DejalActivityView.h"
 
 @interface LoginAndRegisterViewController ()
 {
     NSString *userEmail;
     NSString *userPassword;
     BOOL networkConnected;
+    CGFloat screen_width;
+    CGFloat screen_height;
+    int flag;
 }
 
 @end
@@ -43,8 +47,8 @@
     //获取屏幕分辨率
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
-    CGFloat screen_width = size.width;
-    CGFloat screen_height = size.height;
+    screen_width = size.width;
+    screen_height = size.height;
     
     //获取navigationbar 的高度
     CGFloat naviHeight=self.navigationController.navigationBar.frame.size.height;
@@ -101,6 +105,15 @@
     [buttonLayer setBorderWidth:1.5];
     [buttonLayer setBorderColor:[[UIColor grayColor] CGColor]];
     [self.view addSubview:button];
+    
+//    alertLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 64, screen_width, 0)];
+//    alertLabel.layer.cornerRadius = 5;
+//    alertLabel.text = @"*不存在该账号*";
+//    alertLabel.textColor = [UIColor redColor];
+//    alertLabel.textAlignment = NSTextAlignmentCenter;
+//    alertLabel.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:alertLabel];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -134,29 +147,35 @@
     if (leftSliderC->networkConnected) {//网络已连接
         userEmail = emailField.text;
         if ([self isValidateEmail:userEmail] && [self isValidatePassword:passwordField.text]) {//用户输入的邮箱合法，已输入密码
+            UIView *viewToUse = self.view;
             userPassword = passwordField.text;
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             manager.responseSerializer = [AFHTTPResponseSerializer serializer]; //这个决定了下面responseObject返回的类型
             manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
             if (isLogin) {//登录
+                [DejalBezelActivityView activityViewForView:viewToUse withLabel:@"登录中..." width:100];
                 [manager POST:@"http://128.199.226.246/beerich/index.php/login"
                    parameters:@{@"user_name":userEmail,@"password":userPassword}
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           if (!operation.responseString) {
-                              [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
+                              flag = 0;
+                              [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
                           } else {
                               NSString *requestTmp = [NSString stringWithString:operation.responseString];
                               NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
                               NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
                               NSLog(@"%@,%@",[dic objectForKey:@"error_code"],[dic objectForKey:@"error_meesage"]);
                               if ([[dic objectForKey:@"error_code"] intValue] == 0) {
-                                  [self alertWithTitle:@"提示" withMsg:@"登录成功"];
+                                  flag = 1;
+                                  [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
                               }
                               else if ([[dic objectForKey:@"error_code"] intValue] == 1){
-                                  [self alertWithTitle:@"提示" withMsg:@"不存在该账号"];
+                                  flag = 2;
+                                  [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
                               }
                               else if ([[dic objectForKey:@"error_code"] intValue] == 2){
-                                  [self alertWithTitle:@"提示" withMsg:@"密码错误！"];
+                                  flag = 3;
+                                  [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
                               }
                           }
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -164,21 +183,25 @@
                       }];
             }
             else {//注册
+                [DejalBezelActivityView activityViewForView:viewToUse withLabel:@"注册中..." width:100];
                 [manager POST:@"http://128.199.226.246/beerich/index.php/login/register"
                    parameters:@{@"user_name":userEmail,@"password":userPassword}
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           if (!operation.responseString) {
-                              [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
+                              flag = 0;
+                              [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
                           } else {
                               NSString *requestTmp = [NSString stringWithString:operation.responseString];
                               NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
                               NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
                               NSLog(@"%@,%@",[dic objectForKey:@"error_code"],[dic objectForKey:@"error_meesage"]);
                               if ([[dic objectForKey:@"error_code"] intValue] == 0) {
-                                  [self alertWithTitle:@"提示" withMsg:@"注册成功"];
+                                  flag = 4;
+                                  [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
                               }
                               else if ([[dic objectForKey:@"error_code"] intValue] == 3){
-                                  [self alertWithTitle:@"提示" withMsg:@"该账号已被注册"];
+                                  flag = 5;
+                                  [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
                               }
                           }
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -231,6 +254,56 @@
                                           cancelButtonTitle:@"确定"
                                           otherButtonTitles:nil];
     [alert show];
+}
+
+
+//- (void)button2Pressed {
+//    [UIView animateWithDuration:0.3f animations:^{
+//        myView.frame = CGRectMake(0, 30, screen_width, screen_height);
+//        alertLabel.frame = CGRectMake(0, 64, screen_width, 30);
+//    } completion:^(BOOL finished) {
+//        
+//    }];
+//    
+//    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(timerFired) userInfo:nil repeats:NO];
+//    [[NSRunLoop currentRunLoop]addTimer:timer forMode:NSDefaultRunLoopMode];
+//}
+
+//- (void)timerFired {
+//    [UIView animateWithDuration:0.3f animations:^{
+//        myView.frame = self.view.frame;
+//        alertLabel.frame = CGRectMake(0, 64, screen_width, 0);
+//    } completion:^(BOOL finished) {
+//        
+//    }];
+//}
+
+- (void)removeActivityView
+{
+    [DejalBezelActivityView removeViewAnimated:YES];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+    switch (flag) {
+        case 0:
+            [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
+            break;
+        case 1:
+            [self alertWithTitle:@"提示" withMsg:@"登录成功"];
+            break;
+        case 2:
+            [self alertWithTitle:@"提示" withMsg:@"不存在该账号"];
+            break;
+        case 3:
+            [self alertWithTitle:@"提示" withMsg:@"密码错误！"];
+            break;
+        case 4:
+            [self alertWithTitle:@"提示" withMsg:@"注册成功"];
+            break;
+        case 5:
+            [self alertWithTitle:@"提示" withMsg:@"该账号已被注册"];
+            break;
+        default:
+            break;
+    }
 }
 
 

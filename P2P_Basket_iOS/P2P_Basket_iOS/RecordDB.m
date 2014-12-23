@@ -70,6 +70,10 @@ fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)sta
     NSInteger state = 0;
     long int timeStamp = [[NSDate date] timeIntervalSince1970];
     int isDeleted = 0;
+    if (maxRate == 0) {
+        maxRate = minRate;
+    }
+    NSLog(@"%.2f,%.2f",minRate,maxRate);
     //组合而成的sql语句，占位符坑爹啊！
     NSString *sql=[[NSString alloc]initWithFormat:@"INSERT INTO recordT VALUES(NULL,\"%@\",\"%@\",%f,%f,%f,\"%@\",\"%@\",\"%@\",%ld,%d,%d)",platform,product,capital,minRate,maxRate,calType,startDate,endDate,timeStamp,state,isDeleted];
     //编译SQL语句
