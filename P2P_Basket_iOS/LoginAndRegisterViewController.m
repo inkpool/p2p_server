@@ -133,7 +133,7 @@
     LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
     if (leftSliderC->networkConnected) {//网络已连接
         userEmail = emailField.text;
-        if ([self isValidateEmail:userEmail]) {//用户输入的邮箱合法
+        if ([self isValidateEmail:userEmail] && [self isValidatePassword:passwordField.text]) {//用户输入的邮箱合法，已输入密码
             userPassword = passwordField.text;
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             manager.responseSerializer = [AFHTTPResponseSerializer serializer]; //这个决定了下面responseObject返回的类型
@@ -142,20 +142,20 @@
                 [manager POST:@"http://128.199.226.246/beerich/index.php/login"
                    parameters:@{@"user_name":userEmail,@"password":userPassword}
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          NSLog(@"JSON#######: %@", responseObject);
-                          NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-                          NSLog(@"_____%@_____",result);
-                          if (!result) {//wifi已连接，但无法访问网络
+                          if (!operation.responseString) {
                               [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
                           } else {
-                              NSString *codeStr = [result substringWithRange:NSMakeRange(14,1)];
-                              if ([codeStr isEqualToString:@"0"]) {
+                              NSString *requestTmp = [NSString stringWithString:operation.responseString];
+                              NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
+                              NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
+                              NSLog(@"%@,%@",[dic objectForKey:@"error_code"],[dic objectForKey:@"error_meesage"]);
+                              if ([[dic objectForKey:@"error_code"] intValue] == 0) {
                                   [self alertWithTitle:@"提示" withMsg:@"登录成功"];
                               }
-                              else if ([codeStr isEqualToString:@"1"]) {
+                              else if ([[dic objectForKey:@"error_code"] intValue] == 1){
                                   [self alertWithTitle:@"提示" withMsg:@"不存在该账号"];
                               }
-                              else if ([codeStr isEqualToString:@"2"]) {
+                              else if ([[dic objectForKey:@"error_code"] intValue] == 2){
                                   [self alertWithTitle:@"提示" withMsg:@"密码错误！"];
                               }
                           }
@@ -164,35 +164,36 @@
                       }];
             }
             else {//注册
-                
                 [manager POST:@"http://128.199.226.246/beerich/index.php/login/register"
                    parameters:@{@"user_name":userEmail,@"password":userPassword}
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          NSLog(@"JSON#######: %@", responseObject);
-                          NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-                          NSLog(@"_____%@_____",result);
-                          if (!result) {//wifi已连接，但无法访问网络
+                          if (!operation.responseString) {
                               [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
                           } else {
-                              NSString *codeStr = [result substringWithRange:NSMakeRange(14,1)];
-                              if ([codeStr isEqualToString:@"0"]) {
+                              NSString *requestTmp = [NSString stringWithString:operation.responseString];
+                              NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
+                              NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
+                              NSLog(@"%@,%@",[dic objectForKey:@"error_code"],[dic objectForKey:@"error_meesage"]);
+                              if ([[dic objectForKey:@"error_code"] intValue] == 0) {
                                   [self alertWithTitle:@"提示" withMsg:@"注册成功"];
                               }
-                              else if ([codeStr isEqualToString:@"3"]) {
+                              else if ([[dic objectForKey:@"error_code"] intValue] == 3){
                                   [self alertWithTitle:@"提示" withMsg:@"该账号已被注册"];
                               }
                           }
-                          
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           NSLog(@"Error######: %@", error);
                       }];
                 
             }
         }
-        else {
+        else if(![self isValidateEmail:userEmail]) {
             [self alertWithTitle:@"提示" withMsg:@"请输入正确格式的邮箱"];
         }
-
+        else {
+            [self alertWithTitle:@"提示" withMsg:@"请输入密码"];
+        }
+        
     }//end if (leftSliderC->networkConnected)
     else {//网络未连接
         [self alertWithTitle:@"连接错误" withMsg:@"无法连接服务器，请检查您的网络连接是否正常"];
@@ -204,6 +205,13 @@
     NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
     return [emailTest evaluateWithObject:candidate];
+}
+
+- (BOOL) isValidatePassword:(NSString *)password {
+    if ([password isEqualToString:@""]) {
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark - TextField Delegate

@@ -59,7 +59,6 @@
     [downButton setTitleColor:[UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [downButton setTitleColor:[UIColor colorWithRed:40.0/255.0 green:131.0/255.0 blue:254.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
     [downButton addTarget:self action:@selector(downButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    //给registerButton添加边框
     CALayer * buttonLayer2 = [downButton layer];
     [buttonLayer2 setMasksToBounds:YES];
     [buttonLayer2 setCornerRadius:5.0];
@@ -102,25 +101,25 @@
                                 @"startDate":[records[i] objectForKey:@"startDate"],
                                 @"endDate":[records[i] objectForKey:@"endDate"],
                                 @"state":[records[i] objectForKey:@"state"],
-                                @"add_time":[records[i] objectForKey:@"timeStamp"]}
+                                @"add_time":[records[i] objectForKey:@"timeStamp"],
+                                @"ifDeleted":[records[i] objectForKey:@"isDeleted"]}
                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                      NSLog(@"JSON#######: %@", responseObject);
-                      NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-                      NSLog(@"_____%@_____",result);
-                      if (!result) {//wifi已连接，但无法访问网络
+                      NSLog(@"JSON#######: %@", operation.responseString);
+                      if (!operation.responseString) {
                           [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
-                          flag = FALSE;
+                          
                       } else {
-//                          NSString *codeStr = [result substringWithRange:NSMakeRange(14,1)];
-//                          if ([codeStr isEqualToString:@"0"]) {
-//                              [self alertWithTitle:@"提示" withMsg:@"登录成功"];
-//                          }
-//                          else if ([codeStr isEqualToString:@"1"]) {
-//                              [self alertWithTitle:@"提示" withMsg:@"不存在该账号"];
-//                          }
+                          NSString *requestTmp = [NSString stringWithString:operation.responseString];
+                          NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
+                          NSDictionary *resultDic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
+                          NSLog(@"%@,%@",[resultDic objectForKey:@"error_code"],[resultDic objectForKey:@"error_meesage"]);
+                          if ([[resultDic objectForKey:@"error_code"] intValue] == 0) {
+//                              [self alertWithTitle:@"提示" withMsg:@"上传完成"];
+                          }
                       }
+                      
                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                      NSLog(@"Error######: %@", error);
+                      NSLog(@"Error######: %@,%@", error,records[i]);
                   }];
         }
     }//end if (leftSliderC->networkConnected)
@@ -135,7 +134,17 @@
 }
 
 - (void)downButtonPressed {
-    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer]; //这个决定了下面responseObject返回的类型
+    [manager POST:@"http://128.199.226.246/beerich/index.php/sync/cloudAmount"
+       parameters:@{@"user_name":@"xuxin@qq.com"}
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSLog(@"JSON#######: %@", responseObject);
+              
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              NSLog(@"Error######: %@", error);
+          }];
 }
 
 - (void) alertWithTitle:(NSString *)title withMsg:(NSString *)msg{

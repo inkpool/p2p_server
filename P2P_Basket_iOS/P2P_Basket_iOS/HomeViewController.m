@@ -177,10 +177,12 @@
     //计算显示在投总额
     float totalCapital = 0.0;//用于计算年化利息和每日预估收益
     remainCapital = 0.0;//剩余的投资总额（按月还本息：在投总额不断减少）
-    double minAnnualResult = 0.0;
-    double maxAnnualResult = 0.0;
+//    double minAnnualResult = 0.0;
+//    double maxAnnualResult = 0.0;
     double minDailyResult = 0.0;
     double maxDailyResult = 0.0;
+    NSMutableArray *minAnnualResult = [[NSMutableArray alloc] init];//记录每笔投资的年化收益率
+    NSMutableArray *maxAnnualResult = [[NSMutableArray alloc] init];
     for (int i = 0; i < [unExpireRecord count]; i++) {
         totalCapital += [[unExpireRecord[i] objectForKey:@"capital"] floatValue];
         [self getInterestWithAmount:[[unExpireRecord[i] objectForKey:@"capital"] floatValue]
@@ -191,8 +193,8 @@
                                     withCalType:[unExpireRecord[i] objectForKey:@"calType"]
                                     withNum:i];
         //某一个投资的年化收益率：minDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue]
-        minAnnualResult += minDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue];
-        maxAnnualResult += maxDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue];
+        [minAnnualResult addObject:[[NSNumber alloc] initWithDouble:minDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue]]];
+        [maxAnnualResult addObject:[[NSNumber alloc] initWithDouble:maxDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue]]];
         minDailyResult += minDailyInterest;
         maxDailyResult += maxDailyInterest;
     }//end for
@@ -201,8 +203,12 @@
     //即 平均每日收益*365/该投资的总额
     
     //计算平均年化收益率
-    float annualRate_min = minAnnualResult / [unExpireRecord count];
-    float annualRate_max = maxAnnualResult / [unExpireRecord count];
+    float annualRate_min = 0.0;
+    float annualRate_max = 0.0;
+    for (int i = 0; i < [unExpireRecord count]; i++) {
+        annualRate_min += [minAnnualResult[i] doubleValue]*[[unExpireRecord[i] objectForKey:@"capital"] floatValue]/totalCapital;
+        annualRate_max += [maxAnnualResult[i] doubleValue]*[[unExpireRecord[i] objectForKey:@"capital"] floatValue]/totalCapital;
+    }
     incomeLabel.text = [NSString stringWithFormat:@"￥%.1f ± %.1f",(minDailyResult+maxDailyResult)/2.0,maxDailyResult-(minDailyResult+maxDailyResult)/2.0];
     interestRateLabel.text = [NSString stringWithFormat:@"%.2f ± %.2f%%",(annualRate_min+annualRate_max)/2.0*100,(annualRate_max - (annualRate_min+annualRate_max)/2.0)*100];
     left_label1.text = [NSString stringWithFormat:@"%ld",[expiringRecord count]];
