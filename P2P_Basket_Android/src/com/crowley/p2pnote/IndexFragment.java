@@ -39,6 +39,14 @@ public class IndexFragment extends Fragment implements OnClickListener{
 	private TextView tab_button01_number;
 	private TextView tab_button02_number;
 	
+	private TextView timeTextView;
+	private TextView index_info_basic01_number;
+	private TextView index_info_basic01_float;
+	private TextView index_info_basic02_number;
+	private TextView index_info_basic02_float;
+	private TextView index_info_basic03_number;
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -59,6 +67,20 @@ public class IndexFragment extends Fragment implements OnClickListener{
         tab_button02_number = (TextView) view.findViewById(R.id.tab_button02_number);
         tab_button01_number.setText(String.valueOf(returnList.indexCount(0)));
         tab_button02_number.setText(String.valueOf(returnList.indexCount(1)));
+        
+        timeTextView = (TextView) view.findViewById(R.id.index_info_time);
+        index_info_basic01_number = (TextView) view.findViewById(R.id.index_info_basic01_number);
+    	index_info_basic01_float = (TextView) view.findViewById(R.id.index_info_basic01_float);
+    	index_info_basic02_number = (TextView) view.findViewById(R.id.index_info_basic02_number);
+    	index_info_basic02_float = (TextView) view.findViewById(R.id.index_info_basic02_float);
+    	index_info_basic03_number = (TextView) view.findViewById(R.id.index_info_basic03_number);
+    	
+        timeTextView.setText(returnList.getTime());
+        index_info_basic01_number.setText(returnList.getBaseInfo01Number01());
+    	index_info_basic01_float.setText(returnList.getBaseInfo01Number02());
+    	index_info_basic02_number.setText(returnList.getBaseInfo02Number01());
+    	index_info_basic02_float.setText(returnList.getBaseInfo02Number02());
+    	index_info_basic03_number.setText(returnList.getBaseInfo03());
 		
         tab_button01.setOnClickListener(this);
         tab_button02.setOnClickListener(this);

@@ -29,18 +29,22 @@ public class WaterFragment extends Fragment implements OnClickListener{
 	private boolean time_des=true;
 	private boolean money_des=true;
 	private boolean profit_des=true;
+	private boolean begin_des=true;
 	
 	private RelativeLayout time_tab;
 	private RelativeLayout money_tab;
 	private RelativeLayout profit_tab;
+	private RelativeLayout begin_invest;
 	
 	private TextView time_tab_text;
 	private TextView money_tab_text;
 	private TextView profit_tab_text;
+	private TextView begin_invest_text;
 	
 	private ImageView time_tab_icon;
 	private ImageView money_tab_icon;
 	private ImageView profit_tab_icon;
+	private ImageView begin_invest_icon;
 	
 	
 	public static final int[] PLATFORM_NAMES = {
@@ -79,13 +83,19 @@ public class WaterFragment extends Fragment implements OnClickListener{
         time_tab=(RelativeLayout) view.findViewById(R.id.invest_time);
         money_tab=(RelativeLayout) view.findViewById(R.id.invest_money);
         profit_tab=(RelativeLayout) view.findViewById(R.id.invest_profit);
+        begin_invest=(RelativeLayout) view.findViewById(R.id.begin_invest);
+        
         time_tab_text=(TextView) view.findViewById(R.id.invest_time_text);
         money_tab_text=(TextView) view.findViewById(R.id.invest_money_text);
         profit_tab_text=(TextView) view.findViewById(R.id.invest_profit_text);
+        begin_invest_text=(TextView) view.findViewById(R.id.begin_invest_text);
+        
         time_tab_icon=(ImageView) view.findViewById(R.id.invest_time_icon);
         money_tab_icon=(ImageView) view.findViewById(R.id.invest_money_icon);
         profit_tab_icon=(ImageView) view.findViewById(R.id.invest_profit_icon);
-        getData(0,time_des);
+        begin_invest_icon=(ImageView) view.findViewById(R.id.begin_invest_icon);
+        
+        getData(3,begin_des);
         list_adapter=new listAdapter(this.getActivity(), dataList, R.layout.index_listview_item, new String[]{"time","item_icon","item_name","item_money","item_profit"}, new int[]{R.id.time,R.id.item_icon,R.id.item_name,R.id.item_money,R.id.item_profit});
         
                
@@ -93,6 +103,7 @@ public class WaterFragment extends Fragment implements OnClickListener{
         time_tab.setOnClickListener(this);
         money_tab.setOnClickListener(this);
         profit_tab.setOnClickListener(this);
+        begin_invest.setOnClickListener(this);
 		return view;
 	}
 
@@ -110,6 +121,7 @@ public class WaterFragment extends Fragment implements OnClickListener{
 		time_tab_text.setTextColor(getResources().getColor(R.color.light_black));
 		money_tab_text.setTextColor(getResources().getColor(R.color.light_black));
 		profit_tab_text.setTextColor(getResources().getColor(R.color.light_black));
+		begin_invest_text.setTextColor(getResources().getColor(R.color.light_black));
 		if(time_des){
 			time_tab_icon.setImageResource(R.drawable.water_arrow_down);
 		}else{
@@ -124,7 +136,12 @@ public class WaterFragment extends Fragment implements OnClickListener{
 			profit_tab_icon.setImageResource(R.drawable.water_arrow_down);
 		}else{
 			profit_tab_icon.setImageResource(R.drawable.water_arrow_up);
-		}		
+		}
+		if(begin_des){
+			begin_invest_icon.setImageResource(R.drawable.water_arrow_down);
+		}else{
+			begin_invest_icon.setImageResource(R.drawable.water_arrow_up);
+		}
 	}
 
 	@Override
@@ -167,6 +184,19 @@ public class WaterFragment extends Fragment implements OnClickListener{
 				profit_tab_icon.setImageResource(R.drawable.water_arrow_up_chosen);
 			}
 			getData(2,profit_des);
+			list_adapter.notifyDataSetChanged();
+			break;			
+		}
+		case R.id.begin_invest:{
+			begin_des=!begin_des;
+			tabReset();
+			begin_invest_text.setTextColor(getResources().getColor(R.color.tab_text_chosen));
+			if(begin_des){
+				begin_invest_icon.setImageResource(R.drawable.water_arrow_down_chosen);
+			}else{
+				begin_invest_icon.setImageResource(R.drawable.water_arrow_up_chosen);
+			}
+			getData(3,begin_des);
 			list_adapter.notifyDataSetChanged();
 			break;			
 		}
