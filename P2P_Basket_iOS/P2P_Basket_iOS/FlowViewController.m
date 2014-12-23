@@ -33,7 +33,8 @@
     
     button_flag = 0;
     triangle_flag = [NSMutableDictionary dictionary];
-    [triangle_flag setValue:@"1" forKey:@"1010"];//初始时三角超下
+    [triangle_flag setValue:@"1" forKey:@"1000"];//初始时三角超下
+    [triangle_flag setValue:@"1" forKey:@"1010"];
     [triangle_flag setValue:@"1" forKey:@"1020"];
     [triangle_flag setValue:@"1" forKey:@"1030"];
     
@@ -49,65 +50,82 @@
                      nil];
     
     //添加上面的选择菜单
-    UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 64, screen_width/3, 36)];
-    [button1 setTitle:@"到期时间    " forState:UIControlStateNormal];
+    UIButton *button0 = [[UIButton alloc] initWithFrame:CGRectMake(0, 64, screen_width/4, 40)];
+    [button0 setTitle:@"投资时间" forState:UIControlStateNormal];
+    button0.titleLabel.font = [UIFont systemFontOfSize:14];
+    [button0 setTitleColor:[UIColor colorWithRed:89.0/255.0 green:89.0/255.0 blue:89.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [button0 addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    button0.tag = 100;
+    [self.view addSubview:button0];
+    
+    UIImageView *triangle0 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/4/2-5, 33, 10, 5)];
+    triangle0.image = [UIImage imageNamed:@"triangle_gray_1"];
+    triangle0.tag = 1000;
+    [button0 addSubview:triangle0];
+    
+    UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/4, 64, screen_width/4, 40)];
+    [button1 setTitle:@"到期时间" forState:UIControlStateNormal];
     button1.titleLabel.font = [UIFont systemFontOfSize:14];
     [button1 setTitleColor:[UIColor colorWithRed:89.0/255.0 green:89.0/255.0 blue:89.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [button1 addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
     button1.tag = 101;
     [self.view addSubview:button1];
     
-    UIImageView *triangle1 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3/4*3, 16, 10, 5)];
+    UIImageView *triangle1 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/4/2-5, 33, 10, 5)];
     triangle1.image = [UIImage imageNamed:@"triangle_gray_1"];
     triangle1.tag = 1010;
     [button1 addSubview:triangle1];
     
-    UIButton *button2 = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/3, 64, screen_width/3, 36)];
-    [button2 setTitle:@"投资金额    " forState:UIControlStateNormal];
+    UIButton *button2 = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/2, 64, screen_width/4, 40)];
+    [button2 setTitle:@"投资金额" forState:UIControlStateNormal];
     button2.titleLabel.font = [UIFont systemFontOfSize:14];
     [button2 setTitleColor:[UIColor colorWithRed:89.0/255.0 green:89.0/255.0 blue:89.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [button2 addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
     button2.tag = 102;
     [self.view addSubview:button2];
     
-    UIImageView *triangle2 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3/4*3, 16, 10, 5)];
+    UIImageView *triangle2 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/4/2-5, 33, 10, 5)];
     triangle2.image = [UIImage imageNamed:@"triangle_gray_1"];
     triangle2.tag = 1020;
     [button2 addSubview:triangle2];
     
-    UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/3*2, 64, screen_width/3, 36)];
-    [button3 setTitle:@"年化收益率   " forState:UIControlStateNormal];
+    UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/4*3, 64, screen_width/4, 40)];
+    [button3 setTitle:@"年化收益率" forState:UIControlStateNormal];
     button3.titleLabel.font = [UIFont systemFontOfSize:14];
     [button3 setTitleColor:[UIColor colorWithRed:89.0/255.0 green:89.0/255.0 blue:89.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [button3 addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
     button3.tag = 103;
     [self.view addSubview:button3];
     
-    UIImageView *triangle3 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3/4*3+5, 16, 10, 5)];
+    UIImageView *triangle3 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/4/2-5, 33, 10, 5)];
     triangle3.image = [UIImage imageNamed:@"triangle_gray_1"];
     triangle3.tag = 1030;
     [button3 addSubview:triangle3];
     
     
     //添加分割线
-    UIImageView *line1 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3, 70, 2, 24)];
+    UIImageView *line1 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/4, 72, 2, 28)];
     line1.image = [UIImage imageNamed:@"vertical_line"];
     [self.view addSubview:line1];
     
-    UIImageView *line2 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3*2, 70, 2, 24)];
+    UIImageView *line2 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/2, 72, 2, 28)];
     line2.image = [UIImage imageNamed:@"vertical_line"];
     [self.view addSubview:line2];
     
-    UIImageView *line3 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, screen_width, 2)];
-    line3.image = [UIImage imageNamed:@"horiz_line"];
+    UIImageView *line3 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/4*3, 72, 2, 28)];
+    line3.image = [UIImage imageNamed:@"vertical_line"];
     [self.view addSubview:line3];
+    
+    UIImageView *line4 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 64+44, screen_width, 2)];
+    line4.image = [UIImage imageNamed:@"horiz_line"];
+    [self.view addSubview:line4];
 
     //tableview有背景颜色，和菜单（背景为白色）相区别
-    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 102, screen_width, screen_height)];
+    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 64+44+2, screen_width, screen_height-110-49)];
     backgroundView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:248.0/255.0 blue:247.0/255.0 alpha:1.0];
     [self.view addSubview:backgroundView];
     
-    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 102, screen_width-15, screen_height-102-49)];
+    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64+44+2, screen_width-15, screen_height-110-49)];
     myTableView.dataSource = self;
     myTableView.delegate = self;
     myTableView.showsVerticalScrollIndicator = NO;
@@ -177,7 +195,7 @@
     }
     
     //对用户投资记录进行排序
-    if (button.tag == 101) {//按投资时间降序
+    if (button.tag == 100) {//按投资时间排序
         if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button.tag*10]] isEqualToString:@"1"]) {
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:NO];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
@@ -186,6 +204,19 @@
         }
         else {//按投资时间升序
             NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:YES];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+        }
+    }
+    else if (button.tag == 101) {//按到期时间排序
+        if ([[triangle_flag valueForKey:[NSString stringWithFormat:@"%ld",button.tag*10]] isEqualToString:@"1"]) {
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"endDate" ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+            //NSLog(@"sortedRecord:%@",sortedRecord);
+        }
+        else {//按投资时间升序
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"endDate" ascending:YES];
             NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
             records = [[records sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
         }
@@ -243,12 +274,6 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
-//        //投资开始日期
-//        UILabel *label7 = [[UILabel alloc] initWithFrame:CGRectMake(15, 13, screen_width/3-25, 15)];
-//        label7.tag = 1006;
-//        label7.font = [UIFont systemFontOfSize:15];
-//        [cell.contentView addSubview:label7];
 
         //投资结束日期
         UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15, 13, screen_width/3-25, 15)];
@@ -256,8 +281,8 @@
         label1.font = [UIFont systemFontOfSize:15];
         [cell.contentView addSubview:label1];
         
-        UILabel *label6 = [[UILabel alloc] initWithFrame:CGRectMake(15+screen_width/3-25, 13, 30, 15)];
-        label6.text = @"到期";
+        UILabel *label6 = [[UILabel alloc] initWithFrame:CGRectMake(30, 40, screen_width/3-5, 15)];
+        label6.tag = 1006;
         label6.font = [UIFont systemFontOfSize:15];
         [cell.contentView addSubview:label6];
         
@@ -271,6 +296,7 @@
         [cell.contentView addSubview:label2];
         
         UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3+35, 40, 15, 16)];
+//        label3.backgroundColor = [UIColor blueColor];
         label3.text = @"￥";
         label3.font = [UIFont systemFontOfSize:16];
         [cell.contentView addSubview:label3];
@@ -290,29 +316,26 @@
     }
     
     //写入数据
-//    UILabel *label7 = (UILabel *)[cell.contentView viewWithTag:1006];
     UILabel *label1 = (UILabel *)[cell.contentView viewWithTag:1001];
     UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:1002];
     UILabel *label2 = (UILabel *)[cell.contentView viewWithTag:1003];
     UILabel *label4 = (UILabel *)[cell.contentView viewWithTag:1004];
     UILabel *label5 = (UILabel *)[cell.contentView viewWithTag:1005];
+    UILabel *label6 = (UILabel *)[cell.contentView viewWithTag:1006];
+    
     NSString *imageName = [NSString stringWithFormat:@"%@-icon",[records[indexPath.row] objectForKey:@"platform"]];
     [imageView setImage:[UIImage imageNamed:imageName]];
-//    NSString *label7Text = [NSString stringWithFormat:@"%@",[sortedRecord[indexPath.row] objectForKey:@"startDate"]];
-//    label7.text = label7Text;
-    NSString *label1Text = [NSString stringWithFormat:@"%@",[records[indexPath.row] objectForKey:@"endDate"]];
+    NSString *label1Text = [NSString stringWithFormat:@"%@",[records[indexPath.row] objectForKey:@"startDate"]];
     label1.text = label1Text;
+    NSString *label6Text = [NSString stringWithFormat:@"至 %@",[records[indexPath.row] objectForKey:@"endDate"]];
+    label6.text = label6Text;
     NSString *label2Text = [NSString stringWithFormat:@"%@-%@",[records[indexPath.row] objectForKey:@"platform"],[records[indexPath.row] objectForKey:@"product"]];
     label2.text = label2Text;
     label2.textColor = [platformColor objectForKey:[records[indexPath.row] objectForKey:@"platform"]];
     NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[records[indexPath.row] objectForKey:@"capital"] floatValue]];
     label4.text = label4Text;
-    if ([[records[indexPath.row] objectForKey:@"minRate"] floatValue] == 0 ) {
+    if ([[records[indexPath.row] objectForKey:@"minRate"] floatValue] == [[records[indexPath.row] objectForKey:@"maxRate"] floatValue] ) {
         NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[records[indexPath.row] objectForKey:@"maxRate"] floatValue]];
-        label5.text = label5Text;
-    }
-    else if ([[records[indexPath.row] objectForKey:@"maxRate"] floatValue] == 0) {
-        NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[records[indexPath.row] objectForKey:@"minRate"] floatValue]];
         label5.text = label5Text;
     }
     else {
