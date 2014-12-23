@@ -73,7 +73,7 @@ public class WaterFragment extends Fragment implements OnClickListener{
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.water_fragment, container, false);
 
-		returnList = new ReturnList();
+		returnList = new ReturnList(this.getActivity());
 		dataList=new ArrayList<Map<String,Object>>();
         listView=(ListView) view.findViewById(R.id.water_list_view);
         time_tab=(RelativeLayout) view.findViewById(R.id.invest_time);
@@ -100,7 +100,7 @@ public class WaterFragment extends Fragment implements OnClickListener{
 		// TODO Auto-generated method stub
 		dataList.clear();
 		List<Map<String, Object>> temp=new ArrayList<Map<String,Object>>();
-		temp=returnList.waterSort(this.getActivity(),type,des);
+		temp=returnList.waterSort(type,des);
 		for(int i=0;i<temp.size();i++){
 			dataList.add(temp.get(i));
 		}

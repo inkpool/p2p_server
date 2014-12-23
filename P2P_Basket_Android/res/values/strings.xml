@@ -58,6 +58,17 @@
     <string name="select_method_item02">按月还本息</string>
     <string name="select_method_item03">按月只还息</string>
     
+    <string name="analyze_piechart01">各平台在投总额饼状图</string>
+    <string name="analyze_piechart02">收益率分布饼状图</string>
+    <string name="analyze_piechart03">期限结构分布饼状图</string>
+    <string name="analyze_piechart04">回款时间分布饼状图</string>
+    <string name="analyze_piechart05">各平台余额分布饼状图</string>    
+    <string name="analyze_piechart01_small">在投总额\n饼状图</string>
+    <string name="analyze_piechart02_small">收益率分布\n饼状图</string>
+    <string name="analyze_piechart03_small">期限结构\n饼状图</string>
+    <string name="analyze_piechart04_small">回款时间\n饼状图</string>
+    <string name="analyze_piechart05_small">平台余额\n饼状图</string>
+    
     <string name="left_menu_01">数据云备份</string>
     <string name="left_menu_02">检查更新</string>
     <string name="left_menu_03">用户反馈</string>

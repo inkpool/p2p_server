@@ -2,6 +2,7 @@ package com.crowley.p2pnote;
 
 import java.util.ArrayList;
 
+import com.crowley.p2pnote.db.DBOpenHelper;
 import com.crowley.p2pnote.functions.ReturnList;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
@@ -27,7 +28,8 @@ public class AnalyzeFragment extends Fragment implements OnClickListener{
 	private PieChart mChart;
 	private ReturnList returnList;
 	
-	private TextView time_period;
+	private TextView analyze_name;
+	private int status;
 	private ImageView prev;
 	private ImageView next;
 	
@@ -36,23 +38,23 @@ public class AnalyzeFragment extends Fragment implements OnClickListener{
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View v = inflater.inflate(R.layout.analyze_fragment, container, false);
-		returnList=new ReturnList();
+		
+		returnList=new ReturnList(this.getActivity());
+		
 		mChart = (PieChart) v.findViewById(R.id.pieChart1);
-		time_period=(TextView) v.findViewById(R.id.time_period);
+		analyze_name=(TextView) v.findViewById(R.id.analyze_name);
 		prev=(ImageView) v.findViewById(R.id.prev);
 		next=(ImageView) v.findViewById(R.id.next);
 		
-		String[] timeStrings = (time_period.getText().toString()).split(" ");
-		String beginString = timeStrings[0];
-		String endString = timeStrings[timeStrings.length-1];
+		status=0;
 		
         mChart.setDescription("");
         mChart.setUsePercentValues(true);
-        mChart.setCenterText("投资平台\n占比图");
+        mChart.setCenterText(this.getActivity().getResources().getString(DBOpenHelper.ANALYZE_TITLE_SMALL[status]));
         mChart.setCenterTextSize(22f);
         mChart.setHoleRadius(45f); 
         mChart.setTransparentCircleRadius(50f);        
-        mChart.setData(generatePieData(beginString,endString));        
+        mChart.setData(generatePieData(status));
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.BELOW_CHART_CENTER);
         l.setForm(LegendForm.SQUARE);
@@ -63,104 +65,117 @@ public class AnalyzeFragment extends Fragment implements OnClickListener{
 		return v;
 	}
 	
-	protected PieData generatePieData(String beginString,String endString) {
+	protected PieData generatePieData(int type) {
+		ArrayList<String> xVals=null;
+		ArrayList<Entry> entries1 =null;
+		
+		if (type==0||type==4) {
+			xVals = returnList.analyzexVals(type);
+		}else {
+			switch (type) {
+			case 1:{
+				//收益率
+				xVals = new ArrayList<String>();
+	        	xVals.add("< 6%");
+	        	xVals.add("< 8%");
+	        	xVals.add("< 10%");
+	        	xVals.add("< 12%");
+	        	xVals.add("< 15%");
+	        	xVals.add("< 20%");
+	        	xVals.add("< 25%");
+	        	xVals.add("> 25%");
+	        	break;
+			}
+			case 2:{
+				//期限结构
+				xVals = new ArrayList<String>();
+	        	xVals.add("一个月");
+	        	xVals.add("三个月");
+	        	xVals.add("半年");
+	        	xVals.add("九个月");
+	        	xVals.add("一年");
+	        	xVals.add("一年半");
+	        	xVals.add("两年");
+	        	xVals.add("两年以上");
+	        	break;
+			}
+			case 3:{
+				//回款时间
+				xVals = new ArrayList<String>();
+	        	xVals.add("一周");
+	        	xVals.add("一个月");
+	        	xVals.add("三个月");
+	        	xVals.add("半年");
+	        	xVals.add("九个月");
+	        	xVals.add("一年");
+	        	xVals.add("一年以上");
+	        	break;
+			}
+			default:
+				break;
+			}
+		}
         
-
-        ArrayList<String> xVals = returnList.analyzexVals(this.getActivity(), 0, beginString, endString);
-        ArrayList<Entry> entries1 =null;
+        
         int count = xVals.size();
         PieData d;
-        
+        PieDataSet ds1=null;
         if(count==0){
         	xVals = new ArrayList<String>();
-        	xVals.add("该月没有投资记录");
+        	xVals.add("暂无相应分析");
         	entries1 = new ArrayList<Entry>();
         	entries1.add(new Entry(100f, 0));
+        	ds1 = new PieDataSet(entries1, "");
+        	ds1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            ds1.setSliceSpace(2f);
+            d = new PieData(xVals, ds1);
         }else{
-        	entries1 = returnList.analyzeEntries(this.getActivity(), 0, beginString, endString, xVals);            
-            for(int i = 0; i < count; i++) {
-                xVals.add("entry" + (i+1));
-            }            
-        } 
-        PieDataSet ds1 = new PieDataSet(entries1, "");
-        ds1.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        ds1.setSliceSpace(2f);
-        d = new PieData(xVals, ds1);
+        	entries1 = returnList.analyzeEntries(type,xVals);
+        	ArrayList<Entry> result = new ArrayList<Entry>();
+        	ArrayList<String> xValsResult = new ArrayList<String>();
+        	for(int i=0;i<entries1.size();i++){
+        		if(entries1.get(i).getVal()!=0){
+            		result.add(entries1.get(i));
+            		xValsResult.add(xVals.get(i));
+            	}
+        	}
+            for(int i = 0; i < result.size(); i++) {
+            	xValsResult.add("entry" + (i+1));                
+            }
+            ds1 = new PieDataSet(result, "");
+            ds1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            ds1.setSliceSpace(2f);
+            d = new PieData(xValsResult, ds1);
+        }        
         return d;
-		/*int count = 1;
         
-        ArrayList<Entry> entries1 = new ArrayList<Entry>();
-        ArrayList<String> xVals = new ArrayList<String>();
-        
-        xVals.add("该月没有投资记录");
-        
-        for(int i = 0; i < count; i++) {
-            xVals.add("entry" + (i+1));    
-            entries1.add(new Entry(100f, i));
-        }
-        
-        PieDataSet ds1 = new PieDataSet(entries1, "");
-        ds1.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        ds1.setSliceSpace(2f);
-        
-        PieData d = new PieData(xVals, ds1);
-        return d;*/
     }
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		String[] timeStrings = (time_period.getText().toString()).split(" ");
-		String beginString = timeStrings[0];
-		String endString = timeStrings[timeStrings.length-1];
-		String[] beginTime=beginString.split("-");
-		String[] endTime=endString.split("-");
-		int[] months={0,31,28,31,30,31,30,31,31,30,31,30,31};
-		int beginYear=Integer.parseInt(beginTime[0]);
-		int beginMonth=Integer.parseInt(beginTime[1]);
-		int beginDay=Integer.parseInt(beginTime[2]);
-		int endYear=Integer.parseInt(endTime[0]);
-		int endMonth=Integer.parseInt(endTime[1]);
-		int endDay=Integer.parseInt(endTime[2]);
 		
 		switch (v.getId()) {
 		case R.id.prev:{
-			if (beginMonth==1) {
-				beginYear--;
-				beginString=beginYear+"-12-01";
-				endString=beginYear+"-12-31";				
+			if(status==0){
+				status=4;
 			}else{
-				beginMonth--;
-				if(beginMonth<10){
-					beginString=beginYear+"-0"+beginMonth+"-01";
-					endString=beginYear+"-0"+beginMonth+"-"+months[beginMonth];
-				}else{
-					beginString=beginYear+"-"+beginMonth+"-01";
-					endString=beginYear+"-"+beginMonth+"-"+months[beginMonth];
-				}
+				status--;
 			}
-			time_period.setText(beginString+" 至 "+endString);
-			mChart.setData(generatePieData(beginString,endString));
+			analyze_name.setText(DBOpenHelper.ANALYZE_TITLE[status]);
+			mChart.setData(generatePieData(status));
+			mChart.setCenterText(this.getActivity().getResources().getString(DBOpenHelper.ANALYZE_TITLE_SMALL[status]));
 			mChart.invalidate();
 			break;
 		}
 		case R.id.next:{
-			if (beginMonth==12) {
-				beginYear++;
-				beginString=beginYear+"-01-01";
-				endString=beginYear+"-01-31";				
+			if(status==4){
+				status=0;
 			}else{
-				beginMonth++;
-				if(beginMonth<10){
-					beginString=beginYear+"-0"+beginMonth+"-01";
-					endString=beginYear+"-0"+beginMonth+"-"+months[beginMonth];
-				}else{
-					beginString=beginYear+"-"+beginMonth+"-01";
-					endString=beginYear+"-"+beginMonth+"-"+months[beginMonth];
-				}
+				status++;
 			}
-			time_period.setText(beginString+" 至 "+endString);
-			mChart.setData(generatePieData(beginString,endString));
+			analyze_name.setText(DBOpenHelper.ANALYZE_TITLE[status]);
+			mChart.setData(generatePieData(status));
+			mChart.setCenterText(this.getActivity().getResources().getString(DBOpenHelper.ANALYZE_TITLE_SMALL[status]));
 			mChart.invalidate();
 			break;
 		}

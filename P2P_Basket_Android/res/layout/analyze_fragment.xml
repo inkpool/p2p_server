@@ -22,8 +22,8 @@
             />
         
         <TextView 
-            android:id="@+id/time_period"
-            android:text="2014-12-01 至  2014-12-31"
+            android:id="@+id/analyze_name"
+            android:text="@string/analyze_piechart01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"

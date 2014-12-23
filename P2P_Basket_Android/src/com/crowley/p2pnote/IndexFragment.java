@@ -46,7 +46,7 @@ public class IndexFragment extends Fragment implements OnClickListener{
 		View view = inflater.inflate(R.layout.index_fragment, container, false);
 		//TextView text = (TextView) view.findViewById(R.id.test);
 		
-		returnList = new ReturnList();
+		returnList = new ReturnList(this.getActivity());
         dataList=new ArrayList<Map<String,Object>>();
         listView=(ListView) view.findViewById(R.id.list_view);
         getData(1);
@@ -57,8 +57,8 @@ public class IndexFragment extends Fragment implements OnClickListener{
         tab_button02 = (LinearLayout) view.findViewById(R.id.tab_button02);
         tab_button01_number = (TextView) view.findViewById(R.id.tab_button01_number);
         tab_button02_number = (TextView) view.findViewById(R.id.tab_button02_number);
-        tab_button01_number.setText(String.valueOf(returnList.indexCount(this.getActivity(), 0)));
-        tab_button02_number.setText(String.valueOf(returnList.indexCount(this.getActivity(), 1)));
+        tab_button01_number.setText(String.valueOf(returnList.indexCount(0)));
+        tab_button02_number.setText(String.valueOf(returnList.indexCount(1)));
 		
         tab_button01.setOnClickListener(this);
         tab_button02.setOnClickListener(this);
@@ -71,7 +71,7 @@ public class IndexFragment extends Fragment implements OnClickListener{
 	private void getData(int type){
 		dataList.clear();
 		List<Map<String, Object>> temp=new ArrayList<Map<String,Object>>();
-		temp=returnList.indexList(this.getActivity(), type);
+		temp=returnList.indexList(type);
 		for(int i=0;i<temp.size();i++){
 			dataList.add(temp.get(i));
 		}

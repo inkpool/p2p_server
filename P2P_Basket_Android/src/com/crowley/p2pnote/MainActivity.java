@@ -91,6 +91,7 @@ public class MainActivity extends Activity implements OnClickListener{
             }  
             break;  
         case 2:  
+        	((Button)findViewById(R.id.new_item)).setVisibility(View.GONE);
         	title.setText(R.string.tab_analyze);
         	((ImageView)tabAnalyze.findViewById(R.id.tab_analyze_icon)).setImageResource(R.drawable.analyze_focus);
             ((TextView)tabAnalyze.findViewById(R.id.tab_analyze_text)).setTextColor(getResources().getColor(R.color.tab_text_chosen));  
@@ -104,6 +105,7 @@ public class MainActivity extends Activity implements OnClickListener{
             }  
             break;  
         case 3: 
+        	((Button)findViewById(R.id.new_item)).setVisibility(View.GONE);
         	title.setText(R.string.tab_platform);
         	((ImageView)tabPlatform.findViewById(R.id.tab_platform_icon)).setImageResource(R.drawable.platform_focus); 
             ((TextView)tabPlatform.findViewById(R.id.tab_platform_text)).setTextColor(getResources().getColor(R.color.tab_text_chosen)); 
@@ -117,6 +119,7 @@ public class MainActivity extends Activity implements OnClickListener{
             }  
             break;
 		case 4:  
+        	((Button)findViewById(R.id.new_item)).setVisibility(View.GONE);
 			title.setText(R.string.tab_more);
 	    	((ImageView)tabMore.findViewById(R.id.tab_more_icon)).setImageResource(R.drawable.more_focus);  
             ((TextView)tabMore.findViewById(R.id.tab_more_text)).setTextColor(getResources().getColor(R.color.tab_text_chosen));
