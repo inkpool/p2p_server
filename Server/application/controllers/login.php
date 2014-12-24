@@ -1,4 +1,5 @@
 <?php 
+require 'PHPMailerAutoload.php';
 
 class Login extends CI_Controller {
 	
@@ -58,20 +59,30 @@ class Login extends CI_Controller {
 		
 	}
 	
+	public function createTicket($email)
+	{
+		//插入请求重置密码的数据表
+	}
+	
 	public function recoverPassword()
 	{
 		$user_name=$this->input->post('user_name');
+		if(empty($user_name))
+		{
+			die();
+		}
 		$query=$this->db->select('*')->from('my_users')->where('user_name',$user_name);
 		$num=$query->count_all_results();
 		if(intval($num))
 		{
-			$this->load->library('email');
-			
-			
+			$this->createTicket($email);
+			header("location: http://www.speakaloud.org/beerich/email/sendEmail.php?email=$email&");
+			$this->output(0, "Request sent.");
 			//send a email
 		}else 
 		{
 			$this->output(1, "Username not exists!");
 		}
 	}
+	
 }

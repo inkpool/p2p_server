@@ -1,5 +1,5 @@
 <?php
-require 'PHPMailerAutoload.php';
+include_once 'PHPMailerAutoload.php';
 
 class Email{
 	
