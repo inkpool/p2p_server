@@ -12,7 +12,7 @@
 #import "AboutUsViewController.h"
 #import "FeedbackViewController.h"
 #import "LoginAndRegisterViewController.h"
-#import "CloudBackupViewController.h"
+#import "CloudSyncingViewController.h"
 #import "PasswordViewController.h"
 
 @interface LeftSliderController ()
@@ -45,7 +45,6 @@ static LeftSliderController *sharedLSC;
     CGSize size = rect.size;
     screen_width = size.width;
     screen_height = size.height;
-    
     menu = [NSArray arrayWithObjects:@"云同步",@"检查更新",@"用户反馈",@"关于我们",@"密码设置",@"好友分享",nil];
     
     //添加一个背景图片
@@ -182,7 +181,7 @@ static LeftSliderController *sharedLSC;
     NSInteger num = indexPath.section*3 + indexPath.row;
     switch (num) {
         case 0:{
-            CloudBackupViewController *cloudBackupVC = [[CloudBackupViewController alloc] init];
+            CloudSyncingViewController *cloudBackupVC = [[CloudSyncingViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:cloudBackupVC];
             [self presentViewController:navC animated:YES completion:nil];
             break;

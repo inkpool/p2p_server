@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D02FCFF1A404E5700C09982 /* CloudBackupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D02FCFE1A404E5700C09982 /* CloudBackupViewController.m */; };
+		1D02FCFF1A404E5700C09982 /* CloudSyncingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D02FCFE1A404E5700C09982 /* CloudSyncingViewController.m */; };
 		1D05728C1A3D801100A1DB63 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D05728B1A3D801100A1DB63 /* FeedbackViewController.m */; };
 		1D13628F1A41ABC4006BE057 /* PlatformDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D13628E1A41ABC4006BE057 /* PlatformDetailViewController.m */; };
 		1D1362951A41BC79006BE057 /* PlatformViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1362941A41BC79006BE057 /* PlatformViewController.m */; };
@@ -23,6 +23,9 @@
 		1D5FB5B91A38266500DB12B7 /* vertical_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5FB5B51A38266500DB12B7 /* vertical_line.png */; };
 		1D5FB5BB1A38281500DB12B7 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5FB5BA1A38281500DB12B7 /* arrow.png */; };
 		1D5FB60C1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5FB60B1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a */; };
+		1D60C3631A4A801400C08D52 /* LDProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D60C3601A4A801400C08D52 /* LDProgressView.m */; };
+		1D60C3641A4A801400C08D52 /* UIColor+RGBValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D60C3621A4A801400C08D52 /* UIColor+RGBValues.m */; };
+		1D60C3671A4AB11A00C08D52 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D60C3661A4AB11A00C08D52 /* MBProgressHUD.m */; };
 		1D666CFF1A10C843004DC666 /* LeftSliderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D666CFE1A10C843004DC666 /* LeftSliderController.m */; };
 		1D6A48F61A43C3C600A381C6 /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6A48F51A43C3C600A381C6 /* PasswordViewController.m */; };
 		1D6DBD081A3EECE30081F516 /* LoginAndRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD071A3EECE30081F516 /* LoginAndRegisterViewController.m */; };
@@ -101,8 +104,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1D02FCFD1A404E5700C09982 /* CloudBackupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudBackupViewController.h; sourceTree = "<group>"; };
-		1D02FCFE1A404E5700C09982 /* CloudBackupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudBackupViewController.m; sourceTree = "<group>"; };
+		1D02FCFD1A404E5700C09982 /* CloudSyncingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudSyncingViewController.h; sourceTree = "<group>"; };
+		1D02FCFE1A404E5700C09982 /* CloudSyncingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudSyncingViewController.m; sourceTree = "<group>"; };
 		1D05728A1A3D801100A1DB63 /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
 		1D05728B1A3D801100A1DB63 /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		1D13628D1A41ABC4006BE057 /* PlatformDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlatformDetailViewController.h; sourceTree = "<group>"; };
@@ -201,6 +204,12 @@
 		1D5FB6091A3829F000DB12B7 /* NSDecimalNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDecimalNumberExtensions.h; sourceTree = "<group>"; };
 		1D5FB60A1A3829F000DB12B7 /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		1D5FB60B1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
+		1D60C35F1A4A801400C08D52 /* LDProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDProgressView.h; sourceTree = "<group>"; };
+		1D60C3601A4A801400C08D52 /* LDProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDProgressView.m; sourceTree = "<group>"; };
+		1D60C3611A4A801400C08D52 /* UIColor+RGBValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RGBValues.h"; sourceTree = "<group>"; };
+		1D60C3621A4A801400C08D52 /* UIColor+RGBValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RGBValues.m"; sourceTree = "<group>"; };
+		1D60C3651A4AB11A00C08D52 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		1D60C3661A4AB11A00C08D52 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		1D666CFD1A10C843004DC666 /* LeftSliderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftSliderController.h; sourceTree = "<group>"; };
 		1D666CFE1A10C843004DC666 /* LeftSliderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftSliderController.m; sourceTree = "<group>"; };
 		1D6A48F41A43C3C600A381C6 /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
@@ -446,9 +455,23 @@
 			path = CorePlotHeaders;
 			sourceTree = "<group>";
 		};
+		1D60C35E1A4A7FDF00C08D52 /* ProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				1D60C35F1A4A801400C08D52 /* LDProgressView.h */,
+				1D60C3601A4A801400C08D52 /* LDProgressView.m */,
+				1D60C3611A4A801400C08D52 /* UIColor+RGBValues.h */,
+				1D60C3621A4A801400C08D52 /* UIColor+RGBValues.m */,
+				1D60C3651A4AB11A00C08D52 /* MBProgressHUD.h */,
+				1D60C3661A4AB11A00C08D52 /* MBProgressHUD.m */,
+			);
+			name = ProgressView;
+			sourceTree = "<group>";
+		};
 		1D666CFC1A10C798004DC666 /* Side */ = {
 			isa = PBXGroup;
 			children = (
+				1D60C35E1A4A7FDF00C08D52 /* ProgressView */,
 				1D8966F81A49821800616949 /* DejalActivityView.h */,
 				1D8966F91A49821800616949 /* DejalActivityView.m */,
 				1DCB79661A3993BF00E4372B /* CustomCellBackground.h */,
@@ -457,8 +480,8 @@
 				1D666CFE1A10C843004DC666 /* LeftSliderController.m */,
 				1D6DBD061A3EECE30081F516 /* LoginAndRegisterViewController.h */,
 				1D6DBD071A3EECE30081F516 /* LoginAndRegisterViewController.m */,
-				1D02FCFD1A404E5700C09982 /* CloudBackupViewController.h */,
-				1D02FCFE1A404E5700C09982 /* CloudBackupViewController.m */,
+				1D02FCFD1A404E5700C09982 /* CloudSyncingViewController.h */,
+				1D02FCFE1A404E5700C09982 /* CloudSyncingViewController.m */,
 				1D84F5351A3BE3BE00413A76 /* AboutUsViewController.h */,
 				1D84F5361A3BE3BE00413A76 /* AboutUsViewController.m */,
 				1D05728A1A3D801100A1DB63 /* FeedbackViewController.h */,
@@ -797,18 +820,21 @@
 				1D6DBD081A3EECE30081F516 /* LoginAndRegisterViewController.m in Sources */,
 				1D6DBD1E1A3EFEF80081F516 /* AFHTTPRequestOperationManager.m in Sources */,
 				1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */,
+				1D60C3671A4AB11A00C08D52 /* MBProgressHUD.m in Sources */,
 				1D5C9C231A0B5FE0007CFFF9 /* HomeViewController.m in Sources */,
 				E65EB9001A17AA10004F23B7 /* MoreViewController.m in Sources */,
 				1D6A48F61A43C3C600A381C6 /* PasswordViewController.m in Sources */,
 				1DF0BDF11A10550A00E491D6 /* RootViewController.m in Sources */,
 				1D1362951A41BC79006BE057 /* PlatformViewController.m in Sources */,
 				1D989AAE1A10F6560092EED1 /* AnalysisViewController.m in Sources */,
+				1D60C3641A4A801400C08D52 /* UIColor+RGBValues.m in Sources */,
 				E608615619FFEDC800EBDBE1 /* main.m in Sources */,
 				1D8966FA1A49821800616949 /* DejalActivityView.m in Sources */,
+				1D60C3631A4A801400C08D52 /* LDProgressView.m in Sources */,
 				1DCB79681A3993BF00E4372B /* CustomCellBackground.m in Sources */,
 				1D13628F1A41ABC4006BE057 /* PlatformDetailViewController.m in Sources */,
 				1D6DBD231A3EFEF80081F516 /* AFURLRequestSerialization.m in Sources */,
-				1D02FCFF1A404E5700C09982 /* CloudBackupViewController.m in Sources */,
+				1D02FCFF1A404E5700C09982 /* CloudSyncingViewController.m in Sources */,
 				1D6DBD1D1A3EFEF80081F516 /* AFHTTPRequestOperation.m in Sources */,
 				1D6DBD241A3EFEF80081F516 /* AFURLResponseSerialization.m in Sources */,
 			);

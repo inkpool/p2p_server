@@ -284,22 +284,22 @@
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
     switch (flag) {
         case 0:
-            [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
+            [self alertWithTitle:@"连接异常" withMsg:@"网络连接异常"];
             break;
         case 1:
             [self alertWithTitle:@"提示" withMsg:@"登录成功"];
             break;
         case 2:
-            [self alertWithTitle:@"提示" withMsg:@"不存在该账号"];
+            [self alertWithTitle:@"登录失败" withMsg:@"不存在该账号"];
             break;
         case 3:
-            [self alertWithTitle:@"提示" withMsg:@"密码错误！"];
+            [self alertWithTitle:@"登录失败" withMsg:@"密码错误！"];
             break;
         case 4:
             [self alertWithTitle:@"提示" withMsg:@"注册成功"];
             break;
         case 5:
-            [self alertWithTitle:@"提示" withMsg:@"该账号已被注册"];
+            [self alertWithTitle:@"注册失败" withMsg:@"该账号已被注册"];
             break;
         default:
             break;

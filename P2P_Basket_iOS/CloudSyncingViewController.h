@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CloudBackupViewController : UIViewController
+@interface CloudSyncingViewController : UIViewController
 {
     NSMutableArray *records;//用户所有的投资记录
+
 }
 @end
