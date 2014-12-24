@@ -57,4 +57,21 @@ class Login extends CI_Controller {
 		}
 		
 	}
+	
+	public function recoverPassword()
+	{
+		$user_name=$this->input->post('user_name');
+		$query=$this->db->select('*')->from('my_users')->where('user_name',$user_name);
+		$num=$query->count_all_results();
+		if(intval($num))
+		{
+			$this->load->library('email');
+			
+			
+			//send a email
+		}else 
+		{
+			$this->output(1, "Username not exists!");
+		}
+	}
 }
