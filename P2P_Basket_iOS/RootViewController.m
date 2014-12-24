@@ -130,7 +130,7 @@
 - (void)initChildControllers {
     //初始化“更多”功能界面所在的ViewController
     LeftSliderController *leftSC = [[LeftSliderController alloc] init];
-    leftSC->records = records;
+    leftSC->delegate = self;
     [self addChildViewController:leftSC];
     [_leftSideView addSubview:leftSC.view];
     
@@ -172,7 +172,7 @@
 #pragma mark -
 #pragma mark UIViewPassValueDelegate
 - (void)refresh1 {
-    //添加新的投资后刷新主页和流水界面，分析界面的分析图，以及云备份功能模块获取的用户投资记录
+    //添加新的投资后刷新主页和流水界面，分析界面的分析图
     [self initRecord];
     //NSLog(@"records:%@",records);
     UITabBarController *tbc = [nc.childViewControllers firstObject];
@@ -188,9 +188,6 @@
     analysisVC->records = records;
     [analysisVC->piePlot reloadData];
     [analysisVC->barPlot reloadData];
-    
-    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
-    leftSliderC->records = records;
     
     FlowViewController *flowViewController = tbc.viewControllers[3];
     flowViewController->records = records;
@@ -241,7 +238,7 @@
 }
 
 - (void)refresh2 {
-    //在流水界面删除投资记录后刷新主页，分析界面的分析图，以及云备份功能模块获取的用户投资记录
+    //在流水界面删除投资记录后刷新主页，分析界面的分析图
     [self initRecord];
     UITabBarController *tbc = [nc.childViewControllers firstObject];
     HomeViewController *homeViewController = tbc.viewControllers[0];
@@ -251,9 +248,6 @@
     homeViewController->unExpireRecord = unExpireRecord;
     [homeViewController->myTableView reloadData];
     [homeViewController showData];//重新显示统计数据
-    
-    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
-    leftSliderC->records = records;
     
     AnalysisViewController *analysisVC = tbc.viewControllers[2];
     analysisVC->records = records;

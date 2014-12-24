@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIViewPassValueDelegate.h"
 
 @interface LeftSliderController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 {
 @public
-    NSMutableArray *records;//用户所有的投资记录
     BOOL networkConnected;
+    NSObject<UIViewPassValueDelegate> *delegate;//在AddViewController中添加新的投资后，要刷新主页,流水界面的tableVIew和分析界面
 }
 
 + (id)sharedViewController;//单例，RootViewController只初始化一次
