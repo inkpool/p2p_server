@@ -9,9 +9,29 @@ class Sync extends CI_Controller {
 		return $num;
 	}
 	
+	private function getState($user_name,$add_time)
+	{
+		$query=$this->db->select('*')
+						->from('my_records')
+						->where('userName',$user_name)
+						->where('addTime',$add_time);
+		$row=$query->get()->result_array();
+		return $row[0]['state'];
+	}
+	
+	private function getIfDeleted($user_name,$add_time)
+	{
+		$query=$this->db->select('*')
+		->from('my_records')
+		->where('userName',$user_name)
+		->where('addTime',$add_time);
+		$row=$query->get()->result_array();
+		return $row[0]['ifDeleted'];
+	}
+	
 	private function insertRecord($user_name,$platform,$product,
 			$capital,$minRate,$maxRate,$calType,$startDate,$endDate,
-			$state,$add_time){
+			$state,$add_time,$ifDeleted){
 		$data=array(
 				'id'=>'',
 				'userName'=>$user_name,
@@ -25,6 +45,7 @@ class Sync extends CI_Controller {
 				'endDate'=>$endDate,
 				'state'=>$state,
 				'addTime'=>$add_time,
+				'ifDeleted'=>$ifDeleted,
 		);
 		$this->db->insert('my_records',$data);
 	}
@@ -56,26 +77,57 @@ class Sync extends CI_Controller {
 		$endDate=$this->input->post('endDate');
 		$state=$this->input->post('state');
 		$add_time=$this->input->post('add_time');
+		$ifDeleted=$this->input->post('ifDeleted');
 
 		if($this->ifExists($user_name,$add_time))
 		{
-			$this->output(0, "Already exists, jumped.");
+			//$db_ifDeleted=$this->getIfDeleted($user_name, $add_time);
+			if($ifDeleted)
+			{
+				$update_data=array(
+						'ifDeleted'=>$ifDeleted,
+				);
+				$this->db->where('userName',$user_name)
+						 ->where('addTime',$add_time)
+						 ->update('my_records',$update_data);
+				$this->output(0, "Deleted record. DB updated.");
+			}
+				
+			$db_state=$this->getState($user_name, $add_time);
+			if(intval($db_state)<intval($state))
+			{
+				$update_data=array(
+						'state'=>$state,
+				);
+				$this->db->where('userName',$user_name)
+						 ->where('addTime',$add_time)
+						 ->update('my_records',$update_data);
+				$this->output(0, "Updated.");
+			}
+			$this->output(0, "Already exists, jumped.");		
 		}
 		else{
 			$this->insertRecord($user_name,$platform,$product,
 			$capital,$minRate,$maxRate,$calType,$startDate,$endDate,
-			$state,$add_time);
+			$state,$add_time,$ifDeleted);
 			$this->output(0, "Inserted.");
 		}
 	}
 	
 	public function fromCloud()
 	{
+		//post 用户名、第几条、往后多少条
 		$user_name=$this->input->post('user_name');
 		$index=$this->input->post('index');
 		$number=$this->input->post('number');
 		
-		
+		$query=$this->db->select('*')
+						->from('my_records')
+						->where('userName',$user_name)
+						->limit($number,$index)
+						->order_by('id','desc');
+		$result=$query->get()->result();
+		echo json_encode($result);
 	}
 	
 	public function cloudAmount()
@@ -84,6 +136,11 @@ class Sync extends CI_Controller {
 		$query=$this->db->select('*')->from('my_records')->where('userName',$user_name);
 		$num=$query->count_all_results();
 		echo $num;
+	}
+	
+	public function test()
+	{
+		echo ($this->getState('xuxin@qq.com',1413725078));
 	}
 	
 	
