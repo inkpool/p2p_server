@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginAndRegisterViewController : UIViewController<UITextFieldDelegate>
+@interface LoginAndRegisterViewController : UIViewController<UITextFieldDelegate,UIAlertViewDelegate>
 {
     UITextField *emailField,*passwordField;
     NSDictionary *resultDic;
 @public
     BOOL isLogin;
+    NSMutableArray *userInfoArray;
 }
 @end

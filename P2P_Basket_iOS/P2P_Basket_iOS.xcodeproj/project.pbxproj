@@ -11,6 +11,7 @@
 		1D05728C1A3D801100A1DB63 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D05728B1A3D801100A1DB63 /* FeedbackViewController.m */; };
 		1D13628F1A41ABC4006BE057 /* PlatformDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D13628E1A41ABC4006BE057 /* PlatformDetailViewController.m */; };
 		1D1362951A41BC79006BE057 /* PlatformViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1362941A41BC79006BE057 /* PlatformViewController.m */; };
+		1D1BDF8E1A4D53C9007F9915 /* userInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1D1BDF8D1A4D53C9007F9915 /* userInfo.plist */; };
 		1D5C9C231A0B5FE0007CFFF9 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5C9C221A0B5FE0007CFFF9 /* HomeViewController.m */; };
 		1D5C9C251A0B5FF8007CFFF9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D5C9C241A0B5FF8007CFFF9 /* Main.storyboard */; };
 		1D5C9C2D1A0B60CC007CFFF9 /* homepage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5C9C281A0B60CC007CFFF9 /* homepage@2x.png */; };
@@ -23,9 +24,6 @@
 		1D5FB5B91A38266500DB12B7 /* vertical_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5FB5B51A38266500DB12B7 /* vertical_line.png */; };
 		1D5FB5BB1A38281500DB12B7 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5FB5BA1A38281500DB12B7 /* arrow.png */; };
 		1D5FB60C1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5FB60B1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a */; };
-		1D60C3631A4A801400C08D52 /* LDProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D60C3601A4A801400C08D52 /* LDProgressView.m */; };
-		1D60C3641A4A801400C08D52 /* UIColor+RGBValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D60C3621A4A801400C08D52 /* UIColor+RGBValues.m */; };
-		1D60C3671A4AB11A00C08D52 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D60C3661A4AB11A00C08D52 /* MBProgressHUD.m */; };
 		1D666CFF1A10C843004DC666 /* LeftSliderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D666CFE1A10C843004DC666 /* LeftSliderController.m */; };
 		1D6A48F61A43C3C600A381C6 /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6A48F51A43C3C600A381C6 /* PasswordViewController.m */; };
 		1D6DBD081A3EECE30081F516 /* LoginAndRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD071A3EECE30081F516 /* LoginAndRegisterViewController.m */; };
@@ -39,6 +37,13 @@
 		1D6DBD241A3EFEF80081F516 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD1A1A3EFEF80081F516 /* AFURLResponseSerialization.m */; };
 		1D6DBD251A3EFEF80081F516 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD1C1A3EFEF80081F516 /* AFURLSessionManager.m */; };
 		1D6DBD271A3F172F0081F516 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D6DBD261A3F172F0081F516 /* MessageUI.framework */; };
+		1D6ECFD21A4BEBB7007C49DB /* AnalysisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6ECFD11A4BEBB7007C49DB /* AnalysisViewController.m */; };
+		1D6ECFDA1A4BEC7A007C49DB /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6ECFD51A4BEC7A007C49DB /* PieChartView.m */; };
+		1D6ECFDB1A4BEC7A007C49DB /* RenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6ECFD71A4BEC7A007C49DB /* RenderView.m */; };
+		1D6ECFDC1A4BEC7A007C49DB /* RotatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6ECFD91A4BEC7A007C49DB /* RotatedView.m */; };
+		1D6ECFE01A4BEC89007C49DB /* center.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D6ECFDD1A4BEC89007C49DB /* center.png */; };
+		1D6ECFE11A4BEC89007C49DB /* select.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D6ECFDE1A4BEC89007C49DB /* select.png */; };
+		1D6ECFE21A4BEC89007C49DB /* shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D6ECFDF1A4BEC89007C49DB /* shadow.png */; };
 		1D78F4A31A0D1581009ED28B /* menu-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D78F4A21A0D1581009ED28B /* menu-icon@2x.png */; };
 		1D78F4A51A0D168E009ED28B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D78F4A41A0D168E009ED28B /* QuartzCore.framework */; };
 		1D817EE11A4045D400D1F914 /* p2p_basket.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1D817EE01A4045D400D1F914 /* p2p_basket.sqlite */; };
@@ -49,7 +54,6 @@
 		1D8966FA1A49821800616949 /* DejalActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D8966F91A49821800616949 /* DejalActivityView.m */; };
 		1D8F1BEA1A41209000FA7F91 /* arrow_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D8F1BE91A41209000FA7F91 /* arrow_down.png */; };
 		1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D989AAA1A10F6260092EED1 /* FlowViewController.m */; };
-		1D989AAE1A10F6560092EED1 /* AnalysisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D989AAD1A10F6560092EED1 /* AnalysisViewController.m */; };
 		1DA23D401A3EDD3C00116632 /* menu_icon_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DA23D341A3EDD3C00116632 /* menu_icon_1.png */; };
 		1DA23D411A3EDD3C00116632 /* menu_icon_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DA23D351A3EDD3C00116632 /* menu_icon_1@2x.png */; };
 		1DA23D421A3EDD3C00116632 /* menu_icon_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DA23D361A3EDD3C00116632 /* menu_icon_4.png */; };
@@ -70,6 +74,9 @@
 		1DB339221A3A9C19002CAD78 /* register.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB339211A3A9C19002CAD78 /* register.png */; };
 		1DB339241A3AA1ED002CAD78 /* account_management.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB339231A3AA1ED002CAD78 /* account_management.png */; };
 		1DB339281A3AA636002CAD78 /* sign_out.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB339271A3AA636002CAD78 /* sign_out.png */; };
+		1DB963411A4D0B5B006CD037 /* AccountManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DB963401A4D0B5B006CD037 /* AccountManagementViewController.m */; };
+		1DB963431A4D1856006CD037 /* sign-up.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB963421A4D1856006CD037 /* sign-up.png */; };
+		1DB963451A4D1874006CD037 /* add-account.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB963441A4D1874006CD037 /* add-account.png */; };
 		1DCB79681A3993BF00E4372B /* CustomCellBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCB79671A3993BF00E4372B /* CustomCellBackground.m */; };
 		1DED79D91A287A4A00A054DB /* 爱投资-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D11A287A4A00A054DB /* 爱投资-icon.png */; };
 		1DED79DA1A287A4A00A054DB /* 点融网-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D21A287A4A00A054DB /* 点融网-icon.png */; };
@@ -79,6 +86,20 @@
 		1DED79DE1A287A4A00A054DB /* 盛融在线-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D61A287A4A00A054DB /* 盛融在线-icon.png */; };
 		1DED79DF1A287A4A00A054DB /* 鑫合汇-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D71A287A4A00A054DB /* 鑫合汇-icon.png */; };
 		1DED79E01A287A4A00A054DB /* 有利网-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D81A287A4A00A054DB /* 有利网-icon.png */; };
+		1DEF2D0C1A4AF0980029754A /* ALAlertBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DEF2D001A4AF0980029754A /* ALAlertBanner.m */; };
+		1DEF2D0D1A4AF0980029754A /* ALAlertBannerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DEF2D021A4AF0980029754A /* ALAlertBannerManager.m */; };
+		1DEF2D101A4AF0980029754A /* bannerFailure.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D061A4AF0980029754A /* bannerFailure.png */; };
+		1DEF2D111A4AF0980029754A /* bannerFailure@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D071A4AF0980029754A /* bannerFailure@2x.png */; };
+		1DEF2D141A4AF0980029754A /* bannerSuccess.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D0A1A4AF0980029754A /* bannerSuccess.png */; };
+		1DEF2D151A4AF0980029754A /* bannerSuccess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D0B1A4AF0980029754A /* bannerSuccess@2x.png */; };
+		1DEF2D1E1A4AF9AA0029754A /* 爱投资-icon-灰色.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D161A4AF9AA0029754A /* 爱投资-icon-灰色.png */; };
+		1DEF2D1F1A4AF9AA0029754A /* 点融网-icon-灰色.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D171A4AF9AA0029754A /* 点融网-icon-灰色.png */; };
+		1DEF2D201A4AF9AA0029754A /* 积木盒子-icon-灰色.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D181A4AF9AA0029754A /* 积木盒子-icon-灰色.png */; };
+		1DEF2D211A4AF9AA0029754A /* 陆金所-icon-灰色.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D191A4AF9AA0029754A /* 陆金所-icon-灰色.png */; };
+		1DEF2D221A4AF9AA0029754A /* 人人贷-icon-灰色.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D1A1A4AF9AA0029754A /* 人人贷-icon-灰色.png */; };
+		1DEF2D231A4AF9AA0029754A /* 盛融在线-icon-灰色.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D1B1A4AF9AA0029754A /* 盛融在线-icon-灰色.png */; };
+		1DEF2D241A4AF9AA0029754A /* 鑫合汇-icon-灰色.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D1C1A4AF9AA0029754A /* 鑫合汇-icon-灰色.png */; };
+		1DEF2D251A4AF9AA0029754A /* 有利网-icon-灰色.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF2D1D1A4AF9AA0029754A /* 有利网-icon-灰色.png */; };
 		1DF0BDF11A10550A00E491D6 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0BDF01A10550A00E491D6 /* RootViewController.m */; };
 		E608615619FFEDC800EBDBE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E608615519FFEDC800EBDBE1 /* main.m */; };
 		E608615919FFEDC800EBDBE1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E608615819FFEDC800EBDBE1 /* AppDelegate.m */; };
@@ -112,6 +133,7 @@
 		1D13628E1A41ABC4006BE057 /* PlatformDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlatformDetailViewController.m; sourceTree = "<group>"; };
 		1D1362931A41BC79006BE057 /* PlatformViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlatformViewController.h; sourceTree = "<group>"; };
 		1D1362941A41BC79006BE057 /* PlatformViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlatformViewController.m; sourceTree = "<group>"; };
+		1D1BDF8D1A4D53C9007F9915 /* userInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = userInfo.plist; sourceTree = "<group>"; };
 		1D5285161A2F054000989CAC /* UIViewPassValueDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewPassValueDelegate.h; sourceTree = "<group>"; };
 		1D5C9C211A0B5FE0007CFFF9 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		1D5C9C221A0B5FE0007CFFF9 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
@@ -125,91 +147,7 @@
 		1D5FB5B41A38266500DB12B7 /* triangle_gray_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle_gray_1.png; sourceTree = "<group>"; };
 		1D5FB5B51A38266500DB12B7 /* vertical_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vertical_line.png; sourceTree = "<group>"; };
 		1D5FB5BA1A38281500DB12B7 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
-		1D5FB5BD1A3829F000DB12B7 /* CorePlot-CocoaTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CorePlot-CocoaTouch.h"; sourceTree = "<group>"; };
-		1D5FB5BE1A3829F000DB12B7 /* CPTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAnimation.h; sourceTree = "<group>"; };
-		1D5FB5BF1A3829F000DB12B7 /* CPTAnimationOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAnimationOperation.h; sourceTree = "<group>"; };
-		1D5FB5C01A3829F000DB12B7 /* CPTAnimationPeriod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAnimationPeriod.h; sourceTree = "<group>"; };
-		1D5FB5C11A3829F000DB12B7 /* CPTAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAnnotation.h; sourceTree = "<group>"; };
-		1D5FB5C21A3829F000DB12B7 /* CPTAnnotationHostLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAnnotationHostLayer.h; sourceTree = "<group>"; };
-		1D5FB5C31A3829F000DB12B7 /* CPTAxis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAxis.h; sourceTree = "<group>"; };
-		1D5FB5C41A3829F000DB12B7 /* CPTAxisLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAxisLabel.h; sourceTree = "<group>"; };
-		1D5FB5C51A3829F000DB12B7 /* CPTAxisLabelGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAxisLabelGroup.h; sourceTree = "<group>"; };
-		1D5FB5C61A3829F000DB12B7 /* CPTAxisSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAxisSet.h; sourceTree = "<group>"; };
-		1D5FB5C71A3829F000DB12B7 /* CPTAxisTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAxisTitle.h; sourceTree = "<group>"; };
-		1D5FB5C81A3829F000DB12B7 /* CPTBarPlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTBarPlot.h; sourceTree = "<group>"; };
-		1D5FB5C91A3829F000DB12B7 /* CPTBorderedLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTBorderedLayer.h; sourceTree = "<group>"; };
-		1D5FB5CA1A3829F000DB12B7 /* CPTCalendarFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTCalendarFormatter.h; sourceTree = "<group>"; };
-		1D5FB5CB1A3829F000DB12B7 /* CPTColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTColor.h; sourceTree = "<group>"; };
-		1D5FB5CC1A3829F000DB12B7 /* CPTColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTColorSpace.h; sourceTree = "<group>"; };
-		1D5FB5CD1A3829F000DB12B7 /* CPTConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTConstraints.h; sourceTree = "<group>"; };
-		1D5FB5CE1A3829F000DB12B7 /* CPTDataSourceTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTDataSourceTestCase.h; sourceTree = "<group>"; };
-		1D5FB5CF1A3829F000DB12B7 /* CPTDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTDefinitions.h; sourceTree = "<group>"; };
-		1D5FB5D01A3829F000DB12B7 /* CPTDerivedXYGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTDerivedXYGraph.h; sourceTree = "<group>"; };
-		1D5FB5D11A3829F000DB12B7 /* CPTExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTExceptions.h; sourceTree = "<group>"; };
-		1D5FB5D21A3829F000DB12B7 /* CPTFill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTFill.h; sourceTree = "<group>"; };
-		1D5FB5D31A3829F000DB12B7 /* CPTFunctionDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTFunctionDataSource.h; sourceTree = "<group>"; };
-		1D5FB5D41A3829F000DB12B7 /* CPTGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTGradient.h; sourceTree = "<group>"; };
-		1D5FB5D51A3829F000DB12B7 /* CPTGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTGraph.h; sourceTree = "<group>"; };
-		1D5FB5D61A3829F000DB12B7 /* CPTGraphHostingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTGraphHostingView.h; sourceTree = "<group>"; };
-		1D5FB5D71A3829F000DB12B7 /* CPTGridLineGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTGridLineGroup.h; sourceTree = "<group>"; };
-		1D5FB5D81A3829F000DB12B7 /* CPTGridLines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTGridLines.h; sourceTree = "<group>"; };
-		1D5FB5D91A3829F000DB12B7 /* CPTImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTImage.h; sourceTree = "<group>"; };
-		1D5FB5DA1A3829F000DB12B7 /* CPTLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTLayer.h; sourceTree = "<group>"; };
-		1D5FB5DB1A3829F000DB12B7 /* CPTLayerAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTLayerAnnotation.h; sourceTree = "<group>"; };
-		1D5FB5DC1A3829F000DB12B7 /* CPTLegend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTLegend.h; sourceTree = "<group>"; };
-		1D5FB5DD1A3829F000DB12B7 /* CPTLegendEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTLegendEntry.h; sourceTree = "<group>"; };
-		1D5FB5DE1A3829F000DB12B7 /* CPTLimitBand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTLimitBand.h; sourceTree = "<group>"; };
-		1D5FB5DF1A3829F000DB12B7 /* CPTLineCap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTLineCap.h; sourceTree = "<group>"; };
-		1D5FB5E01A3829F000DB12B7 /* CPTLineStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTLineStyle.h; sourceTree = "<group>"; };
-		1D5FB5E11A3829F000DB12B7 /* CPTMutableLineStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTMutableLineStyle.h; sourceTree = "<group>"; };
-		1D5FB5E21A3829F000DB12B7 /* CPTMutableNumericData+TypeConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CPTMutableNumericData+TypeConversion.h"; sourceTree = "<group>"; };
-		1D5FB5E31A3829F000DB12B7 /* CPTMutableNumericData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTMutableNumericData.h; sourceTree = "<group>"; };
-		1D5FB5E41A3829F000DB12B7 /* CPTMutablePlotRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTMutablePlotRange.h; sourceTree = "<group>"; };
-		1D5FB5E51A3829F000DB12B7 /* CPTMutableShadow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTMutableShadow.h; sourceTree = "<group>"; };
-		1D5FB5E61A3829F000DB12B7 /* CPTMutableTextStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTMutableTextStyle.h; sourceTree = "<group>"; };
-		1D5FB5E71A3829F000DB12B7 /* CPTNumericData+TypeConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CPTNumericData+TypeConversion.h"; sourceTree = "<group>"; };
-		1D5FB5E81A3829F000DB12B7 /* CPTNumericData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTNumericData.h; sourceTree = "<group>"; };
-		1D5FB5E91A3829F000DB12B7 /* CPTNumericDataType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTNumericDataType.h; sourceTree = "<group>"; };
-		1D5FB5EA1A3829F000DB12B7 /* CPTPathExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPathExtensions.h; sourceTree = "<group>"; };
-		1D5FB5EB1A3829F000DB12B7 /* CPTPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPieChart.h; sourceTree = "<group>"; };
-		1D5FB5EC1A3829F000DB12B7 /* CPTPlatformSpecificCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPlatformSpecificCategories.h; sourceTree = "<group>"; };
-		1D5FB5ED1A3829F000DB12B7 /* CPTPlatformSpecificDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPlatformSpecificDefines.h; sourceTree = "<group>"; };
-		1D5FB5EE1A3829F000DB12B7 /* CPTPlatformSpecificFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPlatformSpecificFunctions.h; sourceTree = "<group>"; };
-		1D5FB5EF1A3829F000DB12B7 /* CPTPlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPlot.h; sourceTree = "<group>"; };
-		1D5FB5F01A3829F000DB12B7 /* CPTPlotArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPlotArea.h; sourceTree = "<group>"; };
-		1D5FB5F11A3829F000DB12B7 /* CPTPlotAreaFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPlotAreaFrame.h; sourceTree = "<group>"; };
-		1D5FB5F21A3829F000DB12B7 /* CPTPlotGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPlotGroup.h; sourceTree = "<group>"; };
-		1D5FB5F31A3829F000DB12B7 /* CPTPlotRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPlotRange.h; sourceTree = "<group>"; };
-		1D5FB5F41A3829F000DB12B7 /* CPTPlotSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPlotSpace.h; sourceTree = "<group>"; };
-		1D5FB5F51A3829F000DB12B7 /* CPTPlotSpaceAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPlotSpaceAnnotation.h; sourceTree = "<group>"; };
-		1D5FB5F61A3829F000DB12B7 /* CPTPlotSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTPlotSymbol.h; sourceTree = "<group>"; };
-		1D5FB5F71A3829F000DB12B7 /* CPTRangePlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTRangePlot.h; sourceTree = "<group>"; };
-		1D5FB5F81A3829F000DB12B7 /* CPTResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTResponder.h; sourceTree = "<group>"; };
-		1D5FB5F91A3829F000DB12B7 /* CPTScatterPlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTScatterPlot.h; sourceTree = "<group>"; };
-		1D5FB5FA1A3829F000DB12B7 /* CPTShadow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTShadow.h; sourceTree = "<group>"; };
-		1D5FB5FB1A3829F000DB12B7 /* CPTTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTTestCase.h; sourceTree = "<group>"; };
-		1D5FB5FC1A3829F000DB12B7 /* CPTTextLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTTextLayer.h; sourceTree = "<group>"; };
-		1D5FB5FD1A3829F000DB12B7 /* CPTTextStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTTextStyle.h; sourceTree = "<group>"; };
-		1D5FB5FE1A3829F000DB12B7 /* CPTTextStylePlatformSpecific.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTTextStylePlatformSpecific.h; sourceTree = "<group>"; };
-		1D5FB5FF1A3829F000DB12B7 /* CPTTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTTheme.h; sourceTree = "<group>"; };
-		1D5FB6001A3829F000DB12B7 /* CPTTimeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTTimeFormatter.h; sourceTree = "<group>"; };
-		1D5FB6011A3829F000DB12B7 /* CPTTradingRangePlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTTradingRangePlot.h; sourceTree = "<group>"; };
-		1D5FB6021A3829F000DB12B7 /* CPTUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTUtilities.h; sourceTree = "<group>"; };
-		1D5FB6031A3829F000DB12B7 /* CPTXYAxis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTXYAxis.h; sourceTree = "<group>"; };
-		1D5FB6041A3829F000DB12B7 /* CPTXYAxisSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTXYAxisSet.h; sourceTree = "<group>"; };
-		1D5FB6051A3829F000DB12B7 /* CPTXYGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTXYGraph.h; sourceTree = "<group>"; };
-		1D5FB6061A3829F000DB12B7 /* CPTXYPlotSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTXYPlotSpace.h; sourceTree = "<group>"; };
-		1D5FB6071A3829F000DB12B7 /* mainpage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mainpage.h; sourceTree = "<group>"; };
-		1D5FB6081A3829F000DB12B7 /* NSCoderExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCoderExtensions.h; sourceTree = "<group>"; };
-		1D5FB6091A3829F000DB12B7 /* NSDecimalNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDecimalNumberExtensions.h; sourceTree = "<group>"; };
-		1D5FB60A1A3829F000DB12B7 /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		1D5FB60B1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
-		1D60C35F1A4A801400C08D52 /* LDProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDProgressView.h; sourceTree = "<group>"; };
-		1D60C3601A4A801400C08D52 /* LDProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDProgressView.m; sourceTree = "<group>"; };
-		1D60C3611A4A801400C08D52 /* UIColor+RGBValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RGBValues.h"; sourceTree = "<group>"; };
-		1D60C3621A4A801400C08D52 /* UIColor+RGBValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RGBValues.m"; sourceTree = "<group>"; };
-		1D60C3651A4AB11A00C08D52 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		1D60C3661A4AB11A00C08D52 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		1D666CFD1A10C843004DC666 /* LeftSliderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftSliderController.h; sourceTree = "<group>"; };
 		1D666CFE1A10C843004DC666 /* LeftSliderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftSliderController.m; sourceTree = "<group>"; };
 		1D6A48F41A43C3C600A381C6 /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
@@ -236,6 +174,17 @@
 		1D6DBD1B1A3EFEF80081F516 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		1D6DBD1C1A3EFEF80081F516 /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
 		1D6DBD261A3F172F0081F516 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		1D6ECFD01A4BEBB7007C49DB /* AnalysisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalysisViewController.h; sourceTree = "<group>"; };
+		1D6ECFD11A4BEBB7007C49DB /* AnalysisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalysisViewController.m; sourceTree = "<group>"; };
+		1D6ECFD41A4BEC7A007C49DB /* PieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChartView.h; sourceTree = "<group>"; };
+		1D6ECFD51A4BEC7A007C49DB /* PieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChartView.m; sourceTree = "<group>"; };
+		1D6ECFD61A4BEC7A007C49DB /* RenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderView.h; sourceTree = "<group>"; };
+		1D6ECFD71A4BEC7A007C49DB /* RenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderView.m; sourceTree = "<group>"; };
+		1D6ECFD81A4BEC7A007C49DB /* RotatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotatedView.h; sourceTree = "<group>"; };
+		1D6ECFD91A4BEC7A007C49DB /* RotatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotatedView.m; sourceTree = "<group>"; };
+		1D6ECFDD1A4BEC89007C49DB /* center.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = center.png; sourceTree = "<group>"; };
+		1D6ECFDE1A4BEC89007C49DB /* select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select.png; sourceTree = "<group>"; };
+		1D6ECFDF1A4BEC89007C49DB /* shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shadow.png; sourceTree = "<group>"; };
 		1D78F4A21A0D1581009ED28B /* menu-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-icon@2x.png"; sourceTree = "<group>"; };
 		1D78F4A41A0D168E009ED28B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1D817EE01A4045D400D1F914 /* p2p_basket.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = p2p_basket.sqlite; sourceTree = "<group>"; };
@@ -249,8 +198,6 @@
 		1D8F1BE91A41209000FA7F91 /* arrow_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_down.png; sourceTree = "<group>"; };
 		1D989AA91A10F6260092EED1 /* FlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowViewController.h; sourceTree = "<group>"; };
 		1D989AAA1A10F6260092EED1 /* FlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowViewController.m; sourceTree = "<group>"; };
-		1D989AAC1A10F6560092EED1 /* AnalysisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalysisViewController.h; sourceTree = "<group>"; };
-		1D989AAD1A10F6560092EED1 /* AnalysisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalysisViewController.m; sourceTree = "<group>"; };
 		1DA23D341A3EDD3C00116632 /* menu_icon_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_icon_1.png; sourceTree = "<group>"; };
 		1DA23D351A3EDD3C00116632 /* menu_icon_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_icon_1@2x.png"; sourceTree = "<group>"; };
 		1DA23D361A3EDD3C00116632 /* menu_icon_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_icon_4.png; sourceTree = "<group>"; };
@@ -271,6 +218,10 @@
 		1DB339211A3A9C19002CAD78 /* register.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = register.png; sourceTree = "<group>"; };
 		1DB339231A3AA1ED002CAD78 /* account_management.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account_management.png; sourceTree = "<group>"; };
 		1DB339271A3AA636002CAD78 /* sign_out.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sign_out.png; sourceTree = "<group>"; };
+		1DB9633F1A4D0B5B006CD037 /* AccountManagementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountManagementViewController.h; sourceTree = "<group>"; };
+		1DB963401A4D0B5B006CD037 /* AccountManagementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountManagementViewController.m; sourceTree = "<group>"; };
+		1DB963421A4D1856006CD037 /* sign-up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sign-up.png"; sourceTree = "<group>"; };
+		1DB963441A4D1874006CD037 /* add-account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-account.png"; sourceTree = "<group>"; };
 		1DCB79661A3993BF00E4372B /* CustomCellBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellBackground.h; sourceTree = "<group>"; };
 		1DCB79671A3993BF00E4372B /* CustomCellBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellBackground.m; sourceTree = "<group>"; };
 		1DED79D11A287A4A00A054DB /* 爱投资-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "爱投资-icon.png"; sourceTree = "<group>"; };
@@ -281,6 +232,23 @@
 		1DED79D61A287A4A00A054DB /* 盛融在线-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "盛融在线-icon.png"; sourceTree = "<group>"; };
 		1DED79D71A287A4A00A054DB /* 鑫合汇-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "鑫合汇-icon.png"; sourceTree = "<group>"; };
 		1DED79D81A287A4A00A054DB /* 有利网-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "有利网-icon.png"; sourceTree = "<group>"; };
+		1DEF2CFE1A4AF0980029754A /* ALAlertBanner+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAlertBanner+Private.h"; sourceTree = "<group>"; };
+		1DEF2CFF1A4AF0980029754A /* ALAlertBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALAlertBanner.h; sourceTree = "<group>"; };
+		1DEF2D001A4AF0980029754A /* ALAlertBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALAlertBanner.m; sourceTree = "<group>"; };
+		1DEF2D011A4AF0980029754A /* ALAlertBannerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALAlertBannerManager.h; sourceTree = "<group>"; };
+		1DEF2D021A4AF0980029754A /* ALAlertBannerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALAlertBannerManager.m; sourceTree = "<group>"; };
+		1DEF2D061A4AF0980029754A /* bannerFailure.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bannerFailure.png; sourceTree = "<group>"; };
+		1DEF2D071A4AF0980029754A /* bannerFailure@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bannerFailure@2x.png"; sourceTree = "<group>"; };
+		1DEF2D0A1A4AF0980029754A /* bannerSuccess.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bannerSuccess.png; sourceTree = "<group>"; };
+		1DEF2D0B1A4AF0980029754A /* bannerSuccess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bannerSuccess@2x.png"; sourceTree = "<group>"; };
+		1DEF2D161A4AF9AA0029754A /* 爱投资-icon-灰色.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "爱投资-icon-灰色.png"; sourceTree = "<group>"; };
+		1DEF2D171A4AF9AA0029754A /* 点融网-icon-灰色.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "点融网-icon-灰色.png"; sourceTree = "<group>"; };
+		1DEF2D181A4AF9AA0029754A /* 积木盒子-icon-灰色.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "积木盒子-icon-灰色.png"; sourceTree = "<group>"; };
+		1DEF2D191A4AF9AA0029754A /* 陆金所-icon-灰色.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "陆金所-icon-灰色.png"; sourceTree = "<group>"; };
+		1DEF2D1A1A4AF9AA0029754A /* 人人贷-icon-灰色.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "人人贷-icon-灰色.png"; sourceTree = "<group>"; };
+		1DEF2D1B1A4AF9AA0029754A /* 盛融在线-icon-灰色.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "盛融在线-icon-灰色.png"; sourceTree = "<group>"; };
+		1DEF2D1C1A4AF9AA0029754A /* 鑫合汇-icon-灰色.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "鑫合汇-icon-灰色.png"; sourceTree = "<group>"; };
+		1DEF2D1D1A4AF9AA0029754A /* 有利网-icon-灰色.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "有利网-icon-灰色.png"; sourceTree = "<group>"; };
 		1DF0BDEF1A10550A00E491D6 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = ../RootViewController.h; sourceTree = "<group>"; };
 		1DF0BDF01A10550A00E491D6 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = ../RootViewController.m; sourceTree = "<group>"; };
 		E608615019FFEDC800EBDBE1 /* P2P_Basket_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = P2P_Basket_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -351,6 +319,14 @@
 				1DED79D61A287A4A00A054DB /* 盛融在线-icon.png */,
 				1DED79D71A287A4A00A054DB /* 鑫合汇-icon.png */,
 				1DED79D81A287A4A00A054DB /* 有利网-icon.png */,
+				1DEF2D161A4AF9AA0029754A /* 爱投资-icon-灰色.png */,
+				1DEF2D171A4AF9AA0029754A /* 点融网-icon-灰色.png */,
+				1DEF2D181A4AF9AA0029754A /* 积木盒子-icon-灰色.png */,
+				1DEF2D191A4AF9AA0029754A /* 陆金所-icon-灰色.png */,
+				1DEF2D1A1A4AF9AA0029754A /* 人人贷-icon-灰色.png */,
+				1DEF2D1B1A4AF9AA0029754A /* 盛融在线-icon-灰色.png */,
+				1DEF2D1C1A4AF9AA0029754A /* 鑫合汇-icon-灰色.png */,
+				1DEF2D1D1A4AF9AA0029754A /* 有利网-icon-灰色.png */,
 			);
 			name = PlatformIcon;
 			sourceTree = "<group>";
@@ -358,6 +334,7 @@
 		1D5C9C261A0B60A2007CFFF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1D1BDF8D1A4D53C9007F9915 /* userInfo.plist */,
 				1D5FB5B21A38266500DB12B7 /* horiz_line.png */,
 				1D5FB5B31A38266500DB12B7 /* triangle_blue_1.png */,
 				1D5FB5B41A38266500DB12B7 /* triangle_gray_1.png */,
@@ -370,108 +347,10 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		1D5FB5BC1A3829F000DB12B7 /* CorePlotHeaders */ = {
-			isa = PBXGroup;
-			children = (
-				1D5FB5BD1A3829F000DB12B7 /* CorePlot-CocoaTouch.h */,
-				1D5FB5BE1A3829F000DB12B7 /* CPTAnimation.h */,
-				1D5FB5BF1A3829F000DB12B7 /* CPTAnimationOperation.h */,
-				1D5FB5C01A3829F000DB12B7 /* CPTAnimationPeriod.h */,
-				1D5FB5C11A3829F000DB12B7 /* CPTAnnotation.h */,
-				1D5FB5C21A3829F000DB12B7 /* CPTAnnotationHostLayer.h */,
-				1D5FB5C31A3829F000DB12B7 /* CPTAxis.h */,
-				1D5FB5C41A3829F000DB12B7 /* CPTAxisLabel.h */,
-				1D5FB5C51A3829F000DB12B7 /* CPTAxisLabelGroup.h */,
-				1D5FB5C61A3829F000DB12B7 /* CPTAxisSet.h */,
-				1D5FB5C71A3829F000DB12B7 /* CPTAxisTitle.h */,
-				1D5FB5C81A3829F000DB12B7 /* CPTBarPlot.h */,
-				1D5FB5C91A3829F000DB12B7 /* CPTBorderedLayer.h */,
-				1D5FB5CA1A3829F000DB12B7 /* CPTCalendarFormatter.h */,
-				1D5FB5CB1A3829F000DB12B7 /* CPTColor.h */,
-				1D5FB5CC1A3829F000DB12B7 /* CPTColorSpace.h */,
-				1D5FB5CD1A3829F000DB12B7 /* CPTConstraints.h */,
-				1D5FB5CE1A3829F000DB12B7 /* CPTDataSourceTestCase.h */,
-				1D5FB5CF1A3829F000DB12B7 /* CPTDefinitions.h */,
-				1D5FB5D01A3829F000DB12B7 /* CPTDerivedXYGraph.h */,
-				1D5FB5D11A3829F000DB12B7 /* CPTExceptions.h */,
-				1D5FB5D21A3829F000DB12B7 /* CPTFill.h */,
-				1D5FB5D31A3829F000DB12B7 /* CPTFunctionDataSource.h */,
-				1D5FB5D41A3829F000DB12B7 /* CPTGradient.h */,
-				1D5FB5D51A3829F000DB12B7 /* CPTGraph.h */,
-				1D5FB5D61A3829F000DB12B7 /* CPTGraphHostingView.h */,
-				1D5FB5D71A3829F000DB12B7 /* CPTGridLineGroup.h */,
-				1D5FB5D81A3829F000DB12B7 /* CPTGridLines.h */,
-				1D5FB5D91A3829F000DB12B7 /* CPTImage.h */,
-				1D5FB5DA1A3829F000DB12B7 /* CPTLayer.h */,
-				1D5FB5DB1A3829F000DB12B7 /* CPTLayerAnnotation.h */,
-				1D5FB5DC1A3829F000DB12B7 /* CPTLegend.h */,
-				1D5FB5DD1A3829F000DB12B7 /* CPTLegendEntry.h */,
-				1D5FB5DE1A3829F000DB12B7 /* CPTLimitBand.h */,
-				1D5FB5DF1A3829F000DB12B7 /* CPTLineCap.h */,
-				1D5FB5E01A3829F000DB12B7 /* CPTLineStyle.h */,
-				1D5FB5E11A3829F000DB12B7 /* CPTMutableLineStyle.h */,
-				1D5FB5E21A3829F000DB12B7 /* CPTMutableNumericData+TypeConversion.h */,
-				1D5FB5E31A3829F000DB12B7 /* CPTMutableNumericData.h */,
-				1D5FB5E41A3829F000DB12B7 /* CPTMutablePlotRange.h */,
-				1D5FB5E51A3829F000DB12B7 /* CPTMutableShadow.h */,
-				1D5FB5E61A3829F000DB12B7 /* CPTMutableTextStyle.h */,
-				1D5FB5E71A3829F000DB12B7 /* CPTNumericData+TypeConversion.h */,
-				1D5FB5E81A3829F000DB12B7 /* CPTNumericData.h */,
-				1D5FB5E91A3829F000DB12B7 /* CPTNumericDataType.h */,
-				1D5FB5EA1A3829F000DB12B7 /* CPTPathExtensions.h */,
-				1D5FB5EB1A3829F000DB12B7 /* CPTPieChart.h */,
-				1D5FB5EC1A3829F000DB12B7 /* CPTPlatformSpecificCategories.h */,
-				1D5FB5ED1A3829F000DB12B7 /* CPTPlatformSpecificDefines.h */,
-				1D5FB5EE1A3829F000DB12B7 /* CPTPlatformSpecificFunctions.h */,
-				1D5FB5EF1A3829F000DB12B7 /* CPTPlot.h */,
-				1D5FB5F01A3829F000DB12B7 /* CPTPlotArea.h */,
-				1D5FB5F11A3829F000DB12B7 /* CPTPlotAreaFrame.h */,
-				1D5FB5F21A3829F000DB12B7 /* CPTPlotGroup.h */,
-				1D5FB5F31A3829F000DB12B7 /* CPTPlotRange.h */,
-				1D5FB5F41A3829F000DB12B7 /* CPTPlotSpace.h */,
-				1D5FB5F51A3829F000DB12B7 /* CPTPlotSpaceAnnotation.h */,
-				1D5FB5F61A3829F000DB12B7 /* CPTPlotSymbol.h */,
-				1D5FB5F71A3829F000DB12B7 /* CPTRangePlot.h */,
-				1D5FB5F81A3829F000DB12B7 /* CPTResponder.h */,
-				1D5FB5F91A3829F000DB12B7 /* CPTScatterPlot.h */,
-				1D5FB5FA1A3829F000DB12B7 /* CPTShadow.h */,
-				1D5FB5FB1A3829F000DB12B7 /* CPTTestCase.h */,
-				1D5FB5FC1A3829F000DB12B7 /* CPTTextLayer.h */,
-				1D5FB5FD1A3829F000DB12B7 /* CPTTextStyle.h */,
-				1D5FB5FE1A3829F000DB12B7 /* CPTTextStylePlatformSpecific.h */,
-				1D5FB5FF1A3829F000DB12B7 /* CPTTheme.h */,
-				1D5FB6001A3829F000DB12B7 /* CPTTimeFormatter.h */,
-				1D5FB6011A3829F000DB12B7 /* CPTTradingRangePlot.h */,
-				1D5FB6021A3829F000DB12B7 /* CPTUtilities.h */,
-				1D5FB6031A3829F000DB12B7 /* CPTXYAxis.h */,
-				1D5FB6041A3829F000DB12B7 /* CPTXYAxisSet.h */,
-				1D5FB6051A3829F000DB12B7 /* CPTXYGraph.h */,
-				1D5FB6061A3829F000DB12B7 /* CPTXYPlotSpace.h */,
-				1D5FB6071A3829F000DB12B7 /* mainpage.h */,
-				1D5FB6081A3829F000DB12B7 /* NSCoderExtensions.h */,
-				1D5FB6091A3829F000DB12B7 /* NSDecimalNumberExtensions.h */,
-				1D5FB60A1A3829F000DB12B7 /* NSNumberExtensions.h */,
-			);
-			path = CorePlotHeaders;
-			sourceTree = "<group>";
-		};
-		1D60C35E1A4A7FDF00C08D52 /* ProgressView */ = {
-			isa = PBXGroup;
-			children = (
-				1D60C35F1A4A801400C08D52 /* LDProgressView.h */,
-				1D60C3601A4A801400C08D52 /* LDProgressView.m */,
-				1D60C3611A4A801400C08D52 /* UIColor+RGBValues.h */,
-				1D60C3621A4A801400C08D52 /* UIColor+RGBValues.m */,
-				1D60C3651A4AB11A00C08D52 /* MBProgressHUD.h */,
-				1D60C3661A4AB11A00C08D52 /* MBProgressHUD.m */,
-			);
-			name = ProgressView;
-			sourceTree = "<group>";
-		};
 		1D666CFC1A10C798004DC666 /* Side */ = {
 			isa = PBXGroup;
 			children = (
-				1D60C35E1A4A7FDF00C08D52 /* ProgressView */,
+				1DEF2CFD1A4AF0980029754A /* ALAlertBanner */,
 				1D8966F81A49821800616949 /* DejalActivityView.h */,
 				1D8966F91A49821800616949 /* DejalActivityView.m */,
 				1DCB79661A3993BF00E4372B /* CustomCellBackground.h */,
@@ -488,6 +367,8 @@
 				1D05728B1A3D801100A1DB63 /* FeedbackViewController.m */,
 				1D6A48F41A43C3C600A381C6 /* PasswordViewController.h */,
 				1D6A48F51A43C3C600A381C6 /* PasswordViewController.m */,
+				1DB9633F1A4D0B5B006CD037 /* AccountManagementViewController.h */,
+				1DB963401A4D0B5B006CD037 /* AccountManagementViewController.m */,
 			);
 			name = Side;
 			path = ..;
@@ -496,16 +377,17 @@
 		1D666D031A10C963004DC666 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				1D6ECFD31A4BEC7A007C49DB /* ChartView */,
 				1D5C9C211A0B5FE0007CFFF9 /* HomeViewController.h */,
 				1D5C9C221A0B5FE0007CFFF9 /* HomeViewController.m */,
-				1D989AA91A10F6260092EED1 /* FlowViewController.h */,
-				1D989AAA1A10F6260092EED1 /* FlowViewController.m */,
-				1D989AAC1A10F6560092EED1 /* AnalysisViewController.h */,
-				1D989AAD1A10F6560092EED1 /* AnalysisViewController.m */,
 				1D1362931A41BC79006BE057 /* PlatformViewController.h */,
 				1D1362941A41BC79006BE057 /* PlatformViewController.m */,
 				1D13628D1A41ABC4006BE057 /* PlatformDetailViewController.h */,
 				1D13628E1A41ABC4006BE057 /* PlatformDetailViewController.m */,
+				1D989AA91A10F6260092EED1 /* FlowViewController.h */,
+				1D989AAA1A10F6260092EED1 /* FlowViewController.m */,
+				1D6ECFD01A4BEBB7007C49DB /* AnalysisViewController.h */,
+				1D6ECFD11A4BEBB7007C49DB /* AnalysisViewController.m */,
 				E65EB8FE1A17AA10004F23B7 /* MoreViewController.h */,
 				E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */,
 				E6C8E4241A18C7A600229A9F /* AddViewController.h */,
@@ -540,6 +422,22 @@
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
+		1D6ECFD31A4BEC7A007C49DB /* ChartView */ = {
+			isa = PBXGroup;
+			children = (
+				1D6ECFDD1A4BEC89007C49DB /* center.png */,
+				1D6ECFDE1A4BEC89007C49DB /* select.png */,
+				1D6ECFDF1A4BEC89007C49DB /* shadow.png */,
+				1D6ECFD41A4BEC7A007C49DB /* PieChartView.h */,
+				1D6ECFD51A4BEC7A007C49DB /* PieChartView.m */,
+				1D6ECFD61A4BEC7A007C49DB /* RenderView.h */,
+				1D6ECFD71A4BEC7A007C49DB /* RenderView.m */,
+				1D6ECFD81A4BEC7A007C49DB /* RotatedView.h */,
+				1D6ECFD91A4BEC7A007C49DB /* RotatedView.m */,
+			);
+			path = ChartView;
+			sourceTree = "<group>";
+		};
 		1D78F4A61A0D1693009ED28B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -565,6 +463,8 @@
 		1DCB79691A39944000E4372B /* LeftSlider */ = {
 			isa = PBXGroup;
 			children = (
+				1DB963441A4D1874006CD037 /* add-account.png */,
+				1DB963421A4D1856006CD037 /* sign-up.png */,
 				1D8F1BE91A41209000FA7F91 /* arrow_down.png */,
 				1DACC8CD1A39E88100FF841F /* background.jpg */,
 				1D84F53E1A3BF33D00413A76 /* weibo-icon.png */,
@@ -593,12 +493,35 @@
 			name = LeftSlider;
 			sourceTree = "<group>";
 		};
+		1DEF2CFD1A4AF0980029754A /* ALAlertBanner */ = {
+			isa = PBXGroup;
+			children = (
+				1DEF2CFE1A4AF0980029754A /* ALAlertBanner+Private.h */,
+				1DEF2CFF1A4AF0980029754A /* ALAlertBanner.h */,
+				1DEF2D001A4AF0980029754A /* ALAlertBanner.m */,
+				1DEF2D011A4AF0980029754A /* ALAlertBannerManager.h */,
+				1DEF2D021A4AF0980029754A /* ALAlertBannerManager.m */,
+				1DEF2D031A4AF0980029754A /* Images */,
+			);
+			path = ALAlertBanner;
+			sourceTree = "<group>";
+		};
+		1DEF2D031A4AF0980029754A /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				1DEF2D061A4AF0980029754A /* bannerFailure.png */,
+				1DEF2D071A4AF0980029754A /* bannerFailure@2x.png */,
+				1DEF2D0A1A4AF0980029754A /* bannerSuccess.png */,
+				1DEF2D0B1A4AF0980029754A /* bannerSuccess@2x.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		E608614719FFEDC800EBDBE1 = {
 			isa = PBXGroup;
 			children = (
 				1D817EE01A4045D400D1F914 /* p2p_basket.sqlite */,
 				1D6DBD091A3EFEF80081F516 /* AFNetworking */,
-				1D5FB5BC1A3829F000DB12B7 /* CorePlotHeaders */,
 				E608615219FFEDC800EBDBE1 /* P2P_Basket_iOS */,
 				1D5C9C261A0B60A2007CFFF9 /* Resources */,
 				E608616C19FFEDC800EBDBE1 /* P2P_Basket_iOSTests */,
@@ -742,6 +665,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DA23D451A3EDD3C00116632 /* menu_icon_5@2x.png in Resources */,
+				1DB963431A4D1856006CD037 /* sign-up.png in Resources */,
 				1DED79E01A287A4A00A054DB /* 有利网-icon.png in Resources */,
 				1DA23D4A1A3EDD3C00116632 /* menu_icon_3.png in Resources */,
 				1DED79DA1A287A4A00A054DB /* 点融网-icon.png in Resources */,
@@ -754,28 +678,40 @@
 				E608616419FFEDC800EBDBE1 /* LaunchScreen.xib in Resources */,
 				1DA23D4E1A3EDD6500116632 /* menu_icon_2.png in Resources */,
 				1DA23D461A3EDD3C00116632 /* menu_icon_6.png in Resources */,
+				1DEF2D151A4AF0980029754A /* bannerSuccess@2x.png in Resources */,
 				E608616119FFEDC800EBDBE1 /* Images.xcassets in Resources */,
+				1DEF2D101A4AF0980029754A /* bannerFailure.png in Resources */,
 				1DED79DE1A287A4A00A054DB /* 盛融在线-icon.png in Resources */,
 				1D84F53D1A3BF29A00413A76 /* wechat-icon.png in Resources */,
 				1DA23D421A3EDD3C00116632 /* menu_icon_4.png in Resources */,
+				1DB963451A4D1874006CD037 /* add-account.png in Resources */,
+				1DEF2D211A4AF9AA0029754A /* 陆金所-icon-灰色.png in Resources */,
 				1DA23D411A3EDD3C00116632 /* menu_icon_1@2x.png in Resources */,
 				1D5FB5BB1A38281500DB12B7 /* arrow.png in Resources */,
 				1DA23D491A3EDD3C00116632 /* Oval 53@2x.png in Resources */,
 				1D5C9C2E1A0B60CC007CFFF9 /* anchor@2x.png in Resources */,
 				1D5FB5B71A38266500DB12B7 /* triangle_blue_1.png in Resources */,
 				1D5C9C301A0B60CC007CFFF9 /* layers@2x.png in Resources */,
+				1DEF2D201A4AF9AA0029754A /* 积木盒子-icon-灰色.png in Resources */,
 				1DACC8D01A39ED6100FF841F /* cellSelected.png in Resources */,
 				1DB339221A3A9C19002CAD78 /* register.png in Resources */,
 				1DA23D4B1A3EDD3C00116632 /* menu_icon_3@2x.png in Resources */,
 				1DB339241A3AA1ED002CAD78 /* account_management.png in Resources */,
+				1DEF2D231A4AF9AA0029754A /* 盛融在线-icon-灰色.png in Resources */,
 				1DA23D431A3EDD3C00116632 /* menu_icon_4@2x.png in Resources */,
+				1D6ECFE11A4BEC89007C49DB /* select.png in Resources */,
 				1DB3391D1A3A970C002CAD78 /* portrait_default.png in Resources */,
 				1D5FB5B81A38266500DB12B7 /* triangle_gray_1.png in Resources */,
 				1D817EE11A4045D400D1F914 /* p2p_basket.sqlite in Resources */,
+				1D1BDF8E1A4D53C9007F9915 /* userInfo.plist in Resources */,
+				1DEF2D1F1A4AF9AA0029754A /* 点融网-icon-灰色.png in Resources */,
 				1DED79DC1A287A4A00A054DB /* 陆金所-icon.png in Resources */,
+				1DEF2D111A4AF0980029754A /* bannerFailure@2x.png in Resources */,
 				1DED79DF1A287A4A00A054DB /* 鑫合汇-icon.png in Resources */,
 				1DA23D481A3EDD3C00116632 /* Oval 53.png in Resources */,
+				1DEF2D1E1A4AF9AA0029754A /* 爱投资-icon-灰色.png in Resources */,
 				1DED79DD1A287A4A00A054DB /* 人人贷-icon.png in Resources */,
+				1DEF2D221A4AF9AA0029754A /* 人人贷-icon-灰色.png in Resources */,
 				1DED79D91A287A4A00A054DB /* 爱投资-icon.png in Resources */,
 				1DED79DB1A287A4A00A054DB /* 积木盒子-icon.png in Resources */,
 				1DA23D4F1A3EDD6500116632 /* menu_icon_2@2x.png in Resources */,
@@ -784,9 +720,14 @@
 				1DB339281A3AA636002CAD78 /* sign_out.png in Resources */,
 				1D5C9C2D1A0B60CC007CFFF9 /* homepage@2x.png in Resources */,
 				1D84F53F1A3BF33D00413A76 /* weibo-icon.png in Resources */,
+				1D6ECFE21A4BEC89007C49DB /* shadow.png in Resources */,
 				1D5C9C2F1A0B60CC007CFFF9 /* chart_up@2x.png in Resources */,
 				1D5FB5B91A38266500DB12B7 /* vertical_line.png in Resources */,
+				1DEF2D141A4AF0980029754A /* bannerSuccess.png in Resources */,
+				1DEF2D241A4AF9AA0029754A /* 鑫合汇-icon-灰色.png in Resources */,
 				1DACC8CE1A39E88100FF841F /* background.jpg in Resources */,
+				1DEF2D251A4AF9AA0029754A /* 有利网-icon-灰色.png in Resources */,
+				1D6ECFE01A4BEC89007C49DB /* center.png in Resources */,
 				E65EB9021A17AD32004F23B7 /* more@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -811,6 +752,7 @@
 				1D6DBD1F1A3EFEF80081F516 /* AFHTTPSessionManager.m in Sources */,
 				1D6DBD201A3EFEF80081F516 /* AFNetworkReachabilityManager.m in Sources */,
 				E6C8E4261A18C7A600229A9F /* AddViewController.m in Sources */,
+				1DB963411A4D0B5B006CD037 /* AccountManagementViewController.m in Sources */,
 				1D05728C1A3D801100A1DB63 /* FeedbackViewController.m in Sources */,
 				1D84F5371A3BE3BE00413A76 /* AboutUsViewController.m in Sources */,
 				E68B042D1A2A1FD700DF1EBB /* RecordDB.m in Sources */,
@@ -818,25 +760,27 @@
 				E608615919FFEDC800EBDBE1 /* AppDelegate.m in Sources */,
 				1D666CFF1A10C843004DC666 /* LeftSliderController.m in Sources */,
 				1D6DBD081A3EECE30081F516 /* LoginAndRegisterViewController.m in Sources */,
+				1DEF2D0C1A4AF0980029754A /* ALAlertBanner.m in Sources */,
 				1D6DBD1E1A3EFEF80081F516 /* AFHTTPRequestOperationManager.m in Sources */,
 				1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */,
-				1D60C3671A4AB11A00C08D52 /* MBProgressHUD.m in Sources */,
 				1D5C9C231A0B5FE0007CFFF9 /* HomeViewController.m in Sources */,
 				E65EB9001A17AA10004F23B7 /* MoreViewController.m in Sources */,
 				1D6A48F61A43C3C600A381C6 /* PasswordViewController.m in Sources */,
 				1DF0BDF11A10550A00E491D6 /* RootViewController.m in Sources */,
+				1D6ECFDB1A4BEC7A007C49DB /* RenderView.m in Sources */,
+				1D6ECFDA1A4BEC7A007C49DB /* PieChartView.m in Sources */,
 				1D1362951A41BC79006BE057 /* PlatformViewController.m in Sources */,
-				1D989AAE1A10F6560092EED1 /* AnalysisViewController.m in Sources */,
-				1D60C3641A4A801400C08D52 /* UIColor+RGBValues.m in Sources */,
 				E608615619FFEDC800EBDBE1 /* main.m in Sources */,
+				1DEF2D0D1A4AF0980029754A /* ALAlertBannerManager.m in Sources */,
 				1D8966FA1A49821800616949 /* DejalActivityView.m in Sources */,
-				1D60C3631A4A801400C08D52 /* LDProgressView.m in Sources */,
 				1DCB79681A3993BF00E4372B /* CustomCellBackground.m in Sources */,
 				1D13628F1A41ABC4006BE057 /* PlatformDetailViewController.m in Sources */,
 				1D6DBD231A3EFEF80081F516 /* AFURLRequestSerialization.m in Sources */,
 				1D02FCFF1A404E5700C09982 /* CloudSyncingViewController.m in Sources */,
+				1D6ECFDC1A4BEC7A007C49DB /* RotatedView.m in Sources */,
 				1D6DBD1D1A3EFEF80081F516 /* AFHTTPRequestOperation.m in Sources */,
 				1D6DBD241A3EFEF80081F516 /* AFURLResponseSerialization.m in Sources */,
+				1D6ECFD21A4BEBB7007C49DB /* AnalysisViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

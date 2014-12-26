@@ -14,6 +14,8 @@
 @public
     BOOL networkConnected;
     NSObject<UIViewPassValueDelegate> *delegate;//在AddViewController中添加新的投资后，要刷新主页,流水界面的tableVIew和分析界面
+    NSMutableArray *userInfoArray;
+    NSString *loggedOnUser;
 }
 
 + (id)sharedViewController;//单例，RootViewController只初始化一次

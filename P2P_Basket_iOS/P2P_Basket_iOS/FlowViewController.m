@@ -323,7 +323,14 @@
     UILabel *label5 = (UILabel *)[cell.contentView viewWithTag:1005];
     UILabel *label6 = (UILabel *)[cell.contentView viewWithTag:1006];
     
-    NSString *imageName = [NSString stringWithFormat:@"%@-icon",[records[indexPath.row] objectForKey:@"platform"]];
+    NSString *imageName;
+    if ([[records[indexPath.row] objectForKey:@"state"] intValue] == 0) {
+        imageName = [NSString stringWithFormat:@"%@-icon",[records[indexPath.row] objectForKey:@"platform"]];
+        label2.textColor = [platformColor objectForKey:[records[indexPath.row] objectForKey:@"platform"]];
+    } else {
+        imageName = [NSString stringWithFormat:@"%@-icon-灰色",[records[indexPath.row] objectForKey:@"platform"]];
+        label2.textColor = [UIColor grayColor];
+    }
     [imageView setImage:[UIImage imageNamed:imageName]];
     NSString *label1Text = [NSString stringWithFormat:@"%@",[records[indexPath.row] objectForKey:@"startDate"]];
     label1.text = label1Text;
@@ -331,10 +338,10 @@
     label6.text = label6Text;
     NSString *label2Text = [NSString stringWithFormat:@"%@-%@",[records[indexPath.row] objectForKey:@"platform"],[records[indexPath.row] objectForKey:@"product"]];
     label2.text = label2Text;
-    label2.textColor = [platformColor objectForKey:[records[indexPath.row] objectForKey:@"platform"]];
+    
     NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[records[indexPath.row] objectForKey:@"capital"] floatValue]];
     label4.text = label4Text;
-    if ([[records[indexPath.row] objectForKey:@"minRate"] floatValue] == [[records[indexPath.row] objectForKey:@"maxRate"] floatValue] ) {
+    if ([[records[indexPath.row] objectForKey:@"maxRate"] floatValue] == 100.0) {
         NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[records[indexPath.row] objectForKey:@"maxRate"] floatValue]];
         label5.text = label5Text;
     }
@@ -367,7 +374,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        flag = indexPath.row;
+        flag = (int)indexPath.row;
         index = indexPath;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:@"确定要删除所选的投资记录吗？"

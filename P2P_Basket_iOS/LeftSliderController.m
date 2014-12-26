@@ -14,6 +14,7 @@
 #import "LoginAndRegisterViewController.h"
 #import "CloudSyncingViewController.h"
 #import "PasswordViewController.h"
+#import "AccountManagementViewController.h"
 
 @interface LeftSliderController ()
 {
@@ -39,6 +40,24 @@ static LeftSliderController *sharedLSC;
         sharedLSC = self;
     });
     
+    loggedOnUser = @"default";
+    //获取所有的用户信息
+    [self createEditableCopyOfDatabaseIfNeeded];//拷贝userInfo.plist文件
+    NSString *documentDirectory = [self applicationDocumentsDirectory];
+    NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];//不应该从资源文件中读取数据，资源文件中的数据没有更改，要从沙箱中的资源文件读取数据
+    userInfoArray = [[NSMutableArray alloc] initWithContentsOfFile:path];//从资源文件中加载内容
+    if ([userInfoArray count] != 0) {
+        for (int i = 0; i < [userInfoArray count]; i++) {
+            if ([[userInfoArray[i] objectForKey:@"isSelected"] intValue] == 1) {
+                loggedOnUser = [userInfoArray[i] objectForKey:@"userName"];
+                break;
+            }
+        }
+    }
+
+//    [userInfoArray writeToFile:path atomically:YES];//原子性写入，要么全部写入成功，要么全部没写入
+    NSLog(@"%@",userInfoArray);
+    
     [self connectedToNetWork];//监测网络连接情况
     //获取屏幕分辨率
     CGRect rect = [[UIScreen mainScreen] bounds];
@@ -57,8 +76,13 @@ static LeftSliderController *sharedLSC;
     [portraitButton setImage:[UIImage imageNamed:@"portrait_default"] forState:UIControlStateNormal];
     [portraitButton addTarget:self action:@selector(portraitButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:portraitButton];
-    UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3-25, screen_height/15+55, 50, 15)];
-    userNameLabel.text = @"登录";
+    UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3-100, screen_height/15+55, 200, 15)];
+    userNameLabel.tag = 10001;
+    if (![loggedOnUser isEqualToString:@"default"]) {
+        userNameLabel.text = loggedOnUser;
+    } else {
+        userNameLabel.text = @"登录";
+    }
     userNameLabel.font = [UIFont systemFontOfSize:13];
     userNameLabel.textColor = [UIColor whiteColor];
     userNameLabel.textAlignment = NSTextAlignmentCenter;
@@ -75,15 +99,15 @@ static LeftSliderController *sharedLSC;
     [self.view addSubview:tableView];
     
     //显示账户注册和退出登录的button
-    UIImageView *registerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/6-40, screen_height/5+320, 25, 25)];
-    registerImageView.image = [UIImage imageNamed:@"account_management"];
-    [self.view addSubview:registerImageView];
-    UIButton *registerButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/6-12, screen_height/5+320, 55, 25)];
-    [registerButton setTitle:@"账号注册" forState:UIControlStateNormal];
-    [registerButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
-    [registerButton addTarget:self action:@selector(registerButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    registerButton.titleLabel.font = [UIFont systemFontOfSize:13];
-    [self.view addSubview:registerButton];
+    UIImageView *manageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/6-40, screen_height/5+320, 25, 25)];
+    manageImageView.image = [UIImage imageNamed:@"account_management"];
+    [self.view addSubview:manageImageView];
+    UIButton *manageButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/6-12, screen_height/5+320, 55, 25)];
+    [manageButton setTitle:@"账号管理" forState:UIControlStateNormal];
+    [manageButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [manageButton addTarget:self action:@selector(manageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    manageButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [self.view addSubview:manageButton];
     
     UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3-3, screen_height/5+320+4, 1, 17)];
     separateView.image = [UIImage imageNamed:@"vertical_line"];
@@ -151,11 +175,12 @@ static LeftSliderController *sharedLSC;
         cell = [[UITableViewCell alloc]
                 initWithStyle:UITableViewCellStyleValue1
                 reuseIdentifier:TableSampleIdentifier];
+        cell.tag = indexPath.section*3 + indexPath.row;
     }
     cell.textLabel.text = menu[indexPath.section*3+indexPath.row];
     cell.textLabel.textColor = [UIColor whiteColor];
     
-    cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"menu_icon_%d",indexPath.section*3+indexPath.row+1]];
+    cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"menu_icon_%ld",indexPath.section*3+indexPath.row+1]];
     CGSize itemSize = CGSizeMake(20, 20);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
@@ -183,7 +208,10 @@ static LeftSliderController *sharedLSC;
         case 0:{
             CloudSyncingViewController *cloudBackupVC = [[CloudSyncingViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:cloudBackupVC];
-            [self presentViewController:navC animated:YES completion:nil];
+            [self presentViewController:navC animated:YES completion:^{
+                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:0];
+                cell.selected = NO;
+            }];
             break;
         }
         case 1:
@@ -191,20 +219,29 @@ static LeftSliderController *sharedLSC;
         case 2:{
             FeedbackViewController *feedbackVC = [[FeedbackViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:feedbackVC];
-            [self presentViewController:navC animated:YES completion:nil];
+            [self presentViewController:navC animated:YES completion:^{
+                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:2];
+                cell.selected = NO;
+            }];
             
             break;
         }
         case 3:{
             AboutUsViewController *aboutUs = [[AboutUsViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:aboutUs];
-            [self presentViewController:navC animated:YES completion:nil];
+            [self presentViewController:navC animated:YES completion:^{
+                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:3];
+                cell.selected = NO;
+            }];
             break;
         }
         case 4:{
             PasswordViewController *passwordVC = [[PasswordViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:passwordVC];
-            [self presentViewController:navC animated:YES completion:nil];
+            [self presentViewController:navC animated:YES completion:^{
+                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:4];
+                cell.selected = NO;
+            }];
             break;
         }
         case 5:
@@ -217,16 +254,24 @@ static LeftSliderController *sharedLSC;
 
 #pragma mark - ButtonPressedAction
 - (void)portraitButtonPressed {
-    LoginAndRegisterViewController *registerVC = [[LoginAndRegisterViewController alloc] init];
-    registerVC->isLogin = YES;
-    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:registerVC];
-    [self presentViewController:navC animated:YES  completion:nil];
+    if (![loggedOnUser isEqualToString:@"default"]) {
+        
+    } else {
+        AccountManagementViewController *amvc = [[AccountManagementViewController alloc] init];
+        amvc->isManagement = NO;
+        amvc->userInfoArray = userInfoArray;
+        amvc->loggedOnUser = loggedOnUser;
+        UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:amvc];
+        [self presentViewController:navC animated:YES  completion:nil];
+    }
 }
 
-- (void)registerButtonPressed {
-    LoginAndRegisterViewController *registerVC = [[LoginAndRegisterViewController alloc] init];
-    registerVC->isLogin = NO;
-    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:registerVC];
+- (void)manageButtonPressed {
+    AccountManagementViewController *amvc = [[AccountManagementViewController alloc] init];
+    amvc->isManagement = YES;
+    amvc->userInfoArray = userInfoArray;
+    amvc->loggedOnUser = loggedOnUser;
+    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:amvc];
     [self presentViewController:navC animated:YES  completion:nil];
 }
 
@@ -252,5 +297,32 @@ static LeftSliderController *sharedLSC;
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
 }
 
+#pragma mark -
+#pragma mark Copy of userInfo.plist
+
+- (void)createEditableCopyOfDatabaseIfNeeded {//拷贝CarsInfoList.plist文件到沙箱目录，只执行一次拷贝。
+    // First, test for existence - we don't want to wipe out a user's DB
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *documentDirectory = [self applicationDocumentsDirectory];
+    NSString *writableDBPath = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];//在沙箱创建的数据库文件可以更改，若直接操作资源文件，不能更改数据
+    
+    BOOL dbexits = [fileManager fileExistsAtPath:writableDBPath];//是否存在该数据库文件
+    
+    if (!dbexits) {
+        // The writable database does not exist, so copy the default to the appropriate location.
+        NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"userInfo.plist"];//得到资源（Resources）文件的路径
+        NSError *error;
+        BOOL success = [fileManager copyItemAtPath:defaultDBPath toPath:writableDBPath error:&error];
+        if (!success) {
+            NSAssert1(0, @"Failed to create writable database file with message '%@'.", [error localizedDescription]);
+        }else{
+            NSLog(@"userInfo.plist拷贝成功");
+        }
+    }
+}
+
+- (NSString *)applicationDocumentsDirectory {
+    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+}
 
 @end

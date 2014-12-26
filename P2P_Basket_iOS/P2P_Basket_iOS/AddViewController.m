@@ -462,11 +462,11 @@
     RecordDB *myRecordDB = [[RecordDB alloc]init];
     [myRecordDB insertRecord:platformField.text secondPara:productField.text thirdPara:[capitalField.text floatValue] forthPara:[minRateField.text floatValue] fifthPara:[maxRateField.text floatValue] sixthPara:cal_typeField.text seventhPara:startimeField.text eighthPara:endtimeField.text];
     [delegate refresh1];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)cancelPressed{
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
