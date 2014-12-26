@@ -71,7 +71,7 @@ fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)sta
     long int timeStamp = [[NSDate date] timeIntervalSince1970];
     int isDeleted = 0;
     if (maxRate == 0) {
-        maxRate = minRate;
+        maxRate = 100.0;
     }
     NSLog(@"%.2f,%.2f",minRate,maxRate);
     //组合而成的sql语句，占位符坑爹啊！

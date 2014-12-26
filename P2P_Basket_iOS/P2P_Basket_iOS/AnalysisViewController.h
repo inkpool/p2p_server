@@ -2,32 +2,27 @@
 //  AnalysisViewController.h
 //  P2P_Basket_iOS
 //
-//  Created by xuxin on 14-11-10.
+//  Created by xuxin on 14-12-25.
 //  Copyright (c) 2014年 inkJake. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "CorePlot-CocoaTouch.h"
+#import "PieChartView.h"
 
-@interface AnalysisViewController : UIViewController<UIPickerViewDelegate,UIPickerViewDataSource,CPTPlotDataSource,CPTPieChartDelegate,CPTBarPlotDelegate>
+@interface AnalysisViewController : UIViewController<PieChartDelegate>
 {
-    NSMutableDictionary *platformTotalCapital;
-    UIAlertController *myAlert;
-    
+    NSInteger flag;
 @public
     NSMutableArray *records;//用户所有的投资记录
-    UIView *_mainContentView;
-    CPTPieChart *piePlot;
-    CPTBarPlot *barPlot;
-    CPTXYAxis *xAxis;
-    NSArray *platformName;
-    NSInteger index3;
+    NSMutableArray *unExpireRecord;//未到期的投资记录
+    PieChartView *myPieChartView;
 }
 
-@property(retain,nonatomic)CPTGraphHostingView *hostView;
-@property(retain,nonatomic)CPTXYGraph *graph;
-@property(retain,nonatomic)CPTXYPlotSpace *plotSpace;
+@property (nonatomic,strong) UIView *pieContainer;;
+@property (nonatomic,strong) UILabel *selLabel;
 
-- (void)initArray2;
+- (void)reloadData;
+- (void)initArray;
+- (void)onCenterClick:(PieChartView *)pieChartView;
 
 @end

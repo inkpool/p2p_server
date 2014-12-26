@@ -13,6 +13,7 @@
 
 @interface LoginAndRegisterViewController ()
 {
+    LeftSliderController *leftSliderC;
     NSString *userEmail;
     NSString *userPassword;
     BOOL networkConnected;
@@ -143,7 +144,7 @@
 }
 
 - (void)buttonPressed {
-    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
+    leftSliderC = [LeftSliderController sharedViewController];
     if (leftSliderC->networkConnected) {//网络已连接
         userEmail = emailField.text;
         if ([self isValidateEmail:userEmail] && [self isValidatePassword:passwordField.text]) {//用户输入的邮箱合法，已输入密码
@@ -296,8 +297,17 @@
             [self alertWithTitle:@"登录失败" withMsg:@"密码错误！"];
             break;
         case 4:
-            [self alertWithTitle:@"提示" withMsg:@"注册成功"];
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"注册成功"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil];
+            alert.tag = 1001;
+            alert.delegate = self;
+            [alert show];
             break;
+        }
         case 5:
             [self alertWithTitle:@"注册失败" withMsg:@"该账号已被注册"];
             break;
@@ -306,5 +316,24 @@
     }
 }
 
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (actionSheet.tag == 1001) {
+        [userInfoArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:userEmail,@"userName",[[NSNumber alloc] initWithInt:1],@"isSelected",nil]];
+        NSString *documentDirectory = [self applicationDocumentsDirectory];
+        NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];//不应该从资源文件中读取数
+        [userInfoArray writeToFile:path atomically:YES];//原子性写入，要么全部写入成功，要么全部没写入
+        leftSliderC->loggedOnUser = userEmail;
+        UILabel *userNameLabel = (UILabel*)[leftSliderC.view viewWithTag:10001];
+        userNameLabel.text = userEmail;
+        [leftSliderC->delegate refresh1];//切换用户，重新显示投资记录
+        [self dismissViewControllerAnimated:YES  completion:nil];
+    }
+}
+
+- (NSString *)applicationDocumentsDirectory {
+    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+}
 
 @end

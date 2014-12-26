@@ -154,7 +154,8 @@
     flowViewController->records = records;
     AnalysisViewController *analysisViewController = tbc.viewControllers[2];
     analysisViewController->records = records;
-    analysisViewController->_mainContentView = _mainContentView;
+    analysisViewController->unExpireRecord = unExpireRecord;
+//    analysisViewController->_mainContentView = _mainContentView;
     PlatformViewController *platformViewController = tbc.viewControllers[1];
     platformViewController->records = records;
     platformViewController->platformSet = [NSMutableSet set];
@@ -186,8 +187,12 @@
     
     AnalysisViewController *analysisVC = tbc.viewControllers[2];
     analysisVC->records = records;
-    [analysisVC->piePlot reloadData];
-    [analysisVC->barPlot reloadData];
+    analysisVC->unExpireRecord = unExpireRecord;
+//    [analysisVC initArray];
+//    [analysisVC onCenterClick:nil];
+    [analysisVC reloadData];
+//    [analysisVC->piePlot reloadData];
+//    [analysisVC->barPlot reloadData];
     
     FlowViewController *flowViewController = tbc.viewControllers[3];
     flowViewController->records = records;
@@ -251,23 +256,28 @@
     
     AnalysisViewController *analysisVC = tbc.viewControllers[2];
     analysisVC->records = records;
-    [analysisVC initArray2];
-    if (analysisVC->index3!=0) {//显示柱状图
-        analysisVC->xAxis.axisConstraints = nil;//显示x轴label
-        NSMutableArray *labelArray = [NSMutableArray arrayWithCapacity:[analysisVC->platformName count]];
-        float labelLocation = 0.5;
-        for(NSString *label in analysisVC->platformName){
-            CPTAxisLabel *newLabel = [[CPTAxisLabel alloc] initWithText:label textStyle:analysisVC->xAxis.labelTextStyle];
-            newLabel.tickLocation = [[NSNumber numberWithFloat:labelLocation] decimalValue];
-            newLabel.offset = analysisVC->xAxis.labelOffset+analysisVC->xAxis.majorTickLength;
-            newLabel.rotation = M_PI/6;
-            [labelArray addObject:newLabel];
-            labelLocation += 1;
-        }
-        analysisVC->xAxis.axisLabels=[NSSet setWithArray:labelArray];
-    }
-    [analysisVC->piePlot reloadData];
-    [analysisVC->barPlot reloadData];
+    analysisVC->unExpireRecord = unExpireRecord;
+//    [analysisVC initArray];
+//    [analysisVC onCenterClick:nil];;
+    [analysisVC reloadData];
+    
+//    [analysisVC initArray2];
+//    if (analysisVC->index3!=0) {//显示柱状图
+//        analysisVC->xAxis.axisConstraints = nil;//显示x轴label
+//        NSMutableArray *labelArray = [NSMutableArray arrayWithCapacity:[analysisVC->platformName count]];
+//        float labelLocation = 0.5;
+//        for(NSString *label in analysisVC->platformName){
+//            CPTAxisLabel *newLabel = [[CPTAxisLabel alloc] initWithText:label textStyle:analysisVC->xAxis.labelTextStyle];
+//            newLabel.tickLocation = [[NSNumber numberWithFloat:labelLocation] decimalValue];
+//            newLabel.offset = analysisVC->xAxis.labelOffset+analysisVC->xAxis.majorTickLength;
+//            newLabel.rotation = M_PI/6;
+//            [labelArray addObject:newLabel];
+//            labelLocation += 1;
+//        }
+//        analysisVC->xAxis.axisLabels=[NSSet setWithArray:labelArray];
+//    }
+//    [analysisVC->piePlot reloadData];
+//    [analysisVC->barPlot reloadData];
 }
 
 
@@ -307,7 +317,10 @@
     //添加“新建投资”页面
     AddViewController *aDV = [[AddViewController alloc]init];
     aDV->delegate = self;
-    [nc pushViewController:aDV animated:YES];
+//    [nc pushViewController:aDV animated:YES];
+    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:aDV];
+    aDV.modalTransitionStyle = UIModalTransitionStylePartialCurl;
+    [self presentViewController:navC animated:YES  completion:nil];
 }
 
 - (void)closeSideBar

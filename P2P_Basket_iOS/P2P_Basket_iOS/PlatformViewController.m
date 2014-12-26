@@ -24,7 +24,7 @@
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
     CGFloat screen_width = size.width;
-    CGFloat screen_height = size.height;
+//    CGFloat screen_height = size.height;
     
     plateformArray = [platformSet allObjects];
     
