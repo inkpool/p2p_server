@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "UIViewPassValueDelegate.h"
 
-@interface LeftSliderController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface LeftSliderController : UIViewController<UITableViewDelegate, UITableViewDataSource,UIAlertViewDelegate>
 {
 @public
     BOOL networkConnected;

@@ -8,11 +8,14 @@
 
 #import "AccountManagementViewController.h"
 #import "LoginAndRegisterViewController.h"
+#import "LeftSliderController.h"
 
 @interface AccountManagementViewController ()
 {
+    LeftSliderController *leftSliderC;
     CGFloat screen_width;
     CGFloat screen_height;
+    int flag;//记录当前处于登录状态的账号的indexPath.row
 }
 
 @end
@@ -26,6 +29,9 @@
     CGSize size = rect.size;
     screen_width = size.width;
     screen_height = size.height;
+    
+    leftSliderC = [LeftSliderController sharedViewController];
+    flag = -1;
     self.view.backgroundColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:225.0/255.0 alpha:1];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;//半透明
     //添加标题
@@ -47,16 +53,11 @@
     [self.view addSubview:backgroundView];
     
     UITableView *myTableView;
-    if ([userInfoArray count] != 0) {
-        if ([userInfoArray count]*40+80+20 < screen_height-84) {
-            myTableView = [[UITableView alloc] initWithFrame:CGRectMake(15, 74, screen_width-30, [userInfoArray count]*40+80+20)];
-        } else {
-            myTableView = [[UITableView alloc] initWithFrame:CGRectMake(15, 74, screen_width-30, screen_height-84)];
-        }
-    }
-    else {
-        myTableView = [[UITableView alloc] initWithFrame:CGRectMake(15, 74, screen_width-30, 100)];
+    if ([userInfoArray count]*40+80+20 < screen_height-84) {
+        myTableView = [[UITableView alloc] initWithFrame:CGRectMake(15, 74, screen_width-30, [userInfoArray count]*40+80+20)];
         myTableView.scrollEnabled = NO;
+    } else {
+        myTableView = [[UITableView alloc] initWithFrame:CGRectMake(15, 74, screen_width-30, screen_height-84)];
     }
     
     myTableView.delegate = self;
@@ -131,14 +132,13 @@
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 4, 32, 32)];
         imageView.image = [UIImage imageNamed:@"wechat-icon"];
         [cell.contentView addSubview:imageView];
-        UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(60, 5, 150, 30)];
+        UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(60, 5, 200, 30)];
         lable.text = [userInfoArray[indexPath.row] objectForKey:@"userName"];
         [cell.contentView addSubview:lable];
         if (![loggedOnUser isEqualToString:@"default"]) {
             if ([[userInfoArray[indexPath.row] objectForKey:@"userName"] isEqualToString:loggedOnUser]) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            } else {
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                flag = indexPath.row;
             }
         }
     } else {
@@ -171,7 +171,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        
+        if (flag != indexPath.row) {
+            if (flag != -1) {
+                [userInfoArray[flag] setObject:[[NSNumber alloc] initWithInt:0] forKey:@"isSelected"];
+            }
+            [userInfoArray[indexPath.row] setObject:[[NSNumber alloc] initWithInt:1] forKey:@"isSelected"];
+            NSString *documentDirectory = [self applicationDocumentsDirectory];
+            NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];//不应该从资源文件中读取数
+            [userInfoArray writeToFile:path atomically:YES];//原子性写入，要么全部写入成功，要么全部没写入
+            leftSliderC->loggedOnUser = [userInfoArray[indexPath.row] objectForKey:@"userName"];
+            UILabel *userNameLabel = (UILabel*)[leftSliderC.view viewWithTag:10001];
+            userNameLabel.text = [userInfoArray[indexPath.row] objectForKey:@"userName"];
+            [leftSliderC->delegate refresh1];//切换用户，重新显示投资记录
+            [self dismissViewControllerAnimated:YES  completion:nil];
+        }
     }
     else {
         if (indexPath.row == 0) {//添加账号

@@ -30,6 +30,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:225.0/255.0 alpha:1];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;//半透明
+    leftSliderC = [LeftSliderController sharedViewController];
     //添加标题
     UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 55, 44)];
     if (isLogin) {
@@ -127,6 +128,10 @@
 
 - (void)backItemPressed
 {
+    leftSliderC->loggedOnUser = @"default";
+    UILabel *userNameLabel = (UILabel*)[leftSliderC.view viewWithTag:10001];
+    userNameLabel.text = @"登录";
+    [leftSliderC->delegate refresh1];//切换用户，重新显示投资记录
     [self dismissViewControllerAnimated:YES  completion:nil];
 }
 
@@ -144,7 +149,6 @@
 }
 
 - (void)buttonPressed {
-    leftSliderC = [LeftSliderController sharedViewController];
     if (leftSliderC->networkConnected) {//网络已连接
         userEmail = emailField.text;
         if ([self isValidateEmail:userEmail] && [self isValidatePassword:passwordField.text]) {//用户输入的邮箱合法，已输入密码
@@ -279,7 +283,7 @@
 //    }];
 //}
 
-- (void)removeActivityView
+- (int)removeActivityView
 {
     [DejalBezelActivityView removeViewAnimated:YES];
     [[self class] cancelPreviousPerformRequestsWithTarget:self];
@@ -287,9 +291,37 @@
         case 0:
             [self alertWithTitle:@"连接异常" withMsg:@"网络连接异常"];
             break;
-        case 1:
-            [self alertWithTitle:@"提示" withMsg:@"登录成功"];
+        case 1:{
+//            [self alertWithTitle:@"提示" withMsg:@"登录成功"];
+            for (int i = 0; i < [userInfoArray count]; i++) {
+                //判断添加的是否是本地已有的账户
+                if ([[userInfoArray[i] objectForKey:@"userName"] isEqualToString:userEmail]) {
+                    [userInfoArray[i] setObject:[[NSNumber alloc] initWithInt:1] forKey:@"isSelected"];
+                    NSString *documentDirectory = [self applicationDocumentsDirectory];
+                    NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];
+                    [userInfoArray writeToFile:path atomically:YES];//原子性写入，要么全部写入成功，要么全部没写入
+                    leftSliderC->loggedOnUser = [userInfoArray[i] objectForKey:@"userName"];
+                    UILabel *userNameLabel = (UILabel*)[leftSliderC.view viewWithTag:10001];
+                    userNameLabel.text = [userInfoArray[i] objectForKey:@"userName"];
+                    [leftSliderC->delegate refresh1];//切换用户，重新显示投资记录
+                    [self dismissViewControllerAnimated:YES  completion:nil];
+                    return 1;
+                }
+            }
+            //当前本地没有新添加的用户
+            [userInfoArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:userEmail,@"userName",[[NSNumber alloc] initWithInt:1],@"isSelected",nil]];
+            NSString *documentDirectory = [self applicationDocumentsDirectory];
+            NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];
+            [userInfoArray writeToFile:path atomically:YES];//原子性写入，要么全部写入成功，要么全部没写入
+            leftSliderC->loggedOnUser = userEmail;
+            UILabel *userNameLabel = (UILabel*)[leftSliderC.view viewWithTag:10001];
+            userNameLabel.text = userEmail;
+            [leftSliderC->delegate refresh1];//切换用户，重新显示投资记录
+            [self dismissViewControllerAnimated:YES  completion:nil];
+            return 1;
             break;
+        }
+
         case 2:
             [self alertWithTitle:@"登录失败" withMsg:@"不存在该账号"];
             break;
@@ -314,6 +346,7 @@
         default:
             break;
     }
+    return 0;
 }
 
 #pragma mark -
