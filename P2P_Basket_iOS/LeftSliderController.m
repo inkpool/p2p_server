@@ -54,9 +54,6 @@ static LeftSliderController *sharedLSC;
             }
         }
     }
-
-//    [userInfoArray writeToFile:path atomically:YES];//原子性写入，要么全部写入成功，要么全部没写入
-    NSLog(@"%@",userInfoArray);
     
     [self connectedToNetWork];//监测网络连接情况
     //获取屏幕分辨率
@@ -119,6 +116,7 @@ static LeftSliderController *sharedLSC;
     UIButton *signOutButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/3+screen_width/3-3-screen_width/6-43+28, screen_height/5+320, 55, 25)];
     [signOutButton setTitle:@"退出账号" forState:UIControlStateNormal];
     [signOutButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [signOutButton addTarget:self action:@selector(signOutButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     signOutButton.titleLabel.font = [UIFont systemFontOfSize:13];
     [self.view addSubview:signOutButton];
     
@@ -275,6 +273,17 @@ static LeftSliderController *sharedLSC;
     [self presentViewController:navC animated:YES  completion:nil];
 }
 
+- (void)signOutButtonPressed {
+    NSString *message = [NSString stringWithFormat:@"确定退出账号:%@？",loggedOnUser];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"退出账号"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"取消"
+                                          otherButtonTitles:@"确定",nil];
+    alert.delegate = self;
+    [alert show];
+}
+
 #pragma mark -
 #pragma mark NetworkConnected
 
@@ -324,5 +333,26 @@ static LeftSliderController *sharedLSC;
 - (NSString *)applicationDocumentsDirectory {
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        for (int i = 0; i < [userInfoArray count]; i++) {
+            //判断添加的是否是本地已有的账户
+            if ([[userInfoArray[i] objectForKey:@"userName"] isEqualToString:loggedOnUser]) {
+                [userInfoArray[i] setObject:[[NSNumber alloc] initWithInt:0] forKey:@"isSelected"];
+                NSString *documentDirectory = [self applicationDocumentsDirectory];
+                NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];
+                [userInfoArray writeToFile:path atomically:YES];//原子性写入，要么全部写入成功，要么全部没写入
+                loggedOnUser = @"default";
+                UILabel *userNameLabel = (UILabel*)[self.view viewWithTag:10001];
+                userNameLabel.text = @"登录";
+                [delegate refresh1];//切换到默认用户，重新显示投资记录
+            }
+        }
+    }
+}
+
 
 @end
