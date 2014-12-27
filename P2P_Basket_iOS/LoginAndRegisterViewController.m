@@ -309,7 +309,7 @@
                 }
             }
             //当前本地没有新添加的用户
-            [userInfoArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:userEmail,@"userName",[[NSNumber alloc] initWithInt:1],@"isSelected",nil]];
+            [userInfoArray addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:userEmail,@"userName",[[NSNumber alloc] initWithInt:1],@"isSelected",nil]];
             NSString *documentDirectory = [self applicationDocumentsDirectory];
             NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];
             [userInfoArray writeToFile:path atomically:YES];//原子性写入，要么全部写入成功，要么全部没写入
@@ -353,7 +353,7 @@
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (actionSheet.tag == 1001) {
-        [userInfoArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:userEmail,@"userName",[[NSNumber alloc] initWithInt:1],@"isSelected",nil]];
+        [userInfoArray addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:userEmail,@"userName",[[NSNumber alloc] initWithInt:1],@"isSelected",nil]];
         NSString *documentDirectory = [self applicationDocumentsDirectory];
         NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];//不应该从资源文件中读取数
         [userInfoArray writeToFile:path atomically:YES];//原子性写入，要么全部写入成功，要么全部没写入
