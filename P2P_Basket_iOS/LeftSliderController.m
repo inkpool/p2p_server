@@ -173,7 +173,7 @@ static LeftSliderController *sharedLSC;
         cell = [[UITableViewCell alloc]
                 initWithStyle:UITableViewCellStyleValue1
                 reuseIdentifier:TableSampleIdentifier];
-        cell.tag = indexPath.section*3 + indexPath.row;
+        cell.tag = indexPath.section*3 + indexPath.row + 1;
     }
     cell.textLabel.text = menu[indexPath.section*3+indexPath.row];
     cell.textLabel.textColor = [UIColor whiteColor];
@@ -207,7 +207,7 @@ static LeftSliderController *sharedLSC;
             CloudSyncingViewController *cloudBackupVC = [[CloudSyncingViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:cloudBackupVC];
             [self presentViewController:navC animated:YES completion:^{
-                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:0];
+                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:1];
                 cell.selected = NO;
             }];
             break;
@@ -218,7 +218,7 @@ static LeftSliderController *sharedLSC;
             FeedbackViewController *feedbackVC = [[FeedbackViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:feedbackVC];
             [self presentViewController:navC animated:YES completion:^{
-                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:2];
+                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:3];
                 cell.selected = NO;
             }];
             
@@ -228,7 +228,7 @@ static LeftSliderController *sharedLSC;
             AboutUsViewController *aboutUs = [[AboutUsViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:aboutUs];
             [self presentViewController:navC animated:YES completion:^{
-                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:3];
+                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:4];
                 cell.selected = NO;
             }];
             break;
@@ -237,7 +237,7 @@ static LeftSliderController *sharedLSC;
             PasswordViewController *passwordVC = [[PasswordViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:passwordVC];
             [self presentViewController:navC animated:YES completion:^{
-                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:4];
+                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:5];
                 cell.selected = NO;
             }];
             break;
@@ -274,14 +274,25 @@ static LeftSliderController *sharedLSC;
 }
 
 - (void)signOutButtonPressed {
-    NSString *message = [NSString stringWithFormat:@"确定退出账号:%@？",loggedOnUser];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"退出账号"
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:@"取消"
-                                          otherButtonTitles:@"确定",nil];
-    alert.delegate = self;
-    [alert show];
+    if (![loggedOnUser isEqualToString:@"default"]) {
+        NSString *message = [NSString stringWithFormat:@"确定退出账号:%@？",loggedOnUser];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"退出账号"
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:@"取消"
+                                              otherButtonTitles:@"确定",nil];
+        alert.delegate = self;
+        [alert show];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"退出账号"
+                                                        message:@"操作无效：当前无账号处于登录状态"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    
 }
 
 #pragma mark -
@@ -337,9 +348,9 @@ static LeftSliderController *sharedLSC;
 #pragma mark -
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"%@",userInfoArray[0]);
     if (buttonIndex == 1) {
         for (int i = 0; i < [userInfoArray count]; i++) {
-            //判断添加的是否是本地已有的账户
             if ([[userInfoArray[i] objectForKey:@"userName"] isEqualToString:loggedOnUser]) {
                 [userInfoArray[i] setObject:[[NSNumber alloc] initWithInt:0] forKey:@"isSelected"];
                 NSString *documentDirectory = [self applicationDocumentsDirectory];
@@ -349,6 +360,7 @@ static LeftSliderController *sharedLSC;
                 UILabel *userNameLabel = (UILabel*)[self.view viewWithTag:10001];
                 userNameLabel.text = @"登录";
                 [delegate refresh1];//切换到默认用户，重新显示投资记录
+                break;
             }
         }
     }
