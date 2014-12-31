@@ -40,20 +40,7 @@ static LeftSliderController *sharedLSC;
         sharedLSC = self;
     });
     
-    loggedOnUser = @"default";
-    //获取所有的用户信息
-    [self createEditableCopyOfDatabaseIfNeeded];//拷贝userInfo.plist文件
-    NSString *documentDirectory = [self applicationDocumentsDirectory];
-    NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];//不应该从资源文件中读取数据，资源文件中的数据没有更改，要从沙箱中的资源文件读取数据
-    userInfoArray = [[NSMutableArray alloc] initWithContentsOfFile:path];//从资源文件中加载内容
-    if ([userInfoArray count] != 0) {
-        for (int i = 0; i < [userInfoArray count]; i++) {
-            if ([[userInfoArray[i] objectForKey:@"isSelected"] intValue] == 1) {
-                loggedOnUser = [userInfoArray[i] objectForKey:@"userName"];
-                break;
-            }
-        }
-    }
+    [self initLoggedOnUser];
     
     [self connectedToNetWork];//监测网络连接情况
     //获取屏幕分辨率
@@ -125,6 +112,23 @@ static LeftSliderController *sharedLSC;
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)initLoggedOnUser {
+    loggedOnUser = @"default";
+    //获取所有的用户信息
+    [self createEditableCopyOfDatabaseIfNeeded];//拷贝userInfo.plist文件
+    NSString *documentDirectory = [self applicationDocumentsDirectory];
+    NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];//不应该从资源文件中读取数据，资源文件中的数据没有更改，要从沙箱中的资源文件读取数据
+    userInfoArray = [[NSMutableArray alloc] initWithContentsOfFile:path];//从资源文件中加载内容
+    if ([userInfoArray count] != 0) {
+        for (int i = 0; i < [userInfoArray count]; i++) {
+            if ([[userInfoArray[i] objectForKey:@"isSelected"] intValue] == 1) {
+                loggedOnUser = [userInfoArray[i] objectForKey:@"userName"];
+                break;
+            }
+        }
+    }
 }
 
 #pragma mark - TableView delegate methods

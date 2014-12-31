@@ -8,6 +8,7 @@
 
 #import "FlowViewController.h"
 #import "RecordDB.h"
+#import "LeftSliderController.h"
 
 @interface FlowViewController ()
 
@@ -341,7 +342,7 @@
     
     NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[records[indexPath.row] objectForKey:@"capital"] floatValue]];
     label4.text = label4Text;
-    if ([[records[indexPath.row] objectForKey:@"maxRate"] floatValue] == 100.0) {
+    if ([[records[indexPath.row] objectForKey:@"minRate"] floatValue] == 0.0) {
         NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[records[indexPath.row] objectForKey:@"maxRate"] floatValue]];
         label5.text = label5Text;
     }
@@ -395,8 +396,9 @@
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
+        LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
         RecordDB *myRecordDB = [[RecordDB alloc]init];
-        [myRecordDB updateRecord:[[records[flag] objectForKey:@"timeStamp"] intValue]];
+        [myRecordDB updateRecord:[[records[flag] objectForKey:@"timeStamp"] intValue] withUserName:leftSliderC->loggedOnUser];
         [records removeObjectAtIndex:flag];
         [myTableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationTop];
         [delegate refresh2];

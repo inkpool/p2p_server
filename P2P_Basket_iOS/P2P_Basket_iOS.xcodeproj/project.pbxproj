@@ -26,6 +26,7 @@
 		1D5FB60C1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5FB60B1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a */; };
 		1D666CFF1A10C843004DC666 /* LeftSliderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D666CFE1A10C843004DC666 /* LeftSliderController.m */; };
 		1D6A48F61A43C3C600A381C6 /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6A48F51A43C3C600A381C6 /* PasswordViewController.m */; };
+		1D6D447A1A529ECB00C19984 /* select.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D6D44791A529ECB00C19984 /* select.png */; };
 		1D6DBD081A3EECE30081F516 /* LoginAndRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD071A3EECE30081F516 /* LoginAndRegisterViewController.m */; };
 		1D6DBD1D1A3EFEF80081F516 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD0B1A3EFEF80081F516 /* AFHTTPRequestOperation.m */; };
 		1D6DBD1E1A3EFEF80081F516 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD0D1A3EFEF80081F516 /* AFHTTPRequestOperationManager.m */; };
@@ -41,8 +42,6 @@
 		1D6ECFDA1A4BEC7A007C49DB /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6ECFD51A4BEC7A007C49DB /* PieChartView.m */; };
 		1D6ECFDB1A4BEC7A007C49DB /* RenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6ECFD71A4BEC7A007C49DB /* RenderView.m */; };
 		1D6ECFDC1A4BEC7A007C49DB /* RotatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6ECFD91A4BEC7A007C49DB /* RotatedView.m */; };
-		1D6ECFE01A4BEC89007C49DB /* center.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D6ECFDD1A4BEC89007C49DB /* center.png */; };
-		1D6ECFE11A4BEC89007C49DB /* select.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D6ECFDE1A4BEC89007C49DB /* select.png */; };
 		1D6ECFE21A4BEC89007C49DB /* shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D6ECFDF1A4BEC89007C49DB /* shadow.png */; };
 		1D78F4A31A0D1581009ED28B /* menu-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D78F4A21A0D1581009ED28B /* menu-icon@2x.png */; };
 		1D78F4A51A0D168E009ED28B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D78F4A41A0D168E009ED28B /* QuartzCore.framework */; };
@@ -77,6 +76,7 @@
 		1DB963411A4D0B5B006CD037 /* AccountManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DB963401A4D0B5B006CD037 /* AccountManagementViewController.m */; };
 		1DB963431A4D1856006CD037 /* sign-up.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB963421A4D1856006CD037 /* sign-up.png */; };
 		1DB963451A4D1874006CD037 /* add-account.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB963441A4D1874006CD037 /* add-account.png */; };
+		1DC21B021A53DEAB000D7A2E /* center.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DC21B011A53DEAB000D7A2E /* center.png */; };
 		1DCB79681A3993BF00E4372B /* CustomCellBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCB79671A3993BF00E4372B /* CustomCellBackground.m */; };
 		1DED79D91A287A4A00A054DB /* 爱投资-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D11A287A4A00A054DB /* 爱投资-icon.png */; };
 		1DED79DA1A287A4A00A054DB /* 点融网-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D21A287A4A00A054DB /* 点融网-icon.png */; };
@@ -152,6 +152,7 @@
 		1D666CFE1A10C843004DC666 /* LeftSliderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftSliderController.m; sourceTree = "<group>"; };
 		1D6A48F41A43C3C600A381C6 /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
 		1D6A48F51A43C3C600A381C6 /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
+		1D6D44791A529ECB00C19984 /* select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select.png; sourceTree = "<group>"; };
 		1D6DBD061A3EECE30081F516 /* LoginAndRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginAndRegisterViewController.h; sourceTree = "<group>"; };
 		1D6DBD071A3EECE30081F516 /* LoginAndRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginAndRegisterViewController.m; sourceTree = "<group>"; };
 		1D6DBD0A1A3EFEF80081F516 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -182,8 +183,6 @@
 		1D6ECFD71A4BEC7A007C49DB /* RenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderView.m; sourceTree = "<group>"; };
 		1D6ECFD81A4BEC7A007C49DB /* RotatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotatedView.h; sourceTree = "<group>"; };
 		1D6ECFD91A4BEC7A007C49DB /* RotatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotatedView.m; sourceTree = "<group>"; };
-		1D6ECFDD1A4BEC89007C49DB /* center.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = center.png; sourceTree = "<group>"; };
-		1D6ECFDE1A4BEC89007C49DB /* select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select.png; sourceTree = "<group>"; };
 		1D6ECFDF1A4BEC89007C49DB /* shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shadow.png; sourceTree = "<group>"; };
 		1D78F4A21A0D1581009ED28B /* menu-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-icon@2x.png"; sourceTree = "<group>"; };
 		1D78F4A41A0D168E009ED28B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -222,6 +221,7 @@
 		1DB963401A4D0B5B006CD037 /* AccountManagementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountManagementViewController.m; sourceTree = "<group>"; };
 		1DB963421A4D1856006CD037 /* sign-up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sign-up.png"; sourceTree = "<group>"; };
 		1DB963441A4D1874006CD037 /* add-account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-account.png"; sourceTree = "<group>"; };
+		1DC21B011A53DEAB000D7A2E /* center.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = center.png; sourceTree = "<group>"; };
 		1DCB79661A3993BF00E4372B /* CustomCellBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellBackground.h; sourceTree = "<group>"; };
 		1DCB79671A3993BF00E4372B /* CustomCellBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellBackground.m; sourceTree = "<group>"; };
 		1DED79D11A287A4A00A054DB /* 爱投资-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "爱投资-icon.png"; sourceTree = "<group>"; };
@@ -425,8 +425,8 @@
 		1D6ECFD31A4BEC7A007C49DB /* ChartView */ = {
 			isa = PBXGroup;
 			children = (
-				1D6ECFDD1A4BEC89007C49DB /* center.png */,
-				1D6ECFDE1A4BEC89007C49DB /* select.png */,
+				1DC21B011A53DEAB000D7A2E /* center.png */,
+				1D6D44791A529ECB00C19984 /* select.png */,
 				1D6ECFDF1A4BEC89007C49DB /* shadow.png */,
 				1D6ECFD41A4BEC7A007C49DB /* PieChartView.h */,
 				1D6ECFD51A4BEC7A007C49DB /* PieChartView.m */,
@@ -673,6 +673,7 @@
 				1D8F1BEA1A41209000FA7F91 /* arrow_down.png in Resources */,
 				1D78F4A31A0D1581009ED28B /* menu-icon@2x.png in Resources */,
 				1D84F5341A3BDC1300413A76 /* golden_eggs.jpg in Resources */,
+				1D6D447A1A529ECB00C19984 /* select.png in Resources */,
 				1D5C9C251A0B5FF8007CFFF9 /* Main.storyboard in Resources */,
 				1D5FB5B61A38266500DB12B7 /* horiz_line.png in Resources */,
 				E608616419FFEDC800EBDBE1 /* LaunchScreen.xib in Resources */,
@@ -691,6 +692,7 @@
 				1DA23D491A3EDD3C00116632 /* Oval 53@2x.png in Resources */,
 				1D5C9C2E1A0B60CC007CFFF9 /* anchor@2x.png in Resources */,
 				1D5FB5B71A38266500DB12B7 /* triangle_blue_1.png in Resources */,
+				1DC21B021A53DEAB000D7A2E /* center.png in Resources */,
 				1D5C9C301A0B60CC007CFFF9 /* layers@2x.png in Resources */,
 				1DEF2D201A4AF9AA0029754A /* 积木盒子-icon-灰色.png in Resources */,
 				1DACC8D01A39ED6100FF841F /* cellSelected.png in Resources */,
@@ -699,7 +701,6 @@
 				1DB339241A3AA1ED002CAD78 /* account_management.png in Resources */,
 				1DEF2D231A4AF9AA0029754A /* 盛融在线-icon-灰色.png in Resources */,
 				1DA23D431A3EDD3C00116632 /* menu_icon_4@2x.png in Resources */,
-				1D6ECFE11A4BEC89007C49DB /* select.png in Resources */,
 				1DB3391D1A3A970C002CAD78 /* portrait_default.png in Resources */,
 				1D5FB5B81A38266500DB12B7 /* triangle_gray_1.png in Resources */,
 				1D817EE11A4045D400D1F914 /* p2p_basket.sqlite in Resources */,
@@ -727,7 +728,6 @@
 				1DEF2D241A4AF9AA0029754A /* 鑫合汇-icon-灰色.png in Resources */,
 				1DACC8CE1A39E88100FF841F /* background.jpg in Resources */,
 				1DEF2D251A4AF9AA0029754A /* 有利网-icon-灰色.png in Resources */,
-				1D6ECFE01A4BEC89007C49DB /* center.png in Resources */,
 				E65EB9021A17AD32004F23B7 /* more@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

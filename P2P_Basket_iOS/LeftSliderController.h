@@ -19,5 +19,6 @@
 }
 
 + (id)sharedViewController;//单例，RootViewController只初始化一次
+- (void)initLoggedOnUser;
 
 @end

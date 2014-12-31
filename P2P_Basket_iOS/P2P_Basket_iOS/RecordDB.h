@@ -13,9 +13,9 @@
 -(NSString *)getDataBasePath;
 -(void)copyDatabaseIfNeeded;
 -(NSInteger)insertRecord:(NSString*)platform secondPara:(NSString*)product thirdPara:(float)capital forthPara:(float)minRate
-               fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate;
-- (NSMutableArray *)getAllRecord:(BOOL) flag;
-- (BOOL) updateRecord:(long int)timeStamp;
-- (BOOL) coverLocalRecord:(NSString*)platform secondPara:(NSString*)product thirdPara:(float)capital forthPara:(float)minRate fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate ninthPara:(long int)timeStamp tenthPara:(int)state eleventhPara:(int)isDeleted;
+               fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate ninthPara:(NSString*)userName;
+- (NSMutableArray *)getAllRecord:(BOOL) flag withUserName:(NSString*)userName;
+- (BOOL) updateRecord:(long int)timeStamp withUserName:(NSString*)userName;
+- (BOOL) coverLocalRecord:(NSString*)platform secondPara:(NSString*)product thirdPara:(float)capital forthPara:(float)minRate fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate ninthPara:(long int)timeStamp tenthPara:(int)state eleventhPara:(int)isDeleted withUserName:(NSString*)userName;
 @end
 

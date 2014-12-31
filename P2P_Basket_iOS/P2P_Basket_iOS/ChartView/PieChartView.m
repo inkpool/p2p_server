@@ -49,7 +49,7 @@
         self.title.backgroundColor = [UIColor clearColor];
         self.title.textAlignment = NSTextAlignmentCenter;
         self.title.font = [UIFont systemFontOfSize:18];
-        self.title.textColor = [UIColor whiteColor];
+        self.title.textColor = [UIColor blackColor];
         self.title.text = @"";
         [self.centerView addSubview:self.title];
         

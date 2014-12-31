@@ -19,11 +19,7 @@
     UILabel *incomeLabel;
     UILabel *interestRateLabel;
     UILabel *totalCapitalLable;
-    double minTotalInterest;
-    double maxTotalInterest;
-    double minDailyInterest;
-    double maxDailyInterest;
-    double remainCapital;
+    
 }
 
 @end
@@ -174,129 +170,15 @@
     [formatter setDateFormat : @"yyyy-MM-dd"];
     NSString *nowDate = [formatter stringFromDate:[NSDate date]];
     dateLabel.text = nowDate;
-    //计算显示在投总额
-    float totalCapital = 0.0;//用于计算年化利息和每日预估收益
-    remainCapital = 0.0;//剩余的投资总额（按月还本息：在投总额不断减少）
-//    double minAnnualResult = 0.0;
-//    double maxAnnualResult = 0.0;
-    double minDailyResult = 0.0;
-    double maxDailyResult = 0.0;
-    NSMutableArray *minAnnualResult = [[NSMutableArray alloc] init];//记录每笔投资的年化收益率
-    NSMutableArray *maxAnnualResult = [[NSMutableArray alloc] init];
-    for (int i = 0; i < [unExpireRecord count]; i++) {
-        totalCapital += [[unExpireRecord[i] objectForKey:@"capital"] floatValue];
-        [self getInterestWithAmount:[[unExpireRecord[i] objectForKey:@"capital"] floatValue]
-                                    withMinRate:[[unExpireRecord[i] objectForKey:@"minRate"] floatValue]
-                                    withMaxRate:[[unExpireRecord[i] objectForKey:@"maxRate"] floatValue]
-                                  withStartDate:[unExpireRecord[i] objectForKey:@"startDate"]
-                                    withEndDate:[unExpireRecord[i] objectForKey:@"endDate"]
-                                    withCalType:[unExpireRecord[i] objectForKey:@"calType"]
-                                    withNum:i];
-        //某一个投资的年化收益率：minDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue]
-        [minAnnualResult addObject:[[NSNumber alloc] initWithDouble:minDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue]]];
-        [maxAnnualResult addObject:[[NSNumber alloc] initWithDouble:maxDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue]]];
-        minDailyResult += minDailyInterest;
-        maxDailyResult += maxDailyInterest;
-    }//end for
-    totalCapitalLable.text = [NSString stringWithFormat:@"￥%.2f",remainCapital];//显示在投资金总额
-    //年化收益率=实际收益/（投资金额*（期限天数/360））*100%
-    //即 平均每日收益*365/该投资的总额
     
-    //计算平均年化收益率
-    float annualRate_min = 0.0;
-    float annualRate_max = 0.0;
-    for (int i = 0; i < [unExpireRecord count]; i++) {
-        annualRate_min += [minAnnualResult[i] doubleValue]*[[unExpireRecord[i] objectForKey:@"capital"] floatValue]/totalCapital;
-        annualRate_max += [maxAnnualResult[i] doubleValue]*[[unExpireRecord[i] objectForKey:@"capital"] floatValue]/totalCapital;
-    }
+    totalCapitalLable.text = [NSString stringWithFormat:@"￥%.2f",remainCapital];//显示在投资金总额
     incomeLabel.text = [NSString stringWithFormat:@"￥%.1f ± %.1f",(minDailyResult+maxDailyResult)/2.0,maxDailyResult-(minDailyResult+maxDailyResult)/2.0];
     interestRateLabel.text = [NSString stringWithFormat:@"%.2f ± %.2f%%",(annualRate_min+annualRate_max)/2.0*100,(annualRate_max - (annualRate_min+annualRate_max)/2.0)*100];
     left_label1.text = [NSString stringWithFormat:@"%ld",[expiringRecord count]];
     right_label1.text = [NSString stringWithFormat:@"%ld",[expireRecord count]];
 }
 
-- (void)getInterestWithAmount:(double)amount withMinRate:(double)minRate withMaxRate:(double)maxRate withStartDate:(NSString*)startDate withEndDate:(NSString*)endDate withCalType:(NSString*)calType withNum:(int)i{
-    minTotalInterest = 0.0;
-    maxTotalInterest = 0.0;
-    minDailyInterest = 0.0;
-    maxDailyInterest = 0.0;
-    if (maxRate == 100.0) {
-        maxRate = minRate;
-    }
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat : @"yyyy-MM-dd"];
-    NSDate *start = [formatter dateFromString:startDate];
-    NSDate *end = [formatter dateFromString:endDate];
-//    NSInteger days = [self getDateSpaceWithStartDate:start withEndDate:end];
-//    NSLog(@"%.2f,%.2f,%.2f,%@,%@,%@",amount,minRate,maxRate,startDate,endDate,calType);
-    //计算计息开始到结束间隔的天数
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    unsigned int unitFlags = NSCalendarUnitDay;
-    NSDateComponents *comps = [gregorian components:unitFlags fromDate:start toDate:end options:0];
-    NSInteger days = [comps day];
-    if (![calType isEqualToString:@"按月还本息"]) {//到期还本息，按月只还息
-        remainCapital += amount;
-        minTotalInterest = amount * minRate / 100 * days / 365;
-        maxTotalInterest = amount * maxRate / 100 * days / 365;
-        minDailyInterest = minTotalInterest/days;
-        maxDailyInterest = maxTotalInterest/days;
-//        NSLog(@"%.2f,%.2f,%d",minTotalInterest,maxTotalInterest,days);
-    } else {//按月还本息(在投的本金越来越少)
-        NSDate *today = [NSDate date];
-        float remain = [self getRemainAmountWithAmount:amount withMinRate:minRate withMaxRate:maxRate withStartDate:start withEndDate:today];
-        remainCapital += remain;
-        [self getAverageMonthPayWithAmount:amount withMinRate:minRate withMaxRate:maxRate withStartDate:start withEndDate:end];
-        minTotalInterest = minTotalInterest*[self getMonthSpaceWithStartDate:start withEndDate:end] - amount;
-        maxTotalInterest = maxTotalInterest*[self getMonthSpaceWithStartDate:start withEndDate:end] - amount;
-        minDailyInterest = minTotalInterest/days;
-        maxDailyInterest = maxTotalInterest/days;
-//        NSLog(@"22222:%.2f,%.2f,%d",minTotalInterest,maxTotalInterest,days);
-    }
-}
 
-- (void)getAverageMonthPayWithAmount:(double)amount withMinRate:(double)minRate withMaxRate:(double)maxRate withStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
-    //计算月还款额
-    float avgMinRate = minRate/100/12;//月利率
-    float avgMaxRate = maxRate/100/12;
-    NSInteger months = [self getMonthSpaceWithStartDate:startDate withEndDate:endDate];
-    // 月均还款本息计算，a×i×（1＋i）^n÷〔（1＋i）^n－1〕
-    //double pow(double x, double y）;计算以x为底数的y次幂
-    minTotalInterest = amount * avgMinRate * pow((1+avgMinRate), months) / (pow((1+avgMinRate), months) - 1);
-    maxTotalInterest = amount * avgMaxRate * pow((1+avgMaxRate), months) / (pow((1+avgMaxRate), months) - 1);
-}
-
-//- (NSInteger)getDateSpaceWithStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
-//    //计算计息开始到结束间隔的天数
-//    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-//    unsigned int unitFlags = NSCalendarUnitDay;
-//    NSDateComponents *comps = [gregorian components:unitFlags fromDate:startDate toDate:startDate options:0];
-//    NSInteger days = [comps day];
-//    NSLog(@"%d",days);
-//    return days;
-//}
-
-- (NSInteger)getMonthSpaceWithStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
-    //计算相隔的月数
-    NSCalendar*calendar = [NSCalendar currentCalendar];
-    NSDateComponents *startComps = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:startDate];
-    NSDateComponents *endComps = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate: endDate];
-    //        NSLog(@"1111:%d",([endComps year]-[startComps year])*12+[endComps month]-[startComps month]);
-    NSInteger months = ([endComps year]-[startComps year])*12+[endComps month]-[startComps month];
-    if (months == 0) {
-        months = 1;
-    }
-    return months;
-}
-
-- (double)getRemainAmountWithAmount:(double)amount withMinRate:(double)minRate withMaxRate:(double)maxRate withStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
-    //计算等额本息的剩余本金
-    double result = amount;
-    NSInteger months = [self getMonthSpaceWithStartDate:startDate withEndDate:endDate];
-    [self getAverageMonthPayWithAmount:amount withMinRate:minRate withMaxRate:maxRate withStartDate:startDate withEndDate:endDate];
-    double pay = (minTotalInterest + maxTotalInterest)/2;
-    result -= pay*months;
-    return result;
-}
 
 #pragma mark - ButtonPressedAction
 
@@ -400,7 +282,7 @@
         label2.textColor = [platformColor objectForKey:[expiringRecord[indexPath.row] objectForKey:@"platform"]];
         NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[expiringRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
         label4.text = label4Text;
-        if ([[expiringRecord[indexPath.row] objectForKey:@"maxRate"] floatValue] == 100.0) {
+        if ([[expiringRecord[indexPath.row] objectForKey:@"minRate"] floatValue] == 0.0) {
             NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[expiringRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
             label5.text = label5Text;
         }
@@ -420,7 +302,7 @@
         label2.textColor = [platformColor objectForKey:[expireRecord[indexPath.row] objectForKey:@"platform"]];
         NSString *label4Text = [NSString stringWithFormat:@"%.1f",[[expireRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
         label4.text = label4Text;
-        if ([[expireRecord[indexPath.row] objectForKey:@"maxRate"] floatValue] == 100.0) {
+        if ([[expireRecord[indexPath.row] objectForKey:@"minRate"] floatValue] == 0.0) {
             NSString *label5Text = [NSString stringWithFormat:@"%.2f%%",[[expireRecord[indexPath.row] objectForKey:@"maxRate"] floatValue]];
             label5.text = label5Text;
         }

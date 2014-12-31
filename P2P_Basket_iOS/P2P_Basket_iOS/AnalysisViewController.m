@@ -37,11 +37,10 @@
     CGSize size = rect.size;
     CGFloat screen_width = size.width;
     CGFloat screen_height = size.height;
-    CGFloat pieHeight = screen_width-30;
+    CGFloat pieHeight = screen_width/4*3;
     self.view.backgroundColor = [UIColor colorWithRed:237.0/255.0 green:237.0/255.0 blue:237.0/255.0 alpha:1.0];
     flag = 0;
     [self initArray];
-    
     
     //add shadow img
     pieFrame = CGRectMake((self.view.frame.size.width - pieHeight) / 2, screen_height/6, pieHeight, pieHeight);
@@ -67,7 +66,7 @@
     self.selLabel.backgroundColor = [UIColor clearColor];
     self.selLabel.textAlignment = NSTextAlignmentCenter;
     self.selLabel.font = [UIFont systemFontOfSize:17];
-    self.selLabel.textColor = [UIColor whiteColor];
+    self.selLabel.textColor = [UIColor colorWithRed:1.0/255.0 green:65.0/255.0 blue:128.0/255.0 alpha:1];
     [selView addSubview:self.selLabel];
     [myPieChartView setTitleText:@"平台在投总额"];
 }
@@ -182,29 +181,46 @@
         //平台余额
         
     }//end for
-    platformName = [platformTotalCapital allKeys];
-    
-    platformTotalCapitalArray = [NSMutableArray arrayWithCapacity:[platformName count]];
-    colorArray1 = [NSMutableArray arrayWithCapacity:[platformName count]];
-    for (int i = 0; i < [platformName count]; i++) {
-        [platformTotalCapitalArray insertObject:[platformTotalCapital objectForKey:platformName[i]] atIndex:i];
-        [colorArray1 addObject:[UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1]];
+    if ([unExpireRecord count] != 0) {
+        platformName = [platformTotalCapital allKeys];
+        platformTotalCapitalArray = [NSMutableArray arrayWithCapacity:[platformName count]];
+        colorArray1 = [NSMutableArray arrayWithCapacity:[platformName count]];
+        for (int i = 0; i < [platformName count]; i++) {
+            [platformTotalCapitalArray insertObject:[platformTotalCapital objectForKey:platformName[i]] atIndex:i];
+            [colorArray1 addObject:[UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1]];
+        }
+        
+        rateStatisticsArray = [NSMutableArray arrayWithCapacity:8];
+        termStructureArray = [NSMutableArray arrayWithCapacity:8];
+        colorArray2 = [NSMutableArray arrayWithCapacity:8];
+        for (int i = 0; i < 8; i++) {
+            [rateStatisticsArray insertObject:[[NSNumber alloc] initWithInt:rateStatistics[i]] atIndex:i];
+            [termStructureArray insertObject:[[NSNumber alloc] initWithInt:termStructure[i]] atIndex:i];
+            [colorArray2 addObject:[UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1]];
+        }
+        
+        remainingTimeArray = [NSMutableArray arrayWithCapacity:7];
+        colorArray3 = [NSMutableArray arrayWithCapacity:7];
+        for (int i = 0; i < 7; i++) {
+            [remainingTimeArray insertObject:[[NSNumber alloc] initWithInt:remainingTime[i]] atIndex:i];
+            [colorArray3 addObject:[UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1]];
+        }
     }
-    
-    rateStatisticsArray = [NSMutableArray arrayWithCapacity:8];
-    termStructureArray = [NSMutableArray arrayWithCapacity:8];
-    colorArray2 = [NSMutableArray arrayWithCapacity:8];
-    for (int i = 0; i < 8; i++) {
-        [rateStatisticsArray insertObject:[[NSNumber alloc] initWithInt:rateStatistics[i]] atIndex:i];
-        [termStructureArray insertObject:[[NSNumber alloc] initWithInt:termStructure[i]] atIndex:i];
-        [colorArray2 addObject:[UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1]];
-    }
-    
-    remainingTimeArray = [NSMutableArray arrayWithCapacity:7];
-    colorArray3 = [NSMutableArray arrayWithCapacity:7];
-    for (int i = 0; i < 7; i++) {
-        [remainingTimeArray insertObject:[[NSNumber alloc] initWithInt:remainingTime[i]] atIndex:i];
-        [colorArray3 addObject:[UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1]];
+    else {
+        platformTotalCapitalArray = [NSMutableArray arrayWithCapacity:1];
+        [platformTotalCapitalArray insertObject:[[NSNumber alloc] initWithInt:1] atIndex:0];
+        colorArray1 = [NSMutableArray arrayWithCapacity:1];
+        [colorArray1 addObject:[UIColor grayColor]];
+        rateStatisticsArray = [NSMutableArray arrayWithCapacity:1];
+        termStructureArray = [NSMutableArray arrayWithCapacity:1];
+        colorArray2 = [NSMutableArray arrayWithCapacity:1];
+        [rateStatisticsArray insertObject:[[NSNumber alloc] initWithInt:1] atIndex:0];
+        [termStructureArray insertObject:[[NSNumber alloc] initWithInt:1] atIndex:0];
+        [colorArray2 addObject:[UIColor grayColor]];
+        remainingTimeArray = [NSMutableArray arrayWithCapacity:1];
+        colorArray3 = [NSMutableArray arrayWithCapacity:1];
+        [remainingTimeArray insertObject:[[NSNumber alloc] initWithInt:1] atIndex:0];
+        [colorArray3 addObject:[UIColor grayColor]];
     }
     
 }
@@ -212,99 +228,119 @@
 - (void)selectedFinish:(PieChartView *)pieChartView index:(NSInteger)index percent:(float)per
 {
 //    NSLog(@"selectedFinish11111");
-    switch (flag) {
-        case 0:
-            self.selLabel.text = [NSString stringWithFormat:@"%@:%.2f%%",platformName[index],per*100];
-            break;
-        case 1:
-            switch (index) {
-                case 0:
-                    self.selLabel.text = [NSString stringWithFormat:@"0%%~6%%:%.2f%%",per*100];
-                    break;
-                case 1:
-                    self.selLabel.text = [NSString stringWithFormat:@"6%%~8%%:%.2f%%",per*100];
-                    break;
-                case 2:
-                    self.selLabel.text = [NSString stringWithFormat:@"8%%~10%%:%.2f%%",per*100];
-                    break;
-                case 3:
-                    self.selLabel.text = [NSString stringWithFormat:@"10%%~12%%:%.2f%%",per*100];
-                    break;
-                case 4:
-                    self.selLabel.text = [NSString stringWithFormat:@"12%%~15%%:%.2f%%",per*100];
-                    break;
-                case 5:
-                    self.selLabel.text = [NSString stringWithFormat:@"15%%~20%%:%.2f%%",per*100];
-                    break;
-                case 6:
-                    self.selLabel.text = [NSString stringWithFormat:@"20%%~25%%:%.2f%%",per*100];
-                    break;
-                case 7:
-                    self.selLabel.text = [NSString stringWithFormat:@"25%%以上:%.2f%%",per*100];
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case 2:
-            switch (index) {
-                case 0:
-                    self.selLabel.text = [NSString stringWithFormat:@"0~1个月:%.2f%%",per*100];
-                    break;
-                case 1:
-                    self.selLabel.text = [NSString stringWithFormat:@"1~3个月:%.2f%%",per*100];
-                    break;
-                case 2:
-                    self.selLabel.text = [NSString stringWithFormat:@"3~6个月:%.2f%%",per*100];
-                    break;
-                case 3:
-                    self.selLabel.text = [NSString stringWithFormat:@"6~9个月:%.2f%%",per*100];
-                    break;
-                case 4:
-                    self.selLabel.text = [NSString stringWithFormat:@"9个月~1年:%.2f%%",per*100];
-                    break;
-                case 5:
-                    self.selLabel.text = [NSString stringWithFormat:@"1年~1年半:%.2f%%",per*100];
-                    break;
-                case 6:
-                    self.selLabel.text = [NSString stringWithFormat:@"1年半~2年:%.2f%%",per*100];
-                    break;
-                case 7:
-                    self.selLabel.text = [NSString stringWithFormat:@"2年以上:%.2f%%",per*100];
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case 3:
-            switch (index) {
-                case 0:
-                    self.selLabel.text = [NSString stringWithFormat:@"0~1周:%.2f%%",per*100];
-                    break;
-                case 1:
-                    self.selLabel.text = [NSString stringWithFormat:@"1周~1个月:%.2f%%",per*100];
-                    break;
-                case 2:
-                    self.selLabel.text = [NSString stringWithFormat:@"1个月~3个月:%.2f%%",per*100];
-                    break;
-                case 3:
-                    self.selLabel.text = [NSString stringWithFormat:@"3个月~6个月:%.2f%%",per*100];
-                    break;
-                case 4:
-                    self.selLabel.text = [NSString stringWithFormat:@"6个月~9个月:%.2f%%",per*100];
-                    break;
-                case 5:
-                    self.selLabel.text = [NSString stringWithFormat:@"9个月~1年:%.2f%%",per*100];
-                    break;
-                case 6:
-                    self.selLabel.text = [NSString stringWithFormat:@"1年以上:%.2f%%",per*100];
-                    break;
-                default:
-                    break;
-            }
-            break;
-        default:
-            break;
+    if ([unExpireRecord count] != 0) {
+        switch (flag) {
+            case 0:
+                self.selLabel.text = [NSString stringWithFormat:@"%@:%.2f%%",platformName[index],per*100];
+                break;
+            case 1:
+                switch (index) {
+                    case 0:
+                        self.selLabel.text = [NSString stringWithFormat:@"0%%~6%%:%.2f%%",per*100];
+                        break;
+                    case 1:
+                        self.selLabel.text = [NSString stringWithFormat:@"6%%~8%%:%.2f%%",per*100];
+                        break;
+                    case 2:
+                        self.selLabel.text = [NSString stringWithFormat:@"8%%~10%%:%.2f%%",per*100];
+                        break;
+                    case 3:
+                        self.selLabel.text = [NSString stringWithFormat:@"10%%~12%%:%.2f%%",per*100];
+                        break;
+                    case 4:
+                        self.selLabel.text = [NSString stringWithFormat:@"12%%~15%%:%.2f%%",per*100];
+                        break;
+                    case 5:
+                        self.selLabel.text = [NSString stringWithFormat:@"15%%~20%%:%.2f%%",per*100];
+                        break;
+                    case 6:
+                        self.selLabel.text = [NSString stringWithFormat:@"20%%~25%%:%.2f%%",per*100];
+                        break;
+                    case 7:
+                        self.selLabel.text = [NSString stringWithFormat:@"25%%以上:%.2f%%",per*100];
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 2:
+                switch (index) {
+                    case 0:
+                        self.selLabel.text = [NSString stringWithFormat:@"0~1个月:%.2f%%",per*100];
+                        break;
+                    case 1:
+                        self.selLabel.text = [NSString stringWithFormat:@"1~3个月:%.2f%%",per*100];
+                        break;
+                    case 2:
+                        self.selLabel.text = [NSString stringWithFormat:@"3~6个月:%.2f%%",per*100];
+                        break;
+                    case 3:
+                        self.selLabel.text = [NSString stringWithFormat:@"6~9个月:%.2f%%",per*100];
+                        break;
+                    case 4:
+                        self.selLabel.text = [NSString stringWithFormat:@"9个月~1年:%.2f%%",per*100];
+                        break;
+                    case 5:
+                        self.selLabel.text = [NSString stringWithFormat:@"1年~1年半:%.2f%%",per*100];
+                        break;
+                    case 6:
+                        self.selLabel.text = [NSString stringWithFormat:@"1年半~2年:%.2f%%",per*100];
+                        break;
+                    case 7:
+                        self.selLabel.text = [NSString stringWithFormat:@"2年以上:%.2f%%",per*100];
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 3:
+                switch (index) {
+                    case 0:
+                        self.selLabel.text = [NSString stringWithFormat:@"0~1周:%.2f%%",per*100];
+                        break;
+                    case 1:
+                        self.selLabel.text = [NSString stringWithFormat:@"1周~1个月:%.2f%%",per*100];
+                        break;
+                    case 2:
+                        self.selLabel.text = [NSString stringWithFormat:@"1个月~3个月:%.2f%%",per*100];
+                        break;
+                    case 3:
+                        self.selLabel.text = [NSString stringWithFormat:@"3个月~6个月:%.2f%%",per*100];
+                        break;
+                    case 4:
+                        self.selLabel.text = [NSString stringWithFormat:@"6个月~9个月:%.2f%%",per*100];
+                        break;
+                    case 5:
+                        self.selLabel.text = [NSString stringWithFormat:@"9个月~1年:%.2f%%",per*100];
+                        break;
+                    case 6:
+                        self.selLabel.text = [NSString stringWithFormat:@"1年以上:%.2f%%",per*100];
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    else {//无数据
+        switch (flag) {
+            case 0:
+                self.selLabel.text = @"无数据";
+                break;
+            case 1:
+                self.selLabel.text = @"无数据";
+                break;
+            case 2:
+                self.selLabel.text = @"无数据";
+                break;
+            case 3:
+                self.selLabel.text = @"无数据";
+                break;
+            default:
+                break;
+        }
     }
     
     NSLog(@"%ld",(long)index);

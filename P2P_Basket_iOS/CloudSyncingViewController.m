@@ -87,7 +87,7 @@
     isCloudSyncing = YES;
     LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
     //读取数据库表recordT中用户的所有未删除的投资记录
-    records = [recordDB getAllRecord:YES];//读取所有的数据，包括已被标记为删除的数据
+    records = [recordDB getAllRecord:YES withUserName:leftSliderC->loggedOnUser];//读取所有的数据，包括已被标记为删除的数据
     if (leftSliderC->networkConnected) {//网络已连接
         UIView *viewToUse = self.view;
         [DejalBezelActivityView activityViewForView:viewToUse withLabel:@"同步中..." width:100];
@@ -171,6 +171,7 @@
 
 - (void)cloudSyncingDownStep2:(AFHTTPRequestOperationManager*)manager withAmount:(int)amount withIndex:(int)index {
     int num = index*5+5;
+    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
     if (num <= amount) {
         [manager POST:@"http://128.199.226.246/beerich/index.php/sync/fromCloud"
            parameters:@{@"user_name":@"xuxin@qq.com",
@@ -198,6 +199,7 @@
                                                        ninthPara:[[resultArray[j] objectForKey:@"addTime"] longLongValue]
                                                        tenthPara:[[resultArray[j] objectForKey:@"state"] intValue]
                                                     eleventhPara:[[resultArray[j] objectForKey:@"ifDeleted"] intValue]
+                                                    withUserName:leftSliderC->loggedOnUser
                                        ];//end isOK
                           NSLog(@"isOK:%d",isOK);
                           
@@ -242,6 +244,7 @@
                                                        ninthPara:[[resultArray[j] objectForKey:@"addTime"] longLongValue]
                                                        tenthPara:[[resultArray[j] objectForKey:@"state"] intValue]
                                                     eleventhPara:[[resultArray[j] objectForKey:@"ifDeleted"] intValue]
+                                                    withUserName:leftSliderC->loggedOnUser
                                        ];//end isOK
                           NSLog(@"isOK:%d",isOK);
                           

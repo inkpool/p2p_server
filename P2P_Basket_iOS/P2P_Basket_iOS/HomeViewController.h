@@ -22,6 +22,11 @@
     NSMutableArray *expireRecord;//已到期的投资记录
     NSMutableArray *expiringRecord;//即将到期的投资记录
     NSMutableArray *unExpireRecord;//未到期的投资记录
+    double remainCapital;//在投总额
+    double minDailyResult;//当日收益
+    double maxDailyResult;
+    float annualRate_min;//年化收益率
+    float annualRate_max;
 }
 
 - (void)showData;
