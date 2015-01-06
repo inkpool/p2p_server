@@ -58,6 +58,7 @@
     
     //add selected view
     UIImageView *selView = [[UIImageView alloc]init];
+    selView.tag = 1001;
     selView.image = [UIImage imageNamed:@"select.png"];
     selView.frame = CGRectMake((self.view.frame.size.width - selView.image.size.width/2)/2, self.pieContainer.frame.origin.y + self.pieContainer.frame.size.height, selView.image.size.width/2, selView.image.size.height/2);
     [self.view addSubview:selView];
@@ -420,6 +421,8 @@
     [self.pieContainer addSubview:myPieChartView];
     [self.view addSubview:self.pieContainer];
     myPieChartView.delegate = self;
+    UIImageView *selView = (UIImageView*)[self.view viewWithTag:1001];
+    [self.view bringSubviewToFront:selView];
     //    [myPieChartView reloadChart];
 //    NSLog(@"reloadData22222");
 }

@@ -12,6 +12,10 @@
 		1D13628F1A41ABC4006BE057 /* PlatformDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D13628E1A41ABC4006BE057 /* PlatformDetailViewController.m */; };
 		1D1362951A41BC79006BE057 /* PlatformViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D1362941A41BC79006BE057 /* PlatformViewController.m */; };
 		1D1BDF8E1A4D53C9007F9915 /* userInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1D1BDF8D1A4D53C9007F9915 /* userInfo.plist */; };
+		1D5BD16A1A5BB513009B2CEA /* recommend.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5BD1691A5BB513009B2CEA /* recommend.png */; };
+		1D5BD16C1A5BB528009B2CEA /* news.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5BD16B1A5BB528009B2CEA /* news.png */; };
+		1D5BD16F1A5BB806009B2CEA /* newsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5BD16E1A5BB806009B2CEA /* newsTableViewCell.m */; };
+		1D5BD1721A5BBB52009B2CEA /* NewsDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5BD1711A5BBB52009B2CEA /* NewsDB.m */; };
 		1D5C9C231A0B5FE0007CFFF9 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5C9C221A0B5FE0007CFFF9 /* HomeViewController.m */; };
 		1D5C9C251A0B5FF8007CFFF9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D5C9C241A0B5FF8007CFFF9 /* Main.storyboard */; };
 		1D5C9C2D1A0B60CC007CFFF9 /* homepage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5C9C281A0B60CC007CFFF9 /* homepage@2x.png */; };
@@ -135,6 +139,12 @@
 		1D1362941A41BC79006BE057 /* PlatformViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlatformViewController.m; sourceTree = "<group>"; };
 		1D1BDF8D1A4D53C9007F9915 /* userInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = userInfo.plist; sourceTree = "<group>"; };
 		1D5285161A2F054000989CAC /* UIViewPassValueDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewPassValueDelegate.h; sourceTree = "<group>"; };
+		1D5BD1691A5BB513009B2CEA /* recommend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recommend.png; sourceTree = "<group>"; };
+		1D5BD16B1A5BB528009B2CEA /* news.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = news.png; sourceTree = "<group>"; };
+		1D5BD16D1A5BB806009B2CEA /* newsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = newsTableViewCell.h; sourceTree = "<group>"; };
+		1D5BD16E1A5BB806009B2CEA /* newsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = newsTableViewCell.m; sourceTree = "<group>"; };
+		1D5BD1701A5BBB52009B2CEA /* NewsDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDB.h; sourceTree = "<group>"; };
+		1D5BD1711A5BBB52009B2CEA /* NewsDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDB.m; sourceTree = "<group>"; };
 		1D5C9C211A0B5FE0007CFFF9 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		1D5C9C221A0B5FE0007CFFF9 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		1D5C9C241A0B5FF8007CFFF9 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -340,6 +350,8 @@
 				1D5FB5B41A38266500DB12B7 /* triangle_gray_1.png */,
 				1D5FB5B51A38266500DB12B7 /* vertical_line.png */,
 				1D5FB5BA1A38281500DB12B7 /* arrow.png */,
+				1D5BD1691A5BB513009B2CEA /* recommend.png */,
+				1D5BD16B1A5BB528009B2CEA /* news.png */,
 				1DCB79691A39944000E4372B /* LeftSlider */,
 				1D05BC531A26064D00E3EEC8 /* PlatformIcon */,
 				1D05BC521A26061F00E3EEC8 /* TabBarItemIcon */,
@@ -388,6 +400,8 @@
 				1D989AAA1A10F6260092EED1 /* FlowViewController.m */,
 				1D6ECFD01A4BEBB7007C49DB /* AnalysisViewController.h */,
 				1D6ECFD11A4BEBB7007C49DB /* AnalysisViewController.m */,
+				1D5BD16D1A5BB806009B2CEA /* newsTableViewCell.h */,
+				1D5BD16E1A5BB806009B2CEA /* newsTableViewCell.m */,
 				E65EB8FE1A17AA10004F23B7 /* MoreViewController.h */,
 				E65EB8FF1A17AA10004F23B7 /* MoreViewController.m */,
 				E6C8E4241A18C7A600229A9F /* AddViewController.h */,
@@ -454,6 +468,8 @@
 			children = (
 				E68B042B1A2A1FD700DF1EBB /* RecordDB.h */,
 				E68B042C1A2A1FD700DF1EBB /* RecordDB.m */,
+				1D5BD1701A5BBB52009B2CEA /* NewsDB.h */,
+				1D5BD1711A5BBB52009B2CEA /* NewsDB.m */,
 				E616DAED1A28D68700A17ED9 /* platformDB.h */,
 				E616DAEE1A28D68700A17ED9 /* platformDB.m */,
 			);
@@ -676,6 +692,7 @@
 				1D6D447A1A529ECB00C19984 /* select.png in Resources */,
 				1D5C9C251A0B5FF8007CFFF9 /* Main.storyboard in Resources */,
 				1D5FB5B61A38266500DB12B7 /* horiz_line.png in Resources */,
+				1D5BD16C1A5BB528009B2CEA /* news.png in Resources */,
 				E608616419FFEDC800EBDBE1 /* LaunchScreen.xib in Resources */,
 				1DA23D4E1A3EDD6500116632 /* menu_icon_2.png in Resources */,
 				1DA23D461A3EDD3C00116632 /* menu_icon_6.png in Resources */,
@@ -688,6 +705,7 @@
 				1DB963451A4D1874006CD037 /* add-account.png in Resources */,
 				1DEF2D211A4AF9AA0029754A /* 陆金所-icon-灰色.png in Resources */,
 				1DA23D411A3EDD3C00116632 /* menu_icon_1@2x.png in Resources */,
+				1D5BD16A1A5BB513009B2CEA /* recommend.png in Resources */,
 				1D5FB5BB1A38281500DB12B7 /* arrow.png in Resources */,
 				1DA23D491A3EDD3C00116632 /* Oval 53@2x.png in Resources */,
 				1D5C9C2E1A0B60CC007CFFF9 /* anchor@2x.png in Resources */,
@@ -773,9 +791,11 @@
 				E608615619FFEDC800EBDBE1 /* main.m in Sources */,
 				1DEF2D0D1A4AF0980029754A /* ALAlertBannerManager.m in Sources */,
 				1D8966FA1A49821800616949 /* DejalActivityView.m in Sources */,
+				1D5BD1721A5BBB52009B2CEA /* NewsDB.m in Sources */,
 				1DCB79681A3993BF00E4372B /* CustomCellBackground.m in Sources */,
 				1D13628F1A41ABC4006BE057 /* PlatformDetailViewController.m in Sources */,
 				1D6DBD231A3EFEF80081F516 /* AFURLRequestSerialization.m in Sources */,
+				1D5BD16F1A5BB806009B2CEA /* newsTableViewCell.m in Sources */,
 				1D02FCFF1A404E5700C09982 /* CloudSyncingViewController.m in Sources */,
 				1D6ECFDC1A4BEC7A007C49DB /* RotatedView.m in Sources */,
 				1D6DBD1D1A3EFEF80081F516 /* AFHTTPRequestOperation.m in Sources */,

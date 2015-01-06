@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface MoreViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-
+{
+    NSMutableArray *newsArray;
+    UITableView *myTableView;
+}
 @end

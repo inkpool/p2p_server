@@ -9,9 +9,14 @@
 #import "MoreViewController.h"
 #import "LeftSliderController.h"
 #import "AFHTTPRequestOperationManager.h"
+#import "NewsDB.h"
+#import "newsTableViewCell.h"
 
 @interface MoreViewController ()
-
+{
+    NSArray *queryArray;
+    NewsDB *newsDB;
+}
 @end
 
 @implementation MoreViewController
@@ -24,7 +29,19 @@
     CGFloat screen_width = size.width;
     CGFloat screen_height = size.height;
     
-    UIButton *informationButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 80, 80, 30)];
+    newsDB = [[NewsDB alloc] init];
+    [newsDB copyDatabaseIfNeeded];
+    newsArray = [newsDB getAllNews];
+    
+    NSArray *array = [[NSArray alloc]initWithObjects:@"资讯",@"推荐", nil];
+    UISegmentedControl *segment = [[UISegmentedControl alloc]initWithItems:array];
+    segment.frame = CGRectMake(0, 64, screen_width, screen_height/15);
+    [segment setTintColor:[UIColor colorWithRed:65.0/255.0 green:83.0/255.0 blue:137.0/255.0 alpha:1]]; //设置segments的颜色
+    [segment addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
+    segment.selectedSegmentIndex = 0;
+    [self.view addSubview:segment];
+    
+    UIButton *informationButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 100, 80, 30)];
     [informationButton setTitle:@"资讯" forState:UIControlStateNormal];
     [informationButton setTitleColor:[UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [informationButton setTitleColor:[UIColor colorWithRed:40.0/255.0 green:131.0/255.0 blue:254.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
@@ -35,8 +52,8 @@
     [buttonLayer1 setBorderWidth:1.5];
     [buttonLayer1 setBorderColor:[[UIColor grayColor] CGColor]];
     [self.view addSubview:informationButton];
-    
-    UIButton *recommendButton = [[UIButton alloc] initWithFrame:CGRectMake(130, 80, 80, 30)];
+
+    UIButton *recommendButton = [[UIButton alloc] initWithFrame:CGRectMake(130, 100, 80, 30)];
     [recommendButton setTitle:@"推荐" forState:UIControlStateNormal];
     [recommendButton setTitleColor:[UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [recommendButton setTitleColor:[UIColor colorWithRed:40.0/255.0 green:131.0/255.0 blue:254.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
@@ -48,15 +65,11 @@
     [buttonLayer2 setBorderColor:[[UIColor grayColor] CGColor]];
     [self.view addSubview:recommendButton];
     
-//    //添加一个tableView
-//    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height)];
-//    //tableView.backgroundView = backView;
-//    tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
-//    tableView.backgroundColor=[UIColor clearColor];
-//    //tableView.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
-//    [self.view addSubview:tableView];
-//    tableView.delegate=self;
-//    tableView.dataSource=self;
+    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 130, screen_width, screen_height-130-49)];
+    myTableView.dataSource = self;
+    myTableView.delegate = self;
+    [self.view addSubview:myTableView];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -70,31 +83,32 @@
     NSNumber *timeStamp = [[NSNumber alloc] initWithInt:0];
     if (leftSliderC->networkConnected) {//网络已连接
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//        manager.requestSerializer = [AFJSONRequestSerializer serializer];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer]; //这个决定了下面responseObject返回的类型
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
         [manager POST:@"http://128.199.226.246/beerich/index.php/news"
            parameters:@{@"last_timestamp":timeStamp}
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//                  NSLog(@"JSON#######: %@", responseObject);
-//                  NSLog(@"Success: %@", operation.responseString);
                   NSString *requestTmp = [NSString stringWithString:operation.responseString];
                   NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
-                  
-                  
-                  //系统自带JSON解析
-                  NSArray *array = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
-//                  NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//                  NSLog(@"_____%@_____",result);
-//                  if (!result) {//wifi已连接，但无法访问网络
-//                      [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
-//                      
-//                  } else {
-//                      
-//                  }
-//                  NSMutableArray *array = [NSKeyedUnarchiver unarchiveObjectWithData:resData];
-//                   NSArray *deserializedArray = (NSArray *)resultDic;
-                  NSLog(@"resultDic:%@",[array[0] objectForKey:@"title"]);
+                  NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                  if (!result) {//wifi已连接，但无法访问网络
+                      [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
+                      
+                  } else {
+                      //系统自带JSON解析
+                      queryArray = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
+                      NSLog(@"resultDic11111:%d",[[queryArray[0] objectForKey:@"add_time"] intValue]);
+                      NSLog(@"resultDic22222:%d",[[queryArray[1] objectForKey:@"add_time"] intValue]);
+//                      NSLog(@"resultDic:%@",[queryArray[0] objectForKey:@"title"]);
+//                      NSLog(@"resultDic:%@",[queryArray[0] objectForKey:@"content"]);
+                      NSLog(@"%d",[queryArray count]);
+                      for (int i = 0; i < [queryArray count]; i++) {
+                          [newsDB insertNews:[[queryArray[i] objectForKey:@"add_time"] intValue] withTitle:[queryArray[i] objectForKey:@"title"] withContent:[queryArray[i] objectForKey:@"content"]];
+                      }
+                      newsArray = [newsDB getAllNews];
+//                      NSLog(@"newsArray:%@",newsArray);
+                      [myTableView reloadData];
+                  }
               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                   NSLog(@"Error######: %@", error);
               }];
@@ -103,7 +117,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"连接错误"
                                                         message:@"无法连接服务器，请检查您的网络连接是否正常"
                                                        delegate:self
-                                              cancelButtonTitle:@"OK"
+                                              cancelButtonTitle:@"确定"
                                               otherButtonTitles: nil];
         [alert show];
     }
@@ -111,6 +125,20 @@
 
 - (void)recommendButtonPressed {
     
+}
+
+- (void)segmentAction:(UISegmentedControl *)Seg {
+    NSInteger index = Seg.selectedSegmentIndex;
+    switch (index) {
+        case 0:
+            NSLog(@"0 clicked.");
+            break;
+        case 1:
+            NSLog(@"1 clicked.");
+            break;
+        default:
+            break;
+    }
 }
 
 - (void) alertWithTitle:(NSString *)title withMsg:(NSString *)msg{
@@ -131,63 +159,31 @@
 
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section {
-    return 8;
+    return [newsArray count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView
-         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *TableSampleIdentifier = @"CellIdentifier";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:
-                             TableSampleIdentifier];
-    
+    static NSString *CellIdentifier = @"newsCell";
+    newsTableViewCell *cell = (newsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]
-                initWithStyle:UITableViewCellStyleValue1
-                reuseIdentifier:TableSampleIdentifier];
+        cell = [[newsTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
-    NSUInteger row = [indexPath row];
+    cell.portalImage.image = [UIImage imageNamed:@"golden_eggs.jpg"];
+    NSString *title = [newsArray[indexPath.row] objectForKey:@"title"];
+    cell.newsTitle.text = title;
     
-    switch(row)
-    {
-        case 4:
-        {
-            cell.textLabel.text = @"账户设置";
-            UIImage *image = [UIImage imageNamed:@"homepage"];
-            cell.imageView.image = image;
-            cell.backgroundColor=[UIColor clearColor];
-            break;
-        }
-        case 5:
-        {
-            cell.textLabel.text = @"云端备份";
-            UIImage *image = [UIImage imageNamed:@"homepage"];
-            cell.imageView.image = image;
-            cell.backgroundColor=[UIColor clearColor];
-            break;
-        }
-        case 6:
-        {
-            cell.textLabel.text = @"用户反馈";
-            UIImage *image = [UIImage imageNamed:@"homepage"];
-            cell.imageView.image = image;
-            cell.backgroundColor=[UIColor clearColor];
-            break;
-        }
-        case 7:
-        {
-            cell.textLabel.text = @"联系我们";
-            UIImage *image = [UIImage imageNamed:@"homepage"];
-            cell.imageView.image = image;
-            cell.backgroundColor=[UIColor clearColor];
-            break;
-        }
-        default: cell.backgroundColor=[UIColor clearColor];break;
-    }
+    NSString *content = [newsArray[indexPath.row] objectForKey:@"content"];
+    cell.detailText.text = content;
+    
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 70;
+}
 
 @end

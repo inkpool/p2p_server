@@ -29,8 +29,10 @@
     screen_width = size.width;
     screen_height = size.height;
     
-    startX = screen_width/2-screen_width/10;
+    UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 64, screen_width, 1)];//view1的作用就是避免scrollView下垂
+    [self.view addSubview:view1];
     
+    startX = screen_width/2-screen_width/10;
     myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, screen_width, 70)];
     //myScrollView.backgroundColor = [UIColor clearColor];//clearColor去除背景颜色
     //是否支持滑动到最顶端
