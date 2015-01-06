@@ -19,7 +19,9 @@
     UILabel *incomeLabel;
     UILabel *interestRateLabel;
     UILabel *totalCapitalLable;
-    
+    UITextField *rateField;
+    int prewTag;
+    float prewMoveY;
 }
 
 @end
@@ -320,5 +322,107 @@
 {
     return 65;
 }//返回cell的高度
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    //显示到期确认的对话框
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height)];
+    bgView.tag = 201;
+    bgView.backgroundColor = [UIColor blackColor];
+    bgView.alpha = 0.5;
+    [self.parentViewController.navigationController.view addSubview:bgView];
+    
+    UIView *alertView = [[UIView alloc] initWithFrame:CGRectMake(screen_width/10, screen_height/7, screen_width/5*4, 300)];
+    alertView.tag = 202;
+    alertView.backgroundColor = [UIColor whiteColor];
+    alertView.alpha = 0.96;
+    alertView.layer.cornerRadius = 10;
+    
+//    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+//    UIVisualEffectView *effectview = [[UIVisualEffectView alloc] initWithEffect:blur];
+//    effectview.frame = CGRectMake(0, 0, alertView.frame.size.width, alertView.frame.size.height);
+//    [alertView addSubview:effectview];
+    
+    UIView *upView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, alertView.frame.size.width, 40)];
+    upView.backgroundColor = [UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1];
+    //只有上面两个角设为圆角
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:upView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(10, 10)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = upView.bounds;
+    maskLayer.path = maskPath.CGPath;
+    upView.layer.mask = maskLayer;
+    [alertView addSubview:upView];
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 100, 20)];
+    titleLabel.text = @"确认投资";
+    [upView addSubview:titleLabel];
+    
+    UILabel *datelabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 50, 100, 20)];
+    NSString *dateStr = [NSString stringWithFormat:@"%@",[expireRecord[indexPath.row] objectForKey:@"endDate"]];
+    datelabel.text = dateStr;
+    [alertView addSubview:datelabel];
+    
+    UILabel *productLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 75, 200, 20)];
+    NSString *labelText = [NSString stringWithFormat:@"%@—%@",[expireRecord[indexPath.row] objectForKey:@"platform"],[expireRecord[indexPath.row] objectForKey:@"product"]];
+    productLabel.text = labelText;
+    [alertView addSubview:productLabel];
+    
+    UIImageView *line1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 103, alertView.frame.size.width-20, 2)];
+    line1.image = [UIImage imageNamed:@"horiz_line"];
+    [alertView addSubview:line1];
+    
+    UILabel *capitalLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 115, 100, 20)];
+    capitalLabel.text = @"投资金额";
+    [alertView addSubview:capitalLabel];
+    
+    UILabel *capital = [[UILabel alloc] initWithFrame:CGRectMake(115, 115, alertView.frame.size.width-115-15, 20)];
+    NSString *capitalStr = [NSString stringWithFormat:@"%.1f元",[[expireRecord[indexPath.row] objectForKey:@"capital"] floatValue]];
+    capital.text = capitalStr;
+    capital.textAlignment = NSTextAlignmentRight;
+    [alertView addSubview:capital];
+    
+    UILabel *rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 145, 100, 20)];
+    rateLabel.text = @"最终收益率";
+    [alertView addSubview:rateLabel];
+    
+    rateField = [[UITextField alloc]initWithFrame:CGRectMake(alertView.frame.size.width-80, 145, 40, 20)];
+    rateField.textAlignment = NSTextAlignmentRight;
+    rateField.keyboardType = UIKeyboardTypeNumberPad;
+//    [rateField addTarget:self action:@selector(hideKeyBoard) forControlEvents:UIControlEventEditingDidEndOnExit];//点击键盘Done键时，调用hideKeyBoard方法
+    UIToolbar * topView = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, screen_width, 30)];
+    //    [topView setBarStyle:UIBarStyleBlackTranslucent];
+    [topView setBackgroundColor:[UIColor colorWithRed:201.0/255.0 green:205.0/255.0 blue:216.0/255.0 alpha:1]];
+    UIBarButtonItem * btnSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(1, 1, 28, 28);
+    [btn addTarget:self action:@selector(hideKeyBoard) forControlEvents:UIControlEventTouchUpInside];
+    [btn setImage:[UIImage imageNamed:@"arrow_down"] forState:UIControlStateNormal];
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithCustomView:btn];
+    NSArray * buttonsArray = [NSArray arrayWithObjects:btnSpace,doneBtn,nil];
+    [topView setItems:buttonsArray];
+    [rateField setInputAccessoryView:topView];
+    
+    CALayer * fieldLayer = [rateField layer];
+    [fieldLayer setMasksToBounds:YES];
+    [fieldLayer setCornerRadius:5.0];
+    [fieldLayer setBorderWidth:1.5];
+    [fieldLayer setBorderColor:[[UIColor grayColor] CGColor]];
+    [alertView addSubview:rateField];
+    
+    UILabel *rateLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(alertView.frame.size.width-35, 145, 20, 20)];
+    rateLabel2.text = @"%";
+    [alertView addSubview:rateLabel2];
+    
+    UIImageView *line2 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 173, alertView.frame.size.width-20, 2)];
+    line2.image = [UIImage imageNamed:@"horiz_line"];
+    [alertView addSubview:line2];
+    
+    [self.parentViewController.navigationController.view addSubview:alertView];
+}
+
+- (void)hideKeyBoard
+{
+    [rateField resignFirstResponder];
+}
 
 @end

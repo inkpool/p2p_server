@@ -42,6 +42,9 @@
 		1D6DBD241A3EFEF80081F516 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD1A1A3EFEF80081F516 /* AFURLResponseSerialization.m */; };
 		1D6DBD251A3EFEF80081F516 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6DBD1C1A3EFEF80081F516 /* AFURLSessionManager.m */; };
 		1D6DBD271A3F172F0081F516 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D6DBD261A3F172F0081F516 /* MessageUI.framework */; };
+		1D6EB4751A5BF46900EE35AB /* center.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D6EB4741A5BF46900EE35AB /* center.png */; };
+		1D6EB47C1A5BFA9200EE35AB /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6EB4791A5BFA9200EE35AB /* UIScrollView+SVInfiniteScrolling.m */; };
+		1D6EB47D1A5BFA9200EE35AB /* UIScrollView+SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6EB47B1A5BFA9200EE35AB /* UIScrollView+SVPullToRefresh.m */; };
 		1D6ECFD21A4BEBB7007C49DB /* AnalysisViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6ECFD11A4BEBB7007C49DB /* AnalysisViewController.m */; };
 		1D6ECFDA1A4BEC7A007C49DB /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6ECFD51A4BEC7A007C49DB /* PieChartView.m */; };
 		1D6ECFDB1A4BEC7A007C49DB /* RenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D6ECFD71A4BEC7A007C49DB /* RenderView.m */; };
@@ -80,7 +83,6 @@
 		1DB963411A4D0B5B006CD037 /* AccountManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DB963401A4D0B5B006CD037 /* AccountManagementViewController.m */; };
 		1DB963431A4D1856006CD037 /* sign-up.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB963421A4D1856006CD037 /* sign-up.png */; };
 		1DB963451A4D1874006CD037 /* add-account.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB963441A4D1874006CD037 /* add-account.png */; };
-		1DC21B021A53DEAB000D7A2E /* center.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DC21B011A53DEAB000D7A2E /* center.png */; };
 		1DCB79681A3993BF00E4372B /* CustomCellBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCB79671A3993BF00E4372B /* CustomCellBackground.m */; };
 		1DED79D91A287A4A00A054DB /* 爱投资-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D11A287A4A00A054DB /* 爱投资-icon.png */; };
 		1DED79DA1A287A4A00A054DB /* 点融网-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D21A287A4A00A054DB /* 点融网-icon.png */; };
@@ -185,6 +187,12 @@
 		1D6DBD1B1A3EFEF80081F516 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		1D6DBD1C1A3EFEF80081F516 /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
 		1D6DBD261A3F172F0081F516 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		1D6EB4741A5BF46900EE35AB /* center.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = center.png; sourceTree = "<group>"; };
+		1D6EB4771A5BFA9200EE35AB /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
+		1D6EB4781A5BFA9200EE35AB /* UIScrollView+SVInfiniteScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVInfiniteScrolling.h"; sourceTree = "<group>"; };
+		1D6EB4791A5BFA9200EE35AB /* UIScrollView+SVInfiniteScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVInfiniteScrolling.m"; sourceTree = "<group>"; };
+		1D6EB47A1A5BFA9200EE35AB /* UIScrollView+SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVPullToRefresh.h"; sourceTree = "<group>"; };
+		1D6EB47B1A5BFA9200EE35AB /* UIScrollView+SVPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVPullToRefresh.m"; sourceTree = "<group>"; };
 		1D6ECFD01A4BEBB7007C49DB /* AnalysisViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalysisViewController.h; sourceTree = "<group>"; };
 		1D6ECFD11A4BEBB7007C49DB /* AnalysisViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalysisViewController.m; sourceTree = "<group>"; };
 		1D6ECFD41A4BEC7A007C49DB /* PieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChartView.h; sourceTree = "<group>"; };
@@ -231,7 +239,6 @@
 		1DB963401A4D0B5B006CD037 /* AccountManagementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountManagementViewController.m; sourceTree = "<group>"; };
 		1DB963421A4D1856006CD037 /* sign-up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sign-up.png"; sourceTree = "<group>"; };
 		1DB963441A4D1874006CD037 /* add-account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-account.png"; sourceTree = "<group>"; };
-		1DC21B011A53DEAB000D7A2E /* center.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = center.png; sourceTree = "<group>"; };
 		1DCB79661A3993BF00E4372B /* CustomCellBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellBackground.h; sourceTree = "<group>"; };
 		1DCB79671A3993BF00E4372B /* CustomCellBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellBackground.m; sourceTree = "<group>"; };
 		1DED79D11A287A4A00A054DB /* 爱投资-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "爱投资-icon.png"; sourceTree = "<group>"; };
@@ -390,6 +397,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6ECFD31A4BEC7A007C49DB /* ChartView */,
+				1D6EB4761A5BFA9200EE35AB /* SVPullToRefresh */,
 				1D5C9C211A0B5FE0007CFFF9 /* HomeViewController.h */,
 				1D5C9C221A0B5FE0007CFFF9 /* HomeViewController.m */,
 				1D1362931A41BC79006BE057 /* PlatformViewController.h */,
@@ -436,10 +444,23 @@
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
+		1D6EB4761A5BFA9200EE35AB /* SVPullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				1D6EB4771A5BFA9200EE35AB /* SVPullToRefresh.h */,
+				1D6EB4781A5BFA9200EE35AB /* UIScrollView+SVInfiniteScrolling.h */,
+				1D6EB4791A5BFA9200EE35AB /* UIScrollView+SVInfiniteScrolling.m */,
+				1D6EB47A1A5BFA9200EE35AB /* UIScrollView+SVPullToRefresh.h */,
+				1D6EB47B1A5BFA9200EE35AB /* UIScrollView+SVPullToRefresh.m */,
+			);
+			name = SVPullToRefresh;
+			path = ChartView/SVPullToRefresh;
+			sourceTree = "<group>";
+		};
 		1D6ECFD31A4BEC7A007C49DB /* ChartView */ = {
 			isa = PBXGroup;
 			children = (
-				1DC21B011A53DEAB000D7A2E /* center.png */,
+				1D6EB4741A5BF46900EE35AB /* center.png */,
 				1D6D44791A529ECB00C19984 /* select.png */,
 				1D6ECFDF1A4BEC89007C49DB /* shadow.png */,
 				1D6ECFD41A4BEC7A007C49DB /* PieChartView.h */,
@@ -694,6 +715,7 @@
 				1D5FB5B61A38266500DB12B7 /* horiz_line.png in Resources */,
 				1D5BD16C1A5BB528009B2CEA /* news.png in Resources */,
 				E608616419FFEDC800EBDBE1 /* LaunchScreen.xib in Resources */,
+				1D6EB4751A5BF46900EE35AB /* center.png in Resources */,
 				1DA23D4E1A3EDD6500116632 /* menu_icon_2.png in Resources */,
 				1DA23D461A3EDD3C00116632 /* menu_icon_6.png in Resources */,
 				1DEF2D151A4AF0980029754A /* bannerSuccess@2x.png in Resources */,
@@ -710,7 +732,6 @@
 				1DA23D491A3EDD3C00116632 /* Oval 53@2x.png in Resources */,
 				1D5C9C2E1A0B60CC007CFFF9 /* anchor@2x.png in Resources */,
 				1D5FB5B71A38266500DB12B7 /* triangle_blue_1.png in Resources */,
-				1DC21B021A53DEAB000D7A2E /* center.png in Resources */,
 				1D5C9C301A0B60CC007CFFF9 /* layers@2x.png in Resources */,
 				1DEF2D201A4AF9AA0029754A /* 积木盒子-icon-灰色.png in Resources */,
 				1DACC8D01A39ED6100FF841F /* cellSelected.png in Resources */,
@@ -772,6 +793,7 @@
 				E6C8E4261A18C7A600229A9F /* AddViewController.m in Sources */,
 				1DB963411A4D0B5B006CD037 /* AccountManagementViewController.m in Sources */,
 				1D05728C1A3D801100A1DB63 /* FeedbackViewController.m in Sources */,
+				1D6EB47D1A5BFA9200EE35AB /* UIScrollView+SVPullToRefresh.m in Sources */,
 				1D84F5371A3BE3BE00413A76 /* AboutUsViewController.m in Sources */,
 				E68B042D1A2A1FD700DF1EBB /* RecordDB.m in Sources */,
 				1D6DBD211A3EFEF80081F516 /* AFSecurityPolicy.m in Sources */,
@@ -782,6 +804,7 @@
 				1D6DBD1E1A3EFEF80081F516 /* AFHTTPRequestOperationManager.m in Sources */,
 				1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */,
 				1D5C9C231A0B5FE0007CFFF9 /* HomeViewController.m in Sources */,
+				1D6EB47C1A5BFA9200EE35AB /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				E65EB9001A17AA10004F23B7 /* MoreViewController.m in Sources */,
 				1D6A48F61A43C3C600A381C6 /* PasswordViewController.m in Sources */,
 				1DF0BDF11A10550A00E491D6 /* RootViewController.m in Sources */,

@@ -236,4 +236,8 @@
     return 65;
 }//返回cell的高度
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 12;
+}
+
 @end
