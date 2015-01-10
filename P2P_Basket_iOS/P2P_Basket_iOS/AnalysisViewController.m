@@ -67,7 +67,7 @@
     self.selLabel.backgroundColor = [UIColor clearColor];
     self.selLabel.textAlignment = NSTextAlignmentCenter;
     self.selLabel.font = [UIFont systemFontOfSize:17];
-    self.selLabel.textColor = [UIColor colorWithRed:1.0/255.0 green:65.0/255.0 blue:128.0/255.0 alpha:1];
+    self.selLabel.textColor = [UIColor whiteColor];
     [selView addSubview:self.selLabel];
     [myPieChartView setTitleText:@"平台在投总额"];
 }

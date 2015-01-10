@@ -6,16 +6,17 @@
 //  Copyright (c) 2014 inkJake. All rights reserved.
 //
 
-#import "MoreViewController.h"
+#import "NewsViewController.h"
 #import "LeftSliderController.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "NewsDB.h"
 #import "newsTableViewCell.h"
 #import "SVPullToRefresh.h"
+#import "NewsContentViewController.h"
 
-@interface MoreViewController ()
+@interface NewsViewController ()
 {
-    NSArray *queryArray;
+    NSMutableArray *queryArray;
     NewsDB *newsDB;
     NSSortDescriptor *firstDescriptor;
     NSArray *sortDescriptors;
@@ -23,7 +24,7 @@
 }
 @end
 
-@implementation MoreViewController
+@implementation NewsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -60,24 +61,24 @@
 //    [buttonLayer1 setBorderColor:[[UIColor grayColor] CGColor]];
 //    [self.view addSubview:informationButton];
 
-    UIButton *recommendButton = [[UIButton alloc] initWithFrame:CGRectMake(130, 100, 80, 30)];
-    [recommendButton setTitle:@"推荐" forState:UIControlStateNormal];
-    [recommendButton setTitleColor:[UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [recommendButton setTitleColor:[UIColor colorWithRed:40.0/255.0 green:131.0/255.0 blue:254.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
-    [recommendButton addTarget:self action:@selector(recommendButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    CALayer * buttonLayer2 = [recommendButton layer];
-    [buttonLayer2 setMasksToBounds:YES];
-    [buttonLayer2 setCornerRadius:5.0];
-    [buttonLayer2 setBorderWidth:1.5];
-    [buttonLayer2 setBorderColor:[[UIColor grayColor] CGColor]];
-    [self.view addSubview:recommendButton];
+//    UIButton *recommendButton = [[UIButton alloc] initWithFrame:CGRectMake(130, 100, 80, 30)];
+//    [recommendButton setTitle:@"推荐" forState:UIControlStateNormal];
+//    [recommendButton setTitleColor:[UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+//    [recommendButton setTitleColor:[UIColor colorWithRed:40.0/255.0 green:131.0/255.0 blue:254.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
+//    [recommendButton addTarget:self action:@selector(recommendButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+//    CALayer * buttonLayer2 = [recommendButton layer];
+//    [buttonLayer2 setMasksToBounds:YES];
+//    [buttonLayer2 setCornerRadius:5.0];
+//    [buttonLayer2 setBorderWidth:1.5];
+//    [buttonLayer2 setBorderColor:[[UIColor grayColor] CGColor]];
+//    [self.view addSubview:recommendButton];
     
-    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 130, screen_width, screen_height-130-49)];
+    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, screen_width, screen_height-130-49)];
     myTableView.dataSource = self;
     myTableView.delegate = self;
     [self.view addSubview:myTableView];
     
-    __weak MoreViewController *weakSelf = self;
+    __weak NewsViewController *weakSelf = self;
     // setup pull-to-refresh
     [myTableView addPullToRefreshWithActionHandler:^{
         [weakSelf insertRowAtTop];
@@ -98,7 +99,7 @@
 
 - (void)insertRowAtTop {
     flag = false;
-    [self refreshView];
+    [queryArray removeAllObjects];
     LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
     //读取数据库表recordT中用户的所有未删除的投资记录
     NSNumber *timeStamp;
@@ -109,6 +110,7 @@
     }
     
     if (leftSliderC->networkConnected) {//网络已连接
+        [self refreshView];
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer]; //这个决定了下面responseObject返回的类型
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
@@ -119,6 +121,7 @@
                   NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
                   NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
                   if (!result) {//wifi已连接，但无法访问网络
+                      flag = true;
                       [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
                       
                   } else {
@@ -128,12 +131,13 @@
 //                      NSLog(@"resultDic22222:%d",[[queryArray[1] objectForKey:@"add_time"] intValue]);
                       //                      NSLog(@"resultDic:%@",[queryArray[0] objectForKey:@"title"]);
                       //                      NSLog(@"resultDic:%@",[queryArray[0] objectForKey:@"content"]);
-                      NSLog(@"%d",[queryArray count]);
+                      NSLog(@"[queryArray count]:%d",[queryArray count]);
+//                      [queryArray[1] setObject:[[NSNumber alloc] initWithInt:100] forKey:@"time_stamp"];
                       for (int i = 0; i < [queryArray count]; i++) {
                           [newsDB insertNews:[[queryArray[i] objectForKey:@"add_time"] intValue] withTitle:[queryArray[i] objectForKey:@"title"] withContent:[queryArray[i] objectForKey:@"content"]];
                       }
                       newsArray = [newsDB getAllNews];
-                      newsArray = [[newsArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+//                      newsArray = [[newsArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
                       //                      NSLog(@"newsArray:%@",newsArray);
                       //                          [myTableView reloadData];
                       flag = true;
@@ -294,6 +298,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 70;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NewsContentViewController *newsContentVC = [[NewsContentViewController alloc] init];
+    newsContentVC->title = [newsArray[indexPath.row] objectForKey:@"title"];
+    newsContentVC->content = [newsArray[indexPath.row] objectForKey:@"content"];
+    [self.navigationController pushViewController:newsContentVC animated:YES];
 }
 
 @end

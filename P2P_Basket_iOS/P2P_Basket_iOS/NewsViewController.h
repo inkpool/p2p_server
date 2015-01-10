@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MoreViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface NewsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 {
     NSMutableArray *newsArray;
     UITableView *myTableView;

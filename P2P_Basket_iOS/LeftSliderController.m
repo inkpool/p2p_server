@@ -15,6 +15,7 @@
 #import "CloudSyncingViewController.h"
 #import "PasswordViewController.h"
 #import "AccountManagementViewController.h"
+#import "DejalActivityView.h"
 
 @interface LeftSliderController ()
 {
@@ -216,8 +217,23 @@ static LeftSliderController *sharedLSC;
             }];
             break;
         }
-        case 1:
+        case 1:{
+            if (networkConnected) {
+                UIView *viewToUse = self.parentViewController.view;
+                [DejalBezelActivityView activityViewForView:viewToUse withLabel:@"正在检查最新版本..." width:150];
+                [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:2.0];
+            }
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"连接错误"
+                                                                message:@"无法连接服务器，请检查您的网络连接是否正常"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
+            
             break;
+        }
         case 2:{
             FeedbackViewController *feedbackVC = [[FeedbackViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:feedbackVC];
@@ -370,5 +386,15 @@ static LeftSliderController *sharedLSC;
     }
 }
 
+- (void)removeActivityView {
+    [DejalBezelActivityView removeViewAnimated:YES];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                    message:@"当前为最新版本，无需更新"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 
 @end

@@ -231,14 +231,14 @@
     homeViewController->annualRate_min = annualRate_min;
     homeViewController->annualRate_max = annualRate_max;
     
-    FlowViewController *flowViewController = tbc.viewControllers[3];
+    FlowViewController *flowViewController = tbc.viewControllers[1];
     flowViewController->delegate = self;
     flowViewController->records = records;
     AnalysisViewController *analysisViewController = tbc.viewControllers[2];
     analysisViewController->records = records;
     analysisViewController->unExpireRecord = unExpireRecord;
 //    analysisViewController->_mainContentView = _mainContentView;
-    PlatformViewController *platformViewController = tbc.viewControllers[1];
+    PlatformViewController *platformViewController = tbc.viewControllers[3];
     platformViewController->records = records;
     platformViewController->plateformArray = plateformArray;
     platformViewController->remainCapitalDic = remainCapitalDic;
@@ -355,12 +355,14 @@
     homeViewController->expiringRecord = expiringRecord;
     homeViewController->unExpireRecord = unExpireRecord;
     [homeViewController->myTableView reloadData];
-    [homeViewController showData];//重新显示统计数据
     homeViewController->remainCapital = remainCapital;
     homeViewController->minDailyResult = minDailyResult;
     homeViewController->maxDailyResult = maxDailyResult;
     homeViewController->annualRate_min = annualRate_min;
     homeViewController->annualRate_max = annualRate_max;
+    [homeViewController showData];//重新显示统计数据
+    [homeViewController->bgView removeFromSuperview];
+    [homeViewController->alertView removeFromSuperview];
     
     AnalysisViewController *analysisVC = tbc.viewControllers[2];
     analysisVC->records = records;
@@ -371,7 +373,7 @@
 //    [analysisVC->piePlot reloadData];
 //    [analysisVC->barPlot reloadData];
     
-    FlowViewController *flowViewController = tbc.viewControllers[3];
+    FlowViewController *flowViewController = tbc.viewControllers[1];
     flowViewController->records = records;
     flowViewController->delegate = self;
     if (flowViewController->button_flag == 101) {//按投资时间降序
@@ -429,12 +431,12 @@
     homeViewController->expiringRecord = expiringRecord;
     homeViewController->unExpireRecord = unExpireRecord;
     [homeViewController->myTableView reloadData];
-    [homeViewController showData];//重新显示统计数据
     homeViewController->remainCapital = remainCapital;
     homeViewController->minDailyResult = minDailyResult;
     homeViewController->maxDailyResult = maxDailyResult;
     homeViewController->annualRate_min = annualRate_min;
     homeViewController->annualRate_max = annualRate_max;
+    [homeViewController showData];//重新显示统计数据
     
     AnalysisViewController *analysisVC = tbc.viewControllers[2];
     analysisVC->records = records;
