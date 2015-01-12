@@ -120,16 +120,18 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
     [self.view addSubview:button3];
     
     self.automaticallyAdjustsScrollViewInsets = NO;//避免textView上面出现大段空白
-    textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 64+10+15+25+10, screen_width-20, screen_height/3.5)];
-    textView.delegate = self;
-    textView.scrollEnabled = YES;
-    textView.font = [UIFont systemFontOfSize:14];
-    textView.backgroundColor = [UIColor whiteColor];
+    myTextView = [[UITextView alloc] initWithFrame:CGRectMake(10, 64+10+15+25+10, screen_width-20, screen_height/3.5)];
+    myTextView.delegate = self;
+    myTextView.scrollEnabled = YES;
+    myTextView.text = @"感谢您对网贷篮子的支持，点此进行反馈...";
+    myTextView.textColor = [UIColor grayColor];
+    myTextView.font = [UIFont systemFontOfSize:14];
+    myTextView.backgroundColor = [UIColor whiteColor];
     //设置圆边角
-    textView.layer.borderColor = [UIColor grayColor].CGColor;
-    textView.layer.borderWidth =1.0;
-    textView.layer.cornerRadius =5.0;
-    [self.view addSubview:textView];
+    myTextView.layer.borderColor = [UIColor grayColor].CGColor;
+    myTextView.layer.borderWidth =1.0;
+    myTextView.layer.cornerRadius =5.0;
+    [self.view addSubview:myTextView];
     
     UIToolbar * topView = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, screen_width, 30)];
 //    [topView setBarStyle:UIBarStyleBlackTranslucent];
@@ -143,9 +145,9 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
     UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithCustomView:btn];
     NSArray * buttonsArray = [NSArray arrayWithObjects:btnSpace,doneBtn,nil];
     [topView setItems:buttonsArray];
-    [textView setInputAccessoryView:topView];
+    [myTextView setInputAccessoryView:topView];
     
-    UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/2-40, 124+screen_height/3.5+20, 80, 30)];
+    UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/2-80, 124+screen_height/3.5+20, 160, 30)];
     [sendButton setTitle:@"发送" forState:UIControlStateNormal];
     [sendButton setTitleColor:[UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [sendButton setTitleColor:[UIColor colorWithRed:40.0/255.0 green:131.0/255.0 blue:254.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
@@ -164,12 +166,18 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
     // Dispose of any resources that can be recreated.
 }
 
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    textView.text = @"";
+    textView.textColor = [UIColor blackColor];
+    return YES;
+}
+
 #pragma mark -
 #pragma mark ButtonPressedAction
 
 - (void)backItemPressed
 {
-    NSLog(@"%@",textView.text);
+    NSLog(@"%@",myTextView.text);
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -218,13 +226,13 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
 }
 
 - (void)dismissKeyBoard {
-    [textView resignFirstResponder];
+    [myTextView resignFirstResponder];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     //隐藏键盘
-    [textView resignFirstResponder];
+    [myTextView resignFirstResponder];
 }
 
 - (void)sendButtonPressed {
@@ -246,7 +254,7 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
                 [subjectString appendString:@" 帮助 "];
             }
             [picker setSubject:subjectString];
-            NSString *emailBody = textView.text;
+            NSString *emailBody = myTextView.text;
             [picker setMessageBody:emailBody isHTML:NO];
             [self presentViewController:picker animated:YES completion:nil];
         }
@@ -270,7 +278,7 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
     CGSize keyboardSize = [aValue CGRectValue].size;
     
     //防止UITextView被键盘挡住
-    CGRect textFrame =  textView.frame;
+    CGRect textFrame =  myTextView.frame;
     float textY = textFrame.origin.y+textFrame.size.height;
     float bottomY = self.view.frame.size.height-textY;
     if(bottomY>=keyboardSize.height)  //判断当前的高度是否已经有216，如果超过了就不需要再移动主界面的View高度
@@ -278,7 +286,7 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
         prewTag = -1;
         return;
     }
-    prewTag = textView.tag;
+    prewTag = myTextView.tag;
     float moveY = keyboardSize.height-bottomY;
     prewMoveY = moveY;
     NSTimeInterval animationDuration = 0.30f;
@@ -304,7 +312,7 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
     float moveY ;
     NSTimeInterval animationDuration = 0.30f;
     CGRect frame = self.view.frame;
-    if(prewTag == textView.tag) //当结束编辑的View的TAG是上次的就移动
+    if(prewTag == myTextView.tag) //当结束编辑的View的TAG是上次的就移动
     {   //还原界面
         moveY =  prewMoveY;
         frame.origin.y +=moveY;
@@ -316,7 +324,7 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
     [UIView setAnimationDuration:animationDuration];
     self.view.frame = frame;
     [UIView commitAnimations];
-    [textView resignFirstResponder];
+    [myTextView resignFirstResponder];
     
 }
 

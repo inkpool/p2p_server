@@ -9,6 +9,7 @@
 #import "AddViewController.h"
 #import "platformDB.h"
 #import "RecordDB.h"
+#import "LeftSliderController.h"
 
 @interface AddViewController ()
 
@@ -459,14 +460,20 @@
 #pragma mark - Button Pressed
 
 -(void)confirmPressed{
+    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
     RecordDB *myRecordDB = [[RecordDB alloc]init];
-    [myRecordDB insertRecord:platformField.text secondPara:productField.text thirdPara:[capitalField.text floatValue] forthPara:[minRateField.text floatValue] fifthPara:[maxRateField.text floatValue] sixthPara:cal_typeField.text seventhPara:startimeField.text eighthPara:endtimeField.text];
+    if ([maxRateField.text floatValue] != 0) {
+        [myRecordDB insertRecord:platformField.text secondPara:productField.text thirdPara:[capitalField.text floatValue] forthPara:[minRateField.text floatValue] fifthPara:[maxRateField.text floatValue] sixthPara:cal_typeField.text seventhPara:startimeField.text eighthPara:endtimeField.text ninthPara:leftSliderC->loggedOnUser];
+    }
+    else {
+        [myRecordDB insertRecord:platformField.text secondPara:productField.text thirdPara:[capitalField.text floatValue] forthPara:0.0 fifthPara:[minRateField.text floatValue] sixthPara:cal_typeField.text seventhPara:startimeField.text eighthPara:endtimeField.text ninthPara:leftSliderC->loggedOnUser];
+    }
     [delegate refresh1];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)cancelPressed{
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

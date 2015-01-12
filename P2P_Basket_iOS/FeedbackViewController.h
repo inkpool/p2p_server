@@ -12,6 +12,6 @@
 
 @interface FeedbackViewController : UIViewController<UITextViewDelegate,MFMailComposeViewControllerDelegate>
 {
-    UITextView *textView;
+    UITextView *myTextView;
 }
 @end
