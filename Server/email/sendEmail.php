@@ -3,8 +3,12 @@
 header("Content-Type: text/html; charset=UTF-8");
 
 require 'PHPMailerAutoload.php';
-	$email=$_GET['email'];
-	$token=$_GET['token'];
+	$data=$_GET['data'];
+	$data_array=explode(':', base64_decode($data));
+	$email=$data_array[0];
+	$ticket=$data_array[1];
+	$token=$data_array[2];
+	$url="www.speakaloud.org/beerich/index.php/login/reset?ticket=$ticket&token=$token";
 
 	$mail = new PHPMailer;
 	
@@ -33,12 +37,11 @@ require 'PHPMailerAutoload.php';
 	$mail->isHTML(true);                                  // Set email format to HTML
 	
 	$mail->Subject = 'Here is the subject';
-	$mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+	$mail->Body    = "请在24小时内使用以下连接重置密码\n $url";
 	$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
 	if(!$mail->send()) {
-		echo 'Message could not be sent.';
-		echo 'Mailer Error: ' . $mail->ErrorInfo;
+		echo -1;
 	} else {
-		echo 'Message has been sent';
+		echo 0;
 	}

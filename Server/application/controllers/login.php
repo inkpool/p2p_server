@@ -1,5 +1,4 @@
 <?php 
-require 'PHPMailerAutoload.php';
 
 class Login extends CI_Controller {
 	
@@ -75,14 +74,23 @@ class Login extends CI_Controller {
 		$num=$query->count_all_results();
 		if(intval($num))
 		{
-			$this->createTicket($email);
-			header("location: http://www.speakaloud.org/beerich/email/sendEmail.php?email=$email&");
+			$timestamp=time();
+			//$ticket=$this->createTicket($user_name,$timestamp);
+			$ticket=100;
+			$token=md5($timestamp);
+			$data=base64_encode($user_name.':'.$ticket.':'.$token);
+			header("location: http://128.199.226.246/beerich/email/sendEmail.php?data=$data");
 			$this->output(0, "Request sent.");
 			//send a email
 		}else 
 		{
 			$this->output(1, "Username not exists!");
 		}
+	}
+	
+	public function reset(){
+		$ticket=$this->input->get('ticket');
+		$token=$this->input->get('token');
 	}
 	
 }

@@ -25,4 +25,28 @@ class News extends CI_Controller {
 		$index=$this->input->post('average_');
 		$index=$this->input->post('average_');
 	}
+	
+	public function feedback()
+	{
+		$type=$this->input->post('type');
+		$content=$this->input->post('content');
+		$extra=$this->input->post('extra');
+		$data=array(
+				'id'=>'',
+				'type'=>$type,
+				'content'=>$content,
+				'extra'=>$extra,
+		);
+		$this->db->insert('my_feedbacks',$data);
+		$this->output(0, "Feedback success.");
+	}
+	private function output($code,$message)
+	{
+		$output=array(
+				'error_code'=>$code,
+				'error_meesage'=>$message,
+		);
+		echo json_encode($output);
+		exit();
+	}
 }
