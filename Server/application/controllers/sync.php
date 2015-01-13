@@ -31,7 +31,7 @@ class Sync extends CI_Controller {
 	
 	private function insertRecord($user_name,$platform,$product,
 			$capital,$minRate,$maxRate,$calType,$startDate,$endDate,
-			$state,$add_time,$ifDeleted){
+			$state,$add_time,$ifDeleted,$earning,$takeout,$calTime,$balance){
 		$data=array(
 				'id'=>'',
 				'userName'=>$user_name,
@@ -46,6 +46,10 @@ class Sync extends CI_Controller {
 				'state'=>$state,
 				'addTime'=>$add_time,
 				'ifDeleted'=>$ifDeleted,
+				'earning'=>$earning,
+				'takeout'=>$takeout,
+				'calTime'=>$calTime,
+				'balance'=>$balance,
 		);
 		$this->db->insert('my_records',$data);
 	}
@@ -78,6 +82,11 @@ class Sync extends CI_Controller {
 		$state=$this->input->post('state');
 		$add_time=$this->input->post('add_time');
 		$ifDeleted=$this->input->post('ifDeleted');
+		
+		$earning=$this->input->post('earning');
+		$takeout=$this->input->post('takeout');
+		$calTime=$this->input->post('timeStampEnd');
+		$balance=$this->input->post('rest');
 
 		if($this->ifExists($user_name,$add_time))
 		{
@@ -109,7 +118,7 @@ class Sync extends CI_Controller {
 		else{
 			$this->insertRecord($user_name,$platform,$product,
 			$capital,$minRate,$maxRate,$calType,$startDate,$endDate,
-			$state,$add_time,$ifDeleted);
+			$state,$add_time,$ifDeleted,$earning,$takeout,$calTime,$balance);
 			$this->output(0, "Inserted.");
 		}
 	}
