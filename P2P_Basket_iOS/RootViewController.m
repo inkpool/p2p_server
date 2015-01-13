@@ -35,10 +35,13 @@
     CGFloat screen_width;
     LeftSliderController *leftSliderC;
     NSArray *plateformArray;//用户所有投资过的平台记录
-    NSMutableDictionary *incomeDic;//用户投资过的平台各自对应的当前预期收益
-    NSMutableDictionary *remainCapitalDic;////用户投资过的平台各自对应的投资总额
-    NSMutableDictionary *rateMinDic;////用户投资过的平台各自对应的最小年化收益率
-    NSMutableDictionary *rateMaxDic;////用户投资过的平台各自对应的最大年化收益率
+//    NSMutableDictionary *incomeDic;//用户投资过的平台各自对应的当前预期收益
+    NSMutableDictionary *remainCapitalDic;//用户投资过的平台各自对应的投资总额
+    NSMutableDictionary *rateMinDic;//用户投资过的平台各自对应的最小年化收益率
+    NSMutableDictionary *rateMaxDic;//用户投资过的平台各自对应的最大年化收益率
+    
+    NSMutableDictionary *untreatedDic;//各个平台对应的未处理投资
+    NSMutableDictionary *treatedDic;//各个平台对应的已处理过的投资
     
     double minTotalInterest;
     double maxTotalInterest;
@@ -99,6 +102,20 @@
     expireRecord = [[NSMutableArray alloc] init];
     expiringRecord = [[NSMutableArray alloc] init];
     unExpireRecord = [[NSMutableArray alloc] init];
+    //找出用户投资过的所有平台名称
+    NSMutableSet *platformSet = [NSMutableSet set];
+    for (int i = 0; i < [records count]; i++) {
+        //platformSet保存用户投资过的平台的名称,set是单值对象的集合，自动删除重复的对象
+        [platformSet addObject:[records[i] objectForKey:@"platform"]];
+    }
+    plateformArray = [platformSet allObjects];
+    
+    for (int i = 0; i < [plateformArray count]; i++) {
+        NSMutableArray *untreatedRecord = [[NSMutableArray alloc] init];//未处理投资
+        NSMutableArray *treatedRecord = [[NSMutableArray alloc] init];//已处理过的投资
+        [untreatedDic setObject:untreatedRecord forKey:plateformArray[i]];
+        [treatedDic setObject:treatedRecord forKey:plateformArray[i]];
+    }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat : @"yyyy-M-d"];
@@ -110,6 +127,7 @@
     NSDateComponents *endComps;
     NSInteger flag1;
     NSInteger flag2;
+    
     for (int i = 0; i < [records count]; i++) {
         endDate = [formatter dateFromString:[records[i] objectForKey:@"endDate"]];
         endComps = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate: endDate];
@@ -127,23 +145,35 @@
                 [expiringRecord addObject:records[i]];//即将到期
             }
         }
+         
+//        if ([[records[i] objectForKey:@"state"] intValue] == 0) {//未处理
+//            NSMutableArray *untreatedRecord;//未处理投资
+//            untreatedRecord = [[untreatedDic objectForKey:[records[i] objectForKey:@"platform"]] mutableCopy];
+//            [untreatedRecord addObject:records[i]];
+//            NSLog(@"records[i]:%@",records[i]);
+//            NSLog(@"untreatedRecord:%@",untreatedRecord);
+//            [untreatedDic setObject:untreatedRecord forKey:[records[i] objectForKey:@"platform"]];
+//        }
+//        else {//已处理
+//            NSMutableArray *treatedRecord;//已处理过的投资
+//            treatedRecord = [[treatedDic objectForKey:[records[i] objectForKey:@"platform"]] mutableCopy];
+//            [treatedRecord addObject:records[i]];
+//            [treatedDic setObject:treatedRecord forKey:[records[i] objectForKey:@"platform"]];
+//        }
+        
     }
     
-    //找出用户投资过的所有平台名称
-    NSMutableSet *platformSet = [NSMutableSet set];
-    for (int i = 0; i < [records count]; i++) {
-        //platformSet保存用户投资过的平台的名称,set是单值对象的集合，自动删除重复的对象
-        [platformSet addObject:[records[i] objectForKey:@"platform"]];
-    }
+//    NSLog(@"untreatedDic:%@",untreatedDic);
+//    NSLog(@"treatedDic:%@",treatedDic);
     
-    incomeDic = [[NSMutableDictionary alloc] init];
-    remainCapitalDic = [[NSMutableDictionary alloc] init];
-    rateMinDic = [[NSMutableDictionary alloc] init];
-    rateMaxDic = [[NSMutableDictionary alloc] init];
     
-    plateformArray = [platformSet allObjects];
+//    incomeDic = [[NSMutableDictionary alloc] init];//用户投资过的平台各自对应的当前预期收益
+    remainCapitalDic = [[NSMutableDictionary alloc] init];//用户投资过的平台各自对应的投资总额
+    rateMinDic = [[NSMutableDictionary alloc] init];//用户投资过的平台各自对应的最小年化收益率
+    rateMaxDic = [[NSMutableDictionary alloc] init];//用户投资过的平台各自对应的最大年化收益率
+    
     for (int i = 0; i < [plateformArray count]; i++) {
-        [incomeDic setObject:[[NSNumber alloc] initWithFloat:0.0] forKey:plateformArray[i]];
+//        [incomeDic setObject:[[NSNumber alloc] initWithFloat:0.0] forKey:plateformArray[i]];
         [remainCapitalDic setObject:[[NSNumber alloc] initWithFloat:0.0] forKey:plateformArray[i]];
         [rateMinDic setObject:[[NSNumber alloc] initWithFloat:0.0] forKey:plateformArray[i]];
         [rateMaxDic setObject:[[NSNumber alloc] initWithFloat:0.0] forKey:plateformArray[i]];
@@ -221,7 +251,7 @@
     tbc.delegate = self;
     //向HomeViewController、FlowViewController传递数据库中用户所有的投资记录
     HomeViewController *homeViewController = tbc.viewControllers[0];
-//    homeViewController->records = records;
+    homeViewController->records = records;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
     homeViewController->unExpireRecord = unExpireRecord;
@@ -241,7 +271,7 @@
     PlatformViewController *platformViewController = tbc.viewControllers[3];
     platformViewController->records = records;
     platformViewController->plateformArray = plateformArray;
-    platformViewController->remainCapitalDic = remainCapitalDic;
+//    platformViewController->remainCapitalDic = remainCapitalDic;
     
     
     [tbc.navigationItem.leftBarButtonItem setAction:@selector(leftBarButtonItemPressed)];
@@ -345,12 +375,12 @@
 #pragma mark -
 #pragma mark UIViewPassValueDelegate
 - (void)refresh1 {
-    //添加新的投资后刷新主页和流水界面，分析界面的分析图
+    //添加新的投资后刷新主页和流水界面，分析界面的分析图和平台界面
     [self initRecord];
     //NSLog(@"records:%@",records);
     UITabBarController *tbc = [nc.childViewControllers firstObject];
     HomeViewController *homeViewController = tbc.viewControllers[0];
-//    homeViewController->records = records;
+    homeViewController->records = records;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
     homeViewController->unExpireRecord = unExpireRecord;
@@ -419,14 +449,20 @@
     }
     
     [flowViewController->myTableView reloadData];
+    
+    PlatformViewController *platformViewController = tbc.viewControllers[3];
+    platformViewController->records = records;
+    platformViewController->plateformArray = plateformArray;
+    [platformViewController initData];
+    [platformViewController showData];
 }
 
 - (void)refresh2 {
-    //在流水界面删除投资记录后刷新主页，分析界面的分析图
+    //在流水界面删除投资记录后刷新主页，分析界面的分析图和平台界面
     [self initRecord];
     UITabBarController *tbc = [nc.childViewControllers firstObject];
     HomeViewController *homeViewController = tbc.viewControllers[0];
-//    homeViewController->records = records;
+    homeViewController->records = records;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
     homeViewController->unExpireRecord = unExpireRecord;
@@ -462,6 +498,12 @@
 //    }
 //    [analysisVC->piePlot reloadData];
 //    [analysisVC->barPlot reloadData];
+
+    PlatformViewController *platformViewController = tbc.viewControllers[3];
+    platformViewController->records = records;
+    platformViewController->plateformArray = plateformArray;
+    [platformViewController initData];
+    [platformViewController showData];
 }
 
 
@@ -486,25 +528,27 @@
                          completion:^(BOOL finished) {
                              _tapGestureRec.enabled = YES;//开启响应点击屏幕时间，执行closeSideBar方法的手势
                          }];
-        ifActivated=1;
+        ifActivated = 1;
     }
     else
     {
         [self closeSideBar];
-        ifActivated=0;
+        ifActivated = 0;
     }
 
 }
 
 - (void)rightBarButtonItemPressed {
-    
     //添加“新建投资”页面
     AddViewController *aDV = [[AddViewController alloc]init];
+//    aDV->untreatedDic = untreatedDic;
+//    aDV->treatedDic = treatedDic;
+    aDV->records = records;
     aDV->delegate = self;
-//    [nc pushViewController:aDV animated:YES];
-    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:aDV];
-    aDV.modalTransitionStyle = UIModalTransitionStylePartialCurl;
-    [self presentViewController:navC animated:YES  completion:nil];
+    [nc pushViewController:aDV animated:YES];
+//    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:aDV];
+//    aDV.modalTransitionStyle = UIModalTransitionStylePartialCurl;
+//    [self presentViewController:navC animated:YES  completion:nil];
 }
 
 - (void)closeSideBar

@@ -328,16 +328,16 @@
     else {//无数据
         switch (flag) {
             case 0:
-                self.selLabel.text = @"无数据";
+                self.selLabel.text = @"暂无数据";
                 break;
             case 1:
-                self.selLabel.text = @"无数据";
+                self.selLabel.text = @"暂无数据";
                 break;
             case 2:
-                self.selLabel.text = @"无数据";
+                self.selLabel.text = @"暂无数据";
                 break;
             case 3:
-                self.selLabel.text = @"无数据";
+                self.selLabel.text = @"暂无数据";
                 break;
             default:
                 break;
@@ -350,7 +350,7 @@
 
 - (void)onCenterClick:(PieChartView *)pieChartView
 {
-    NSLog(@"onCenterClick111111");
+//    NSLog(@"onCenterClick111111");
     myPieChartView.delegate = nil;
     [myPieChartView removeFromSuperview];
     flag++;
@@ -384,7 +384,7 @@
     [self.pieContainer addSubview:myPieChartView];
     myPieChartView.delegate = self;
     [myPieChartView reloadChart];
-    NSLog(@"onCenterClick22222");
+//    NSLog(@"onCenterClick22222");
 }
 
 - (void)reloadData {

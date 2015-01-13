@@ -210,6 +210,7 @@ static LeftSliderController *sharedLSC;
     switch (num) {
         case 0:{
             CloudSyncingViewController *cloudBackupVC = [[CloudSyncingViewController alloc] init];
+            cloudBackupVC->loggedOnUser = loggedOnUser;
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:cloudBackupVC];
             [self presentViewController:navC animated:YES completion:^{
                 UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:1];
@@ -254,16 +255,36 @@ static LeftSliderController *sharedLSC;
             break;
         }
         case 4:{
-            PasswordViewController *passwordVC = [[PasswordViewController alloc] init];
-            UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:passwordVC];
-            [self presentViewController:navC animated:YES completion:^{
-                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:5];
-                cell.selected = NO;
-            }];
+            if (![loggedOnUser isEqualToString:@"default"]) {
+                PasswordViewController *passwordVC = [[PasswordViewController alloc] init];
+                passwordVC->loggedOnUser = loggedOnUser;
+                UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:passwordVC];
+                [self presentViewController:navC animated:YES completion:^{
+                    UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:5];
+                    cell.selected = NO;
+                }];
+            }
+            else {//用户尚未登录
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"无效操作"
+                                                                message:@"操作无效，您尚未登录"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil,nil];
+                [alert show];
+
+            }
             break;
         }
-        case 5:
+        case 5:{//好友分享
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"有待开发！"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil,nil];
+            [alert show];
             break;
+        }
+            
         default:
             break;
     }

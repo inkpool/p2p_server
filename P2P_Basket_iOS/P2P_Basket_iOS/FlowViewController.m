@@ -105,19 +105,19 @@
     
     
     //添加分割线
-    UIImageView *line1 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/4, 72, 2, 28)];
+    UIImageView *line1 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/4, 72, 1, 28)];
     line1.image = [UIImage imageNamed:@"vertical_line"];
     [self.view addSubview:line1];
     
-    UIImageView *line2 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/2, 72, 2, 28)];
+    UIImageView *line2 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/2, 72, 1, 28)];
     line2.image = [UIImage imageNamed:@"vertical_line"];
     [self.view addSubview:line2];
     
-    UIImageView *line3 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/4*3, 72, 2, 28)];
+    UIImageView *line3 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/4*3, 72, 1, 28)];
     line3.image = [UIImage imageNamed:@"vertical_line"];
     [self.view addSubview:line3];
     
-    UIImageView *line4 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 64+44, screen_width, 2)];
+    UIImageView *line4 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 64+44, screen_width, 1)];
     line4.image = [UIImage imageNamed:@"horiz_line"];
     [self.view addSubview:line4];
 
