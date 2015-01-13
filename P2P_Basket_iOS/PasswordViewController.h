@@ -11,5 +11,7 @@
 @interface PasswordViewController : UIViewController<UITextFieldDelegate>
 {
     UITextField *oldPasswordField,*newPasswordField1,*newPasswordField2;
+@public
+    NSString *loggedOnUser;
 }
 @end

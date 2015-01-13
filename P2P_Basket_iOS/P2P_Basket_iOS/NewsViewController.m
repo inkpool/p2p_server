@@ -13,6 +13,7 @@
 #import "newsTableViewCell.h"
 #import "SVPullToRefresh.h"
 #import "NewsContentViewController.h"
+#import "DejalActivityView.h"
 
 @interface NewsViewController ()
 {
@@ -21,6 +22,7 @@
     NSSortDescriptor *firstDescriptor;
     NSArray *sortDescriptors;
     BOOL flag;
+    CGFloat screen_width;
 }
 @end
 
@@ -31,13 +33,13 @@
     //获取屏幕分辨率
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
-    CGFloat screen_width = size.width;
+    screen_width = size.width;
     CGFloat screen_height = size.height;
     
     newsDB = [[NewsDB alloc] init];
     [newsDB copyDatabaseIfNeeded];
     newsArray = [newsDB getAllNews];
-    firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"time_stamp" ascending:YES];
+    firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"time_stamp" ascending:NO];
     sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
     newsArray = [[newsArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
     
@@ -99,12 +101,15 @@
 
 - (void)insertRowAtTop {
     flag = false;
-    [queryArray removeAllObjects];
+    if ([queryArray count] != 0) {
+        [queryArray removeAllObjects];
+    }
     LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
     //读取数据库表recordT中用户的所有未删除的投资记录
     NSNumber *timeStamp;
     if ([newsArray count] != 0) {
         timeStamp = [newsArray[0] objectForKey:@"time_stamp"];
+//        timeStamp = [[NSNumber alloc] initWithInt:1418910328];
     } else {
         timeStamp = [[NSNumber alloc] initWithInt:0];
     }
@@ -114,7 +119,7 @@
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer]; //这个决定了下面responseObject返回的类型
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
-        [manager POST:@"http://128.199.226.246/beerich/index.php/news"
+        [manager POST:@"http://128.199.226.246/beerich/index.php/news"//http://128.199.226.246/beerich/index.php/news/getRecommend
            parameters:@{@"last_timestamp":timeStamp}
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   NSString *requestTmp = [NSString stringWithString:operation.responseString];
@@ -126,20 +131,21 @@
                       
                   } else {
                       //系统自带JSON解析
-                      queryArray = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
+                      //1418910328
+                      queryArray = [[NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil] mutableCopy];
+                      NSLog(@"[queryArray count]:%ld",[queryArray count]);
 //                      NSLog(@"resultDic11111:%d",[[queryArray[0] objectForKey:@"add_time"] intValue]);
 //                      NSLog(@"resultDic22222:%d",[[queryArray[1] objectForKey:@"add_time"] intValue]);
-                      //                      NSLog(@"resultDic:%@",[queryArray[0] objectForKey:@"title"]);
-                      //                      NSLog(@"resultDic:%@",[queryArray[0] objectForKey:@"content"]);
-                      NSLog(@"[queryArray count]:%d",[queryArray count]);
+//                      NSLog(@"resultDic11:%@",[queryArray[0] objectForKey:@"title"]);
+//                      NSLog(@"resultDic22:%@",[queryArray[1] objectForKey:@"title"]);
+//                                            NSLog(@"resultDic:%@",[queryArray[0] objectForKey:@"content"]);
+                      
 //                      [queryArray[1] setObject:[[NSNumber alloc] initWithInt:100] forKey:@"time_stamp"];
                       for (int i = 0; i < [queryArray count]; i++) {
                           [newsDB insertNews:[[queryArray[i] objectForKey:@"add_time"] intValue] withTitle:[queryArray[i] objectForKey:@"title"] withContent:[queryArray[i] objectForKey:@"content"]];
                       }
                       newsArray = [newsDB getAllNews];
-//                      newsArray = [[newsArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
-                      //                      NSLog(@"newsArray:%@",newsArray);
-                      //                          [myTableView reloadData];
+                      newsArray = [[newsArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
                       flag = true;
                   }
               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -167,8 +173,14 @@
     }
     else {
         if ([queryArray count] != 0) {
+            //准备插入数据
+            NSMutableArray *insertIndexPaths = [NSMutableArray arrayWithCapacity:[queryArray count]];
+            for (int i = 0; i < [queryArray count]; i++) {
+                NSIndexPath *newPath = [NSIndexPath indexPathForRow:i+1 inSection:0];
+                [insertIndexPaths addObject:newPath];
+            }
             [myTableView beginUpdates];
-            [myTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
+            [myTableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
             [myTableView endUpdates];
         }
         [myTableView.pullToRefreshView stopAnimating];
@@ -273,7 +285,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section {
-    return [newsArray count];
+    return [newsArray count]+1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -284,13 +296,27 @@
         cell = [[newsTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
-    
-    cell.portalImage.image = [UIImage imageNamed:@"golden_eggs.jpg"];
-    NSString *title = [newsArray[indexPath.row] objectForKey:@"title"];
-    cell.newsTitle.text = title;
-    
-    NSString *content = [newsArray[indexPath.row] objectForKey:@"content"];
-    cell.detailText.text = content;
+    if (indexPath.row == 0) {
+        UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, 100, 30)];
+        textLabel.text = @"推荐";
+        textLabel.font = [UIFont systemFontOfSize:21];
+        
+        UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width-15-20, 25, 10, 20)];
+        rightImageView.image = [UIImage imageNamed:@"arrow_right"];
+        [cell.contentView addSubview:rightImageView];
+        
+        cell.portalImage.image = [UIImage imageNamed:@"recommend"];
+        [cell.contentView addSubview:textLabel];
+//        cell.newsTitle.text= @"推荐";
+    }
+    else {
+        cell.portalImage.image = [UIImage imageNamed:@"golden_eggs.jpg"];
+        NSString *title = [newsArray[indexPath.row-1] objectForKey:@"title"];
+        cell.newsTitle.text = title;
+        
+        NSString *content = [newsArray[indexPath.row-1] objectForKey:@"content"];
+        cell.detailText.text = content;
+    }
     
     return cell;
 }
@@ -301,10 +327,74 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 0) {
+        LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
+        if (leftSliderC->networkConnected) {//网络已连接
+            UIView *viewToUse = self.parentViewController.view;
+            [DejalBezelActivityView activityViewForView:viewToUse withLabel:@"获取推荐中..." width:120];
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            manager.responseSerializer = [AFHTTPResponseSerializer serializer]; //这个决定了下面responseObject返回的类型
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
+            [manager POST:@"http://128.199.226.246/beerich/index.php/news/getRecommend"
+               parameters:@{@"average_rate":[[NSNumber alloc] initWithFloat:5.97]}
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      NSString *requestTmp = [NSString stringWithString:operation.responseString];
+                      NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
+                      NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                      if (!result) {//wifi已连接，但无法访问网络
+                          [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
+                          [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
+                          
+                      } else {
+                          NSLog(@"result:%@",result);
+//                          NSMutableDictionary *queryDic = [[NSMutableDictionary alloc] init];
+                          queryArray = [[NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil] mutableCopy];
+//                          NSLog(@"[queryArray count]:%ld",[queryArray count]);
+                          NSLog(@"productName:%@",[queryArray[0] objectForKey:@"productName"]);
+                          NSLog(@"platform:%@",[queryArray[0] objectForKey:@"platform"]);
+                          NSLog(@"duration:%@",[queryArray[0] objectForKey:@"duration"]);
+                          NSLog(@"minRate:%.2f",[[queryArray[0] objectForKey:@"minRate"] floatValue]);
+                          NSLog(@"maxRate:%.2f",[[queryArray[0] objectForKey:@"maxRate"] floatValue]);
+                          [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
+//                          for (int i = 0; i < [queryArray count]; i++) {
+//                              [newsDB insertNews:[[queryArray[i] objectForKey:@"add_time"] intValue] withTitle:[queryArray[i] objectForKey:@"title"] withContent:[queryArray[i] objectForKey:@"content"]];
+//                          }
+//                          newsArray = [newsDB getAllNews];
+//                          newsArray = [[newsArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+//                          flag = true;
+                      }
+                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      NSLog(@"Error######: %@", error);
+                  }];
+        }//end if (leftSliderC->networkConnected)
+        else {//网络未连接
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"连接错误"
+                                                            message:@"无法连接服务器，请检查您的网络连接是否正常"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles: nil];
+            [alert show];
+        }
+    }
+    
+    else {
+        NewsContentViewController *newsContentVC = [[NewsContentViewController alloc] init];
+        newsContentVC->title = [newsArray[indexPath.row-1] objectForKey:@"title"];
+        newsContentVC->content = [newsArray[indexPath.row-1] objectForKey:@"content"];
+        [self.navigationController pushViewController:newsContentVC animated:YES];
+    }
+    
+}
+
+- (int)removeActivityView
+{
+    [DejalBezelActivityView removeViewAnimated:YES];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
     NewsContentViewController *newsContentVC = [[NewsContentViewController alloc] init];
-    newsContentVC->title = [newsArray[indexPath.row] objectForKey:@"title"];
-    newsContentVC->content = [newsArray[indexPath.row] objectForKey:@"content"];
+    newsContentVC->title = [NSString stringWithFormat:@"%@-%@",[queryArray[0] objectForKey:@"platform"],[queryArray[0] objectForKey:@"productName"]];
+    newsContentVC->content = [NSString stringWithFormat:@"期限：%@月\n利率：%@%%\n收益类型：到期还本息",[queryArray[0] objectForKey:@"duration"],[queryArray[0] objectForKey:@"minRate"]];
     [self.navigationController pushViewController:newsContentVC animated:YES];
+    return 0;
 }
 
 @end
