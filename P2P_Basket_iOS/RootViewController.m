@@ -33,6 +33,25 @@
     NSMutableArray *unExpireRecord;//未到期的投资记录
     float RContentOffset;
     CGFloat screen_width;
+    LeftSliderController *leftSliderC;
+    NSArray *plateformArray;//用户所有投资过的平台记录
+//    NSMutableDictionary *incomeDic;//用户投资过的平台各自对应的当前预期收益
+    NSMutableDictionary *remainCapitalDic;//用户投资过的平台各自对应的投资总额
+    NSMutableDictionary *rateMinDic;//用户投资过的平台各自对应的最小年化收益率
+    NSMutableDictionary *rateMaxDic;//用户投资过的平台各自对应的最大年化收益率
+    
+    NSMutableDictionary *untreatedDic;//各个平台对应的未处理投资
+    NSMutableDictionary *treatedDic;//各个平台对应的已处理过的投资
+    
+    double minTotalInterest;
+    double maxTotalInterest;
+    double minDailyInterest;
+    double maxDailyInterest;
+    double remainCapital;//在投总额
+    float annualRate_min;//年化收益率
+    float annualRate_max;
+    double minDailyResult;//当日收益
+    double maxDailyResult;
 }
 
 @end
@@ -46,10 +65,11 @@
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
     screen_width = size.width;
-    
     RContentOffset = screen_width/3*2;
-    
     ifActivated=0;
+    
+    leftSliderC = [[LeftSliderController alloc]init];
+    [leftSliderC initLoggedOnUser];
     
     [self initRecord];
     
@@ -78,10 +98,24 @@
     //读取数据库表recordT中用户的所有未删除的投资记录
     RecordDB *recordDB = [[RecordDB alloc] init];
     [recordDB copyDatabaseIfNeeded];
-    records = [recordDB getAllRecord:NO];
+    records = [recordDB getAllRecord:NO withUserName:leftSliderC->loggedOnUser];
     expireRecord = [[NSMutableArray alloc] init];
     expiringRecord = [[NSMutableArray alloc] init];
     unExpireRecord = [[NSMutableArray alloc] init];
+    //找出用户投资过的所有平台名称
+    NSMutableSet *platformSet = [NSMutableSet set];
+    for (int i = 0; i < [records count]; i++) {
+        //platformSet保存用户投资过的平台的名称,set是单值对象的集合，自动删除重复的对象
+        [platformSet addObject:[records[i] objectForKey:@"platform"]];
+    }
+    plateformArray = [platformSet allObjects];
+    
+    for (int i = 0; i < [plateformArray count]; i++) {
+        NSMutableArray *untreatedRecord = [[NSMutableArray alloc] init];//未处理投资
+        NSMutableArray *treatedRecord = [[NSMutableArray alloc] init];//已处理过的投资
+        [untreatedDic setObject:untreatedRecord forKey:plateformArray[i]];
+        [treatedDic setObject:treatedRecord forKey:plateformArray[i]];
+    }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat : @"yyyy-M-d"];
@@ -93,6 +127,7 @@
     NSDateComponents *endComps;
     NSInteger flag1;
     NSInteger flag2;
+    
     for (int i = 0; i < [records count]; i++) {
         endDate = [formatter dateFromString:[records[i] objectForKey:@"endDate"]];
         endComps = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate: endDate];
@@ -110,8 +145,81 @@
                 [expiringRecord addObject:records[i]];//即将到期
             }
         }
+         
+//        if ([[records[i] objectForKey:@"state"] intValue] == 0) {//未处理
+//            NSMutableArray *untreatedRecord;//未处理投资
+//            untreatedRecord = [[untreatedDic objectForKey:[records[i] objectForKey:@"platform"]] mutableCopy];
+//            [untreatedRecord addObject:records[i]];
+//            NSLog(@"records[i]:%@",records[i]);
+//            NSLog(@"untreatedRecord:%@",untreatedRecord);
+//            [untreatedDic setObject:untreatedRecord forKey:[records[i] objectForKey:@"platform"]];
+//        }
+//        else {//已处理
+//            NSMutableArray *treatedRecord;//已处理过的投资
+//            treatedRecord = [[treatedDic objectForKey:[records[i] objectForKey:@"platform"]] mutableCopy];
+//            [treatedRecord addObject:records[i]];
+//            [treatedDic setObject:treatedRecord forKey:[records[i] objectForKey:@"platform"]];
+//        }
+        
     }
-
+    
+//    NSLog(@"untreatedDic:%@",untreatedDic);
+//    NSLog(@"treatedDic:%@",treatedDic);
+    
+    
+//    incomeDic = [[NSMutableDictionary alloc] init];//用户投资过的平台各自对应的当前预期收益
+    remainCapitalDic = [[NSMutableDictionary alloc] init];//用户投资过的平台各自对应的投资总额
+    rateMinDic = [[NSMutableDictionary alloc] init];//用户投资过的平台各自对应的最小年化收益率
+    rateMaxDic = [[NSMutableDictionary alloc] init];//用户投资过的平台各自对应的最大年化收益率
+    
+    for (int i = 0; i < [plateformArray count]; i++) {
+//        [incomeDic setObject:[[NSNumber alloc] initWithFloat:0.0] forKey:plateformArray[i]];
+        [remainCapitalDic setObject:[[NSNumber alloc] initWithFloat:0.0] forKey:plateformArray[i]];
+        [rateMinDic setObject:[[NSNumber alloc] initWithFloat:0.0] forKey:plateformArray[i]];
+        [rateMaxDic setObject:[[NSNumber alloc] initWithFloat:0.0] forKey:plateformArray[i]];
+    }
+    
+    //计算所有投资和各个平台的当日收益、年化收益率、在投总额，
+    //计算显示在投总额
+    float totalCapital = 0.0;//用于计算年化利息和每日预估收益
+    remainCapital = 0.0;//剩余的投资总额（按月还本息：在投总额不断减少）
+    //    double minAnnualResult = 0.0;
+    //    double maxAnnualResult = 0.0;
+    minDailyResult = 0.0;
+    maxDailyResult = 0.0;
+    NSMutableArray *minAnnualResult = [[NSMutableArray alloc] init];//记录每笔投资的年化收益率
+    NSMutableArray *maxAnnualResult = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [unExpireRecord count]; i++) {
+        totalCapital += [[unExpireRecord[i] objectForKey:@"capital"] floatValue];
+        [self getInterestWithName:[unExpireRecord[i] objectForKey:@"platform"]
+                        withAmount:[[unExpireRecord[i] objectForKey:@"capital"] floatValue]
+                        withMinRate:[[unExpireRecord[i] objectForKey:@"minRate"] floatValue]
+                        withMaxRate:[[unExpireRecord[i] objectForKey:@"maxRate"] floatValue]
+                      withStartDate:[unExpireRecord[i] objectForKey:@"startDate"]
+                        withEndDate:[unExpireRecord[i] objectForKey:@"endDate"]
+                        withCalType:[unExpireRecord[i] objectForKey:@"calType"]
+                            withNum:i];
+        //某一个投资的年化收益率：minDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue]
+        [minAnnualResult addObject:[[NSNumber alloc] initWithDouble:minDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue]]];
+        [maxAnnualResult addObject:[[NSNumber alloc] initWithDouble:maxDailyInterest*365/[[unExpireRecord[i] objectForKey:@"capital"] floatValue]]];
+        minDailyResult += minDailyInterest;
+        maxDailyResult += maxDailyInterest;
+    }//end for
+    
+    //年化收益率=实际收益/（投资金额*（期限天数/360））*100%
+    //即 平均每日收益*365/该投资的总额
+    
+    //计算平均年化收益率
+    annualRate_min = 0.0;
+    annualRate_max = 0.0;
+    for (int i = 0; i < [unExpireRecord count]; i++) {
+        annualRate_min += [minAnnualResult[i] doubleValue]*[[unExpireRecord[i] objectForKey:@"capital"] floatValue]/totalCapital;
+        annualRate_max += [maxAnnualResult[i] doubleValue]*[[unExpireRecord[i] objectForKey:@"capital"] floatValue]/totalCapital;
+    }
+    
+    
+    
+    
 }
 
 
@@ -129,10 +237,9 @@
 
 - (void)initChildControllers {
     //初始化“更多”功能界面所在的ViewController
-    LeftSliderController *leftSC = [[LeftSliderController alloc] init];
-    leftSC->records = records;
-    [self addChildViewController:leftSC];
-    [_leftSideView addSubview:leftSC.view];
+    leftSliderC->delegate = self;
+    [self addChildViewController:leftSliderC];
+    [_leftSideView addSubview:leftSliderC.view];
     
     //初始化NavigationController，以显示“主页”、“流水”等tab view
     nc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"navigationController"];
@@ -144,24 +251,27 @@
     tbc.delegate = self;
     //向HomeViewController、FlowViewController传递数据库中用户所有的投资记录
     HomeViewController *homeViewController = tbc.viewControllers[0];
-//    homeViewController->records = records;
+    homeViewController->records = records;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
     homeViewController->unExpireRecord = unExpireRecord;
+    homeViewController->remainCapital = remainCapital;
+    homeViewController->minDailyResult = minDailyResult;
+    homeViewController->maxDailyResult = maxDailyResult;
+    homeViewController->annualRate_min = annualRate_min;
+    homeViewController->annualRate_max = annualRate_max;
     
-    FlowViewController *flowViewController = tbc.viewControllers[3];
+    FlowViewController *flowViewController = tbc.viewControllers[1];
     flowViewController->delegate = self;
     flowViewController->records = records;
     AnalysisViewController *analysisViewController = tbc.viewControllers[2];
     analysisViewController->records = records;
-    analysisViewController->_mainContentView = _mainContentView;
-    PlatformViewController *platformViewController = tbc.viewControllers[1];
+    analysisViewController->unExpireRecord = unExpireRecord;
+//    analysisViewController->_mainContentView = _mainContentView;
+    PlatformViewController *platformViewController = tbc.viewControllers[3];
     platformViewController->records = records;
-    platformViewController->platformSet = [NSMutableSet set];
-    for (int i = 0; i < [records count]; i++) {
-        //platformSet保存用户投资过的平台的名称,set是单值对象的集合，自动删除重复的对象
-        [platformViewController->platformSet addObject:[records[i] objectForKey:@"platform"]];
-    }
+    platformViewController->plateformArray = plateformArray;
+//    platformViewController->remainCapitalDic = remainCapitalDic;
     
     
     [tbc.navigationItem.leftBarButtonItem setAction:@selector(leftBarButtonItemPressed)];
@@ -170,29 +280,130 @@
 }
 
 #pragma mark -
+#pragma mark 年化收益率、收益计算...
+
+- (void)getInterestWithName:(NSString*)platformName withAmount:(double)amount withMinRate:(double)minRate withMaxRate:(double)maxRate withStartDate:(NSString*)startDate withEndDate:(NSString*)endDate withCalType:(NSString*)calType withNum:(int)i{
+    minTotalInterest = 0.0;
+    maxTotalInterest = 0.0;
+    minDailyInterest = 0.0;
+    maxDailyInterest = 0.0;
+    if (minRate == 0.0) {
+        minRate = maxRate;
+    }
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat : @"yyyy-MM-dd"];
+    NSDate *start = [formatter dateFromString:startDate];
+    NSDate *end = [formatter dateFromString:endDate];
+    //    NSInteger days = [self getDateSpaceWithStartDate:start withEndDate:end];
+    //    NSLog(@"%.2f,%.2f,%.2f,%@,%@,%@",amount,minRate,maxRate,startDate,endDate,calType);
+    //计算计息开始到结束间隔的天数
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    unsigned int unitFlags = NSCalendarUnitDay;
+    NSDateComponents *comps = [gregorian components:unitFlags fromDate:start toDate:end options:0];
+    NSInteger days = [comps day];
+    if (![calType isEqualToString:@"按月还本息"]) {//到期还本息，按月只还息
+        remainCapital += amount;
+        float remain = [[remainCapitalDic objectForKey:platformName] floatValue];
+        remain += amount;
+        [remainCapitalDic setObject:[[NSNumber alloc] initWithFloat:remain] forKey:platformName];
+        minTotalInterest = amount * minRate / 100 * days / 365;
+        maxTotalInterest = amount * maxRate / 100 * days / 365;
+        minDailyInterest = minTotalInterest/days;
+        maxDailyInterest = maxTotalInterest/days;
+        //        NSLog(@"%.2f,%.2f,%d",minTotalInterest,maxTotalInterest,days);
+    } else {//按月还本息(在投的本金越来越少)
+        NSDate *today = [NSDate date];
+        float remain1 = [self getRemainAmountWithAmount:amount withMinRate:minRate withMaxRate:maxRate withStartDate:start withEndDate:today];
+        remainCapital += remain1;
+        float remain2 = [[remainCapitalDic objectForKey:platformName] floatValue];
+        remain2 += remain1;
+        [remainCapitalDic setObject:[[NSNumber alloc] initWithFloat:remain2] forKey:platformName];
+        [self getAverageMonthPayWithAmount:amount withMinRate:minRate withMaxRate:maxRate withStartDate:start withEndDate:end];
+        minTotalInterest = minTotalInterest*[self getMonthSpaceWithStartDate:start withEndDate:end] - amount;
+        maxTotalInterest = maxTotalInterest*[self getMonthSpaceWithStartDate:start withEndDate:end] - amount;
+        minDailyInterest = minTotalInterest/days;
+        maxDailyInterest = maxTotalInterest/days;
+        //        NSLog(@"22222:%.2f,%.2f,%d",minTotalInterest,maxTotalInterest,days);
+    }
+}
+
+- (void)getAverageMonthPayWithAmount:(double)amount withMinRate:(double)minRate withMaxRate:(double)maxRate withStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
+    //计算月还款额
+    float avgMinRate = minRate/100/12;//月利率
+    float avgMaxRate = maxRate/100/12;
+    NSInteger months = [self getMonthSpaceWithStartDate:startDate withEndDate:endDate];
+    // 月均还款本息计算，a×i×（1＋i）^n÷〔（1＋i）^n－1〕
+    //double pow(double x, double y）;计算以x为底数的y次幂
+    minTotalInterest = amount * avgMinRate * pow((1+avgMinRate), months) / (pow((1+avgMinRate), months) - 1);
+    maxTotalInterest = amount * avgMaxRate * pow((1+avgMaxRate), months) / (pow((1+avgMaxRate), months) - 1);
+}
+
+//- (NSInteger)getDateSpaceWithStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
+//    //计算计息开始到结束间隔的天数
+//    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+//    unsigned int unitFlags = NSCalendarUnitDay;
+//    NSDateComponents *comps = [gregorian components:unitFlags fromDate:startDate toDate:startDate options:0];
+//    NSInteger days = [comps day];
+//    NSLog(@"%d",days);
+//    return days;
+//}
+
+- (NSInteger)getMonthSpaceWithStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
+    //计算相隔的月数
+    NSCalendar*calendar = [NSCalendar currentCalendar];
+    NSDateComponents *startComps = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:startDate];
+    NSDateComponents *endComps = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate: endDate];
+    //        NSLog(@"1111:%d",([endComps year]-[startComps year])*12+[endComps month]-[startComps month]);
+    NSInteger months = ([endComps year]-[startComps year])*12+[endComps month]-[startComps month];
+    if (months == 0) {
+        months = 1;
+    }
+    return months;
+}
+
+- (double)getRemainAmountWithAmount:(double)amount withMinRate:(double)minRate withMaxRate:(double)maxRate withStartDate:(NSDate*)startDate withEndDate:(NSDate*)endDate {
+    //计算等额本息的剩余本金
+    double result = amount;
+    NSInteger months = [self getMonthSpaceWithStartDate:startDate withEndDate:endDate];
+    [self getAverageMonthPayWithAmount:amount withMinRate:minRate withMaxRate:maxRate withStartDate:startDate withEndDate:endDate];
+    double pay = (minTotalInterest + maxTotalInterest)/2;
+    result -= pay*months;
+    return result;
+}
+
+
+#pragma mark -
 #pragma mark UIViewPassValueDelegate
 - (void)refresh1 {
-    //添加新的投资后刷新主页和流水界面，分析界面的分析图，以及云备份功能模块获取的用户投资记录
+    //添加新的投资后刷新主页和流水界面，分析界面的分析图和平台界面
     [self initRecord];
     //NSLog(@"records:%@",records);
     UITabBarController *tbc = [nc.childViewControllers firstObject];
     HomeViewController *homeViewController = tbc.viewControllers[0];
-//    homeViewController->records = records;
+    homeViewController->records = records;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
     homeViewController->unExpireRecord = unExpireRecord;
     [homeViewController->myTableView reloadData];
+    homeViewController->remainCapital = remainCapital;
+    homeViewController->minDailyResult = minDailyResult;
+    homeViewController->maxDailyResult = maxDailyResult;
+    homeViewController->annualRate_min = annualRate_min;
+    homeViewController->annualRate_max = annualRate_max;
     [homeViewController showData];//重新显示统计数据
+    [homeViewController->bgView removeFromSuperview];
+    [homeViewController->alertView removeFromSuperview];
     
     AnalysisViewController *analysisVC = tbc.viewControllers[2];
     analysisVC->records = records;
-    [analysisVC->piePlot reloadData];
-    [analysisVC->barPlot reloadData];
+    analysisVC->unExpireRecord = unExpireRecord;
+//    [analysisVC initArray];
+//    [analysisVC onCenterClick:nil];
+    [analysisVC reloadData];
+//    [analysisVC->piePlot reloadData];
+//    [analysisVC->barPlot reloadData];
     
-    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
-    leftSliderC->records = records;
-    
-    FlowViewController *flowViewController = tbc.viewControllers[3];
+    FlowViewController *flowViewController = tbc.viewControllers[1];
     flowViewController->records = records;
     flowViewController->delegate = self;
     if (flowViewController->button_flag == 101) {//按投资时间降序
@@ -238,42 +449,61 @@
     }
     
     [flowViewController->myTableView reloadData];
+    
+    PlatformViewController *platformViewController = tbc.viewControllers[3];
+    platformViewController->records = records;
+    platformViewController->plateformArray = plateformArray;
+    [platformViewController initData];
+    [platformViewController showData];
 }
 
 - (void)refresh2 {
-    //在流水界面删除投资记录后刷新主页，分析界面的分析图，以及云备份功能模块获取的用户投资记录
+    //在流水界面删除投资记录后刷新主页，分析界面的分析图和平台界面
     [self initRecord];
     UITabBarController *tbc = [nc.childViewControllers firstObject];
     HomeViewController *homeViewController = tbc.viewControllers[0];
-//    homeViewController->records = records;
+    homeViewController->records = records;
     homeViewController->expireRecord = expireRecord;
     homeViewController->expiringRecord = expiringRecord;
     homeViewController->unExpireRecord = unExpireRecord;
     [homeViewController->myTableView reloadData];
+    homeViewController->remainCapital = remainCapital;
+    homeViewController->minDailyResult = minDailyResult;
+    homeViewController->maxDailyResult = maxDailyResult;
+    homeViewController->annualRate_min = annualRate_min;
+    homeViewController->annualRate_max = annualRate_max;
     [homeViewController showData];//重新显示统计数据
-    
-    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
-    leftSliderC->records = records;
     
     AnalysisViewController *analysisVC = tbc.viewControllers[2];
     analysisVC->records = records;
-    [analysisVC initArray2];
-    if (analysisVC->index3!=0) {//显示柱状图
-        analysisVC->xAxis.axisConstraints = nil;//显示x轴label
-        NSMutableArray *labelArray = [NSMutableArray arrayWithCapacity:[analysisVC->platformName count]];
-        float labelLocation = 0.5;
-        for(NSString *label in analysisVC->platformName){
-            CPTAxisLabel *newLabel = [[CPTAxisLabel alloc] initWithText:label textStyle:analysisVC->xAxis.labelTextStyle];
-            newLabel.tickLocation = [[NSNumber numberWithFloat:labelLocation] decimalValue];
-            newLabel.offset = analysisVC->xAxis.labelOffset+analysisVC->xAxis.majorTickLength;
-            newLabel.rotation = M_PI/6;
-            [labelArray addObject:newLabel];
-            labelLocation += 1;
-        }
-        analysisVC->xAxis.axisLabels=[NSSet setWithArray:labelArray];
-    }
-    [analysisVC->piePlot reloadData];
-    [analysisVC->barPlot reloadData];
+    analysisVC->unExpireRecord = unExpireRecord;
+//    [analysisVC initArray];
+//    [analysisVC onCenterClick:nil];;
+    [analysisVC reloadData];
+    
+//    [analysisVC initArray2];
+//    if (analysisVC->index3!=0) {//显示柱状图
+//        analysisVC->xAxis.axisConstraints = nil;//显示x轴label
+//        NSMutableArray *labelArray = [NSMutableArray arrayWithCapacity:[analysisVC->platformName count]];
+//        float labelLocation = 0.5;
+//        for(NSString *label in analysisVC->platformName){
+//            CPTAxisLabel *newLabel = [[CPTAxisLabel alloc] initWithText:label textStyle:analysisVC->xAxis.labelTextStyle];
+//            newLabel.tickLocation = [[NSNumber numberWithFloat:labelLocation] decimalValue];
+//            newLabel.offset = analysisVC->xAxis.labelOffset+analysisVC->xAxis.majorTickLength;
+//            newLabel.rotation = M_PI/6;
+//            [labelArray addObject:newLabel];
+//            labelLocation += 1;
+//        }
+//        analysisVC->xAxis.axisLabels=[NSSet setWithArray:labelArray];
+//    }
+//    [analysisVC->piePlot reloadData];
+//    [analysisVC->barPlot reloadData];
+
+    PlatformViewController *platformViewController = tbc.viewControllers[3];
+    platformViewController->records = records;
+    platformViewController->plateformArray = plateformArray;
+    [platformViewController initData];
+    [platformViewController showData];
 }
 
 
@@ -298,22 +528,27 @@
                          completion:^(BOOL finished) {
                              _tapGestureRec.enabled = YES;//开启响应点击屏幕时间，执行closeSideBar方法的手势
                          }];
-        ifActivated=1;
+        ifActivated = 1;
     }
     else
     {
         [self closeSideBar];
-        ifActivated=0;
+        ifActivated = 0;
     }
 
 }
 
 - (void)rightBarButtonItemPressed {
-    
     //添加“新建投资”页面
     AddViewController *aDV = [[AddViewController alloc]init];
+//    aDV->untreatedDic = untreatedDic;
+//    aDV->treatedDic = treatedDic;
+    aDV->records = records;
     aDV->delegate = self;
     [nc pushViewController:aDV animated:YES];
+//    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:aDV];
+//    aDV.modalTransitionStyle = UIModalTransitionStylePartialCurl;
+//    [self presentViewController:navC animated:YES  completion:nil];
 }
 
 - (void)closeSideBar
@@ -454,5 +689,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 @end

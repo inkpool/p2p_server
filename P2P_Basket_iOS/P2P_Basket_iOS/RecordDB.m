@@ -46,7 +46,7 @@
 }
 
 - (NSInteger)insertRecord:(NSString*)platform secondPara:(NSString*)product thirdPara:(float)capital forthPara:(float)minRate
-fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate
+fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate ninthPara:(NSString*)userName tenthPara:(float)rest
 {
     //检查有没有将数据库复制到沙盒library
     [self copyDatabaseIfNeeded];
@@ -70,8 +70,14 @@ fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)sta
     NSInteger state = 0;
     long int timeStamp = [[NSDate date] timeIntervalSince1970];
     int isDeleted = 0;
+//    if (maxRate == 0) {
+//        maxRate = 100.0;
+//    }
+    float value1 = 0.0;
+    int value2 = 0;
+    NSLog(@"%.2f,%.2f",minRate,maxRate);
     //组合而成的sql语句，占位符坑爹啊！
-    NSString *sql=[[NSString alloc]initWithFormat:@"INSERT INTO recordT VALUES(NULL,\"%@\",\"%@\",%f,%f,%f,\"%@\",\"%@\",\"%@\",%ld,%d,%d)",platform,product,capital,minRate,maxRate,calType,startDate,endDate,timeStamp,state,isDeleted];
+    NSString *sql=[[NSString alloc]initWithFormat:@"INSERT INTO recordT VALUES(NULL,\"%@\",\"%@\",%f,%f,%f,\"%@\",\"%@\",\"%@\",%ld,%ld,%d,\"%@\",%f,%f,%d,%f)",platform,product,capital,minRate,maxRate,calType,startDate,endDate,timeStamp,state,isDeleted,userName,value1,value1,value2,rest];
     //编译SQL语句
     result = sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
     if( result != SQLITE_OK){
@@ -94,7 +100,9 @@ fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)sta
 }
 
 //查询数据
-- (NSMutableArray *)getAllRecord:(BOOL) flag {
+- (NSMutableArray *)getAllRecord:(BOOL) flag withUserName:(NSString*)userName{
+    //检查有没有将数据库复制到沙盒library
+    [self copyDatabaseIfNeeded];
     sqlite3 *sqlite = nil;
     sqlite3_stmt *stmt = nil;
     NSMutableArray *records = [[NSMutableArray alloc] init];
@@ -111,9 +119,9 @@ fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)sta
     NSString *sql;
     //创建表的SQL语句
     if (flag) {//读取所有的投资记录
-        sql = @"SELECT * FROM recordT";
+        sql=[[NSString alloc]initWithFormat:@"SELECT * FROM recordT WHERE userName = \"%@\"",userName];
     } else {//读取未被删除的投资记录
-        sql = @"SELECT * FROM recordT WHERE isDeleted = 0";
+        sql=[[NSString alloc]initWithFormat:@"SELECT * FROM recordT WHERE isDeleted = 0 AND userName = \"%@\"",userName];
     }
     //编译SQL语句
     sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
@@ -134,6 +142,11 @@ fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)sta
         long int timeStamp = sqlite3_column_int(stmt, 9);
         int state = sqlite3_column_int(stmt, 10);
         int isDeleted = sqlite3_column_int(stmt, 11);
+        //12为用户名
+        float earning = sqlite3_column_double(stmt, 13);
+        float takeout = sqlite3_column_double(stmt, 14);
+        long int timeStampEnd = sqlite3_column_int(stmt, 15);
+        float rest = sqlite3_column_double(stmt, 16);
         
         NSString *platformString = [NSString stringWithCString:platform encoding:NSUTF8StringEncoding];
         NSString *productString = [NSString stringWithCString:product encoding:NSUTF8StringEncoding];
@@ -143,12 +156,16 @@ fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)sta
         NSString *calTypeString = [NSString stringWithCString:calType encoding:NSUTF8StringEncoding];
         NSString *startDateString = [NSString stringWithCString:startDate encoding:NSUTF8StringEncoding];
         NSString *endDateString = [NSString stringWithCString:endDate encoding:NSUTF8StringEncoding];
-        NSNumber *timeStampNumber = [[NSNumber alloc] initWithInt:timeStamp];
+        NSNumber *timeStampNumber = [[NSNumber alloc] initWithLong:timeStamp];
         NSNumber *stateNumber = [[NSNumber alloc] initWithInt:state];
         NSNumber *isDeletedNumber = [[NSNumber alloc] initWithInt:isDeleted];
+        NSNumber *earningNumber = [[NSNumber alloc] initWithFloat:earning];
+        NSNumber *takeoutNumber = [[NSNumber alloc] initWithFloat:takeout];
+        NSNumber *timeStampEndNumber = [[NSNumber alloc] initWithLong:timeStampEnd];
+        NSNumber *restNumber = [[NSNumber alloc] initWithFloat:rest];
         
         //NSLog(@"平台：%@\n产品：%@\n金额：%@\n最小利率：%@\n最大利率：%@\n类型：%@\n开始时间：%@\n结束时间：%@\n\n\n",platformString,productString,capitalNumber,minRateNumber,maxRateNumber,calTypeNumber,startDateString,endDateString);
-        NSDictionary *investment = [NSDictionary dictionaryWithObjectsAndKeys:platformString,@"platform",productString,@"product",capitalNumber,@"capital",minRateNumber,@"minRate",maxRateNumber,@"maxRate",calTypeString,@"calType",startDateString,@"startDate",endDateString,@"endDate",timeStampNumber,@"timeStamp",stateNumber,@"state",isDeletedNumber,@"isDeleted",nil];
+        NSDictionary *investment = [NSDictionary dictionaryWithObjectsAndKeys:platformString,@"platform",productString,@"product",capitalNumber,@"capital",minRateNumber,@"minRate",maxRateNumber,@"maxRate",calTypeString,@"calType",startDateString,@"startDate",endDateString,@"endDate",timeStampNumber,@"timeStamp",stateNumber,@"state",isDeletedNumber,@"isDeleted",userName,@"userName",earningNumber,@"earning",takeoutNumber,@"takeout",timeStampEndNumber,@"timeStampEnd",restNumber,@"rest",nil];
         [records addObject:investment];
         
         result = sqlite3_step(stmt);
@@ -165,7 +182,7 @@ fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)sta
 }
 
 //标记投资为已删除
-- (BOOL) updateRecord:(long int)timeStamp{
+- (BOOL) updateRecord:(long int)timeStamp withUserName:(NSString*)userName {
     sqlite3 *sqlite = nil;
     sqlite3_stmt *stmt = nil;
     
@@ -177,13 +194,12 @@ fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)sta
         NSLog(@"SQLite DB open error.");
         return NO;
     }
-
     //创建表的SQL语句
-    NSString *sql = @"UPDATE recordT set isDeleted = 1 where timeStamp = ?";
+    NSString *sql = [[NSString alloc]initWithFormat:@"UPDATE recordT set isDeleted = 1 where timeStamp = ? AND userName = \"%@\"",userName];
     //编译SQL语句
     sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
     
-    sqlite3_bind_int(stmt, 1, timeStamp);
+    sqlite3_bind_int64(stmt, 1, timeStamp);
     
     //删除数据
     result = sqlite3_step(stmt);
@@ -199,6 +215,240 @@ fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)sta
     sqlite3_close(sqlite);
     return YES;
 }
+
+- (BOOL) settleUpdate:(long int)timeStamp withUserName:(NSString*)userName withEarning:(float)earning withTakeout:(float)takeout withRest:(float)rest {
+    sqlite3 *sqlite = nil;
+    sqlite3_stmt *stmt = nil;
+    NSLog(@"%ld,%@,%f,%f,%f",timeStamp,userName,earning,takeout,rest);
+    NSString *filePath = [NSHomeDirectory() stringByAppendingFormat:@"/Library/p2p_basket.sqlite"];
+    
+    //打开数据库
+    int result = sqlite3_open([filePath UTF8String],&sqlite);
+    if (result != SQLITE_OK){
+        NSLog(@"SQLite DB open error.");
+        return NO;
+    }
+    
+    long int timeStampEnd = [[NSDate date] timeIntervalSince1970];
+    //创建表的SQL语句
+    NSString *sql = [[NSString alloc]initWithFormat:@"UPDATE recordT set state = 1, earning = %f, takeout = %f, timeStampEnd = %ld, rest = %f where timeStamp = %ld AND userName = \"%@\"",earning,takeout,timeStampEnd,rest,timeStamp,userName];
+    //编译SQL语句
+    sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
+    
+    
+    
+//    sqlite3_bind_int(stmt, 1, 1);
+//    sqlite3_bind_double(stmt,2,earning);
+//    sqlite3_bind_double(stmt,3,takeout);
+//    sqlite3_bind_int64(stmt, 4, timeStampEnd);
+//    sqlite3_bind_double(stmt,5,rest);
+//    sqlite3_bind_int64(stmt, 6, timeStamp);
+    
+    //更新数据
+    result = sqlite3_step(stmt);
+    
+    if( result == SQLITE_ERROR){
+        NSLog(@"结算投资失败");
+        sqlite3_close(sqlite);
+        return NO;
+    }
+    //关闭数据库句柄
+    sqlite3_finalize(stmt);
+    //关闭数据库
+    sqlite3_close(sqlite);
+    return YES;
+}
+
+//覆盖本地记录
+- (BOOL) coverLocalRecord:(NSString*)platform secondPara:(NSString*)product thirdPara:(float)capital forthPara:(float)minRate fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate ninthPara:(long int)timeStamp tenthPara:(int)state eleventhPara:(int)isDeleted twelfthPara:(NSString*)userName thirteenthPara:(float)earning fourteenthPara:(float)takeout fifteenthPara:(long int)timeStampEnd sixteenthPara:(float)rest {
+    sqlite3 *sqlite = nil;
+    sqlite3_stmt *stmt = nil;
+    
+    NSString *filePath = [NSHomeDirectory() stringByAppendingFormat:@"/Library/p2p_basket.sqlite"];
+    BOOL flag = TRUE;
+    //打开数据库
+    int result = sqlite3_open([filePath UTF8String],&sqlite);
+    if (result != SQLITE_OK){
+        NSLog(@"SQLite DB open error.");
+        return NO;
+    }
+    
+    NSString *sql = [[NSString alloc]initWithFormat:@"SELECT * FROM recordT WHERE timeStamp = ? AND userName = \"%@\"",userName];
+    //编译SQL语句
+    sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
+    sqlite3_bind_int64(stmt, 1, timeStamp);
+    //查询数据
+    result = sqlite3_step(stmt);
+    if (result != SQLITE_ROW) {
+        NSLog(@"云端新的投资记录");
+        //插入从云上下载的新的投资记录
+        BOOL isOK = [self insertRecordFromCloud:platform secondPara:product thirdPara:capital forthPara:minRate fifthPara:maxRate sixthPara:calType seventhPara:startDate eighthPara:endDate ninthPara:timeStamp tenthPara:state eleventhPara:isDeleted twelfthPara:userName thirteenthPara:earning fourteenthPara:takeout fifteenthPara:timeStampEnd sixteenthPara:rest];
+        sqlite3_close(sqlite);
+        return isOK;
+    }
+    else {
+        //判断记录是否已存在且相同
+        char *localPlatform = (char *)sqlite3_column_text(stmt, 1);
+        char *localProduct = (char *)sqlite3_column_text(stmt, 2);
+        float localCapital = sqlite3_column_double(stmt, 3);
+        float localMinRate = sqlite3_column_double(stmt, 4);
+        float localMaxRate = sqlite3_column_double(stmt, 5);
+        char *localCalType = (char *)sqlite3_column_text(stmt, 6);
+        char *localStartDate = (char *)sqlite3_column_text(stmt, 7);
+        char *localEndDate = (char *)sqlite3_column_text(stmt, 8);
+        int localState = sqlite3_column_int(stmt, 10);
+        int localIsDeleted = sqlite3_column_int(stmt, 11);
+        //12为用户名
+        float localEarning = sqlite3_column_double(stmt, 13);
+        float localTakeout = sqlite3_column_double(stmt, 14);
+        long int localTimeStampEnd = sqlite3_column_int(stmt, 15);
+        float localRest = sqlite3_column_double(stmt, 16);
+        if (localIsDeleted != isDeleted) {
+            flag = FALSE;
+        }
+        if (flag && localState != state) {
+            flag = FALSE;
+        }
+        if (flag && ![[NSString stringWithCString:localPlatform encoding:NSUTF8StringEncoding] isEqualToString:platform]) {
+            flag = FALSE;
+        }
+        if (flag && ![[NSString stringWithCString:localProduct encoding:NSUTF8StringEncoding] isEqualToString:product]) {
+            flag = FALSE;
+        }
+        if (flag && localCapital != capital) {
+            flag = FALSE;
+        }
+        if (flag && localMinRate != minRate) {
+            flag = FALSE;
+        }
+        if (flag && localMaxRate != maxRate) {
+            flag = FALSE;
+        }
+        if (flag && ![[NSString stringWithCString:localCalType encoding:NSUTF8StringEncoding] isEqualToString:calType]) {
+            flag = FALSE;
+        }
+        if (flag && ![[NSString stringWithCString:localStartDate encoding:NSUTF8StringEncoding] isEqualToString:startDate]) {
+            flag = FALSE;
+        }
+        if (flag && ![[NSString stringWithCString:localEndDate encoding:NSUTF8StringEncoding] isEqualToString:endDate]) {
+            flag = FALSE;
+        }
+        if (flag && localEarning != earning) {
+            flag = FALSE;
+        }
+        if (flag && localTakeout != takeout) {
+            flag = FALSE;
+        }
+        if (flag && localTimeStampEnd != timeStampEnd) {
+            flag = FALSE;
+        }
+        if (flag && localRest != rest) {
+            flag = FALSE;
+        }
+    }
+    if (!flag) {
+        //云上下载的投资记录和本地的内容不同，要覆盖本地的
+        BOOL isOK = [self updateRecordFromCloud:platform secondPara:product thirdPara:capital forthPara:minRate fifthPara:maxRate sixthPara:calType seventhPara:startDate eighthPara:endDate ninthPara:timeStamp tenthPara:state eleventhPara:isDeleted twelfthPara:userName thirteenthPara:earning fourteenthPara:takeout fifteenthPara:timeStampEnd sixteenthPara:rest];
+        sqlite3_close(sqlite);
+        return isOK;
+    }
+    //关闭数据库句柄
+    sqlite3_finalize(stmt);
+    //关闭数据库
+    sqlite3_close(sqlite);
+    return YES;
+}
+
+- (BOOL)insertRecordFromCloud:(NSString*)platform secondPara:(NSString*)product thirdPara:(float)capital forthPara:(float)minRate fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate ninthPara:(long int)timeStamp tenthPara:(int)state eleventhPara:(int)isDeleted twelfthPara:(NSString*)userName thirteenthPara:(float)earning fourteenthPara:(float)takeout fifteenthPara:(long int)timeStampEnd sixteenthPara:(float)rest
+{
+    sqlite3 *sqlite = nil;
+    sqlite3_stmt *stmt=nil;
+    
+    //数据库路径
+    NSString *filePath = [NSHomeDirectory() stringByAppendingFormat:@"/Library/p2p_basket.sqlite"];
+    
+    int result = sqlite3_open([filePath UTF8String], &sqlite);
+    if(result != SQLITE_OK)
+    {
+        NSLog(@"SQLite DB open error.");
+        return NO;
+    }
+    
+    //组合而成的sql语句，占位符坑爹啊！
+    NSString *sql=[[NSString alloc]initWithFormat:@"INSERT INTO recordT VALUES(NULL,\"%@\",\"%@\",%f,%f,%f,\"%@\",\"%@\",\"%@\",%ld,%d,%d,\"%@\",%f,%f,%ld,%f)",platform,product,capital,minRate,maxRate,calType,startDate,endDate,timeStamp,state,isDeleted,userName,earning,takeout,timeStampEnd,rest];
+    //编译SQL语句
+    result = sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
+    if( result != SQLITE_OK){
+        return NO;
+    }
+    
+    result = sqlite3_step(stmt);
+    
+    if(result!=SQLITE_DONE)
+        return NO;
+    
+    sqlite3_finalize(stmt);
+    sqlite3_close(sqlite);
+    
+    return YES;
+}
+
+- (BOOL) updateRecordFromCloud:(NSString*)platform secondPara:(NSString*)product thirdPara:(float)capital forthPara:(float)minRate fifthPara:(float)maxRate sixthPara:(NSString*)calType seventhPara:(NSString*)startDate eighthPara:(NSString*)endDate ninthPara:(long int)timeStamp tenthPara:(int)state eleventhPara:(int)isDeleted twelfthPara:(NSString*)userName thirteenthPara:(float)earning fourteenthPara:(float)takeout fifteenthPara:(long int)timeStampEnd sixteenthPara:(float)rest
+{
+    sqlite3 *sqlite = nil;
+    sqlite3_stmt *stmt = nil;
+    
+    NSString *filePath = [NSHomeDirectory() stringByAppendingFormat:@"/Library/p2p_basket.sqlite"];
+    
+    //打开数据库
+    int result = sqlite3_open([filePath UTF8String],&sqlite);
+    if (result != SQLITE_OK){
+        NSLog(@"SQLite DB open error.");
+        return NO;
+    }
+    //创建表的SQL语句
+    NSString *sql = @"update recordT set platform = ? and product = ? and capital = ? and minRate = ? and maxRate = ? and calType = ? and startDate = ? and endDate = ? and state = ? and isDeleted = ? and earning = ? and takeout = ? and timeStampEnd = ? and rest = ? WHERE timeStamp = ? AND userName = ?";
+    //编译SQL语句
+    result = sqlite3_prepare_v2(sqlite, [sql UTF8String], -1, &stmt, NULL);
+    if (result != SQLITE_OK) {
+        NSLog(@"Error: failed to update:testTable");
+        sqlite3_close(sqlite);
+        return NO;
+    }
+    
+    sqlite3_bind_text(stmt, 1, [platform UTF8String], -1, NULL);
+    sqlite3_bind_text(stmt, 2, [product UTF8String], -1, NULL);
+    sqlite3_bind_double(stmt,3,capital);
+    sqlite3_bind_double(stmt,4,minRate);
+    sqlite3_bind_double(stmt,5,maxRate);
+    sqlite3_bind_text(stmt, 6, [calType UTF8String], -1, NULL);
+    sqlite3_bind_text(stmt, 7, [startDate UTF8String], -1, NULL);
+    sqlite3_bind_text(stmt, 8, [endDate UTF8String], -1, NULL);
+    sqlite3_bind_int(stmt, 9, state);
+    sqlite3_bind_int(stmt, 10, isDeleted);
+    
+    sqlite3_bind_double(stmt,11,earning);
+    sqlite3_bind_double(stmt,12,takeout);
+    sqlite3_bind_int64(stmt,13,timeStampEnd);
+    sqlite3_bind_double(stmt,14,rest);
+    
+    sqlite3_bind_int64(stmt, 15, timeStamp);
+    sqlite3_bind_text(stmt, 16, [userName UTF8String], -1, NULL);
+    
+    result = sqlite3_step(stmt);
+    
+    if( result == SQLITE_ERROR){
+        NSLog(@"更新失败");
+        sqlite3_close(sqlite);
+        return NO;
+    }
+    //关闭数据库句柄
+    sqlite3_finalize(stmt);
+    //关闭数据库
+    sqlite3_close(sqlite);
+    return YES;
+}
+
 
 @end
 

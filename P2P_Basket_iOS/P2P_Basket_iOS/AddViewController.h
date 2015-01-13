@@ -18,7 +18,10 @@
     UIDatePicker *startTimePicker,*endTimePicker;
     UIAlertController *myAlert;
 @public
-    NSObject<UIViewPassValueDelegate> *delegate;//在AddViewController中添加新的投资后，要刷新主页和流水界面的tableVIew
+    NSMutableArray *records;//用户所有的投资记录
+//    NSMutableDictionary *untreatedDic;//各个平台对应的未处理投资
+//    NSMutableDictionary *treatedDic;//各个平台对应的已处理过的投资
+    NSObject<UIViewPassValueDelegate> *delegate;//在AddViewController中添加新的投资后，要刷新主页,流水界面的tableVIew和分析界面
 }
 
 

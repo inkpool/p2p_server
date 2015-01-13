@@ -56,9 +56,9 @@
                     </tabBar>
                     <connections>
                         <segue destination="Iol-v0-2uI" kind="relationship" relationship="viewControllers" id="O2S-aY-dCx"/>
-                        <segue destination="HEA-8r-Z8j" kind="relationship" relationship="viewControllers" id="tDG-Ai-zhj"/>
-                        <segue destination="fnJ-FG-uSo" kind="relationship" relationship="viewControllers" id="45k-qs-Hy9"/>
                         <segue destination="liQ-FN-gK2" kind="relationship" relationship="viewControllers" id="uFn-QK-z3H"/>
+                        <segue destination="fnJ-FG-uSo" kind="relationship" relationship="viewControllers" id="45k-qs-Hy9"/>
+                        <segue destination="HEA-8r-Z8j" kind="relationship" relationship="viewControllers" id="tDG-Ai-zhj"/>
                         <segue destination="aWb-Hr-U2d" kind="relationship" relationship="viewControllers" id="T6j-80-oP7"/>
                     </connections>
                 </tabBarController>
@@ -116,16 +116,16 @@
             </objects>
             <point key="canvasLocation" x="800" y="514.99999999999966"/>
         </scene>
-        <!--更多-->
+        <!--资讯-->
         <scene sceneID="6tZ-qu-TMh">
             <objects>
-                <viewController id="aWb-Hr-U2d" customClass="MoreViewController" sceneMemberID="viewController">
+                <viewController id="aWb-Hr-U2d" customClass="NewsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Non-w3-vmy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="更多" image="more.png" id="daC-FD-qBk"/>
+                    <tabBarItem key="tabBarItem" title="资讯" image="more.png" id="daC-FD-qBk"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dqH-fD-XpB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

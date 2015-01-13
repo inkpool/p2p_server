@@ -57,4 +57,63 @@ class Login extends CI_Controller {
 		}
 		
 	}
+	
+	public function changePassword()
+	{
+		$old_password=$this->input->post('old_password');
+		$new_password=$this->input->post('new_password');
+		$user_name=$this->input->post('user_name');
+		
+		$row=$this->db->select('password')->from('my_users')->where('user_name',$user_name)->get()->row();
+		if(strcmp($old_password, $row->password))
+		{
+			$this->output(2, 'Password wrong!');
+		}
+		else{
+			$data=array(
+					'password'=>$new_password,
+			);
+			$this->db->where('user_name',$user_name)->update('my_users',$data);
+			$this->output(0, "Password changed.");
+		}
+		
+	}
+	
+	
+	//////////找回密码功能，停止开发。
+	
+	public function createTicket($email)
+	{
+		//插入请求重置密码的数据表
+	}
+	
+	public function recoverPassword()
+	{
+		$user_name=$this->input->post('user_name');
+		if(empty($user_name))
+		{
+			die();
+		}
+		$query=$this->db->select('*')->from('my_users')->where('user_name',$user_name);
+		$num=$query->count_all_results();
+		if(intval($num))
+		{
+			$timestamp=time();
+			//$ticket=$this->createTicket($user_name,$timestamp);
+			$ticket=100;
+			$token=md5($timestamp);
+			$data=base64_encode($user_name.':'.$ticket.':'.$token);
+			header("location: http://128.199.226.246/beerich/email/sendEmail.php?data=$data");
+			$this->output(0, "Request sent.");
+			//send a email
+		}else 
+		{
+			$this->output(1, "Username not exists!");
+		}
+	}
+	
+	public function reset(){
+		$ticket=$this->input->get('ticket');
+		$token=$this->input->get('token');
+	}
 }

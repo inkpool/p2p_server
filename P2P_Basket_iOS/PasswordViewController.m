@@ -7,9 +7,14 @@
 //
 
 #import "PasswordViewController.h"
+#import "LeftSliderController.h"
+#import "AFHTTPRequestOperationManager.h"
+#import "DejalActivityView.h"
 
 @interface PasswordViewController ()
-
+{
+    int flag;
+}
 @end
 
 @implementation PasswordViewController
@@ -149,51 +154,72 @@
 
 - (void)buttonPressed {
     if ([oldPasswordField.text isEqualToString:@""]) {
-        [self alertWithTitle:@"请输入原密码"];
+        [self alertWithTitle:@"提示" msg:@"请输入原密码"];
         return;
     }
     if ([newPasswordField1.text isEqualToString:@""]) {
-        [self alertWithTitle:@"请输入新密码"];
+        [self alertWithTitle:@"提示" msg:@"请输入新密码"];
         return;
     }
     if (![newPasswordField1.text isEqualToString:newPasswordField2.text]) {
-        [self alertWithTitle:@"新密码输入不一致"];
+        [self alertWithTitle:@"提示" msg:@"新密码输入不一致"];
         return;
     }
-//    userEmail = emailField.text;
-//    if ([self isValidateEmail:userEmail]) {//用户输入的邮箱合法
-//        userPassword = passwordField.text;
-//        NSLog(@"%@,%@",userEmail,userPassword);
-//        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
-//        if (isLogin) {//登录
-//            [manager POST:@"http://128.199.226.246/beerich/index.php/login"
-//               parameters:@{@"user_name":userEmail,@"password":userPassword}
-//                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//                      NSLog(@"JSON#######: %@", responseObject);
-//                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//                      NSLog(@"Error######: %@", error);
-//                  }];
-//        }
-//        else {//注册
-//            [manager POST:@"http://128.199.226.246/beerich/index.php/login/register"
-//               parameters:@{@"user_name":userEmail,@"password":userPassword}
-//                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//                      NSLog(@"JSON#######: %@", responseObject);
-//                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//                      NSLog(@"Error######: %@", error);
-//                  }];
-//        }
-//    }
-//    else {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
-//                                                        message:@"请输入正确格式的邮箱"
-//                                                       delegate:self
-//                                              cancelButtonTitle:@"OK"
-//                                              otherButtonTitles: nil];
-//        [alert show];
-//    }
-    
+    LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
+    if (leftSliderC->networkConnected) {//网络已连接
+        UIView *viewToUse = self.view;
+        [DejalBezelActivityView activityViewForView:viewToUse withLabel:@"更新中..." width:100];
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer]; //这个决定了下面responseObject返回的类型
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
+        [manager POST:@"http://128.199.226.246/beerich/index.php/login/changePassword"
+           parameters:@{@"user_name":loggedOnUser,@"old_password":oldPasswordField.text,@"new_password":newPasswordField1.text}
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                  if (!operation.responseString) {
+                      flag = 0;
+                      [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
+                  } else {
+                      NSString *requestTmp = [NSString stringWithString:operation.responseString];
+                      NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
+                      NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
+                      NSLog(@"%@,%@",[dic objectForKey:@"error_code"],[dic objectForKey:@"error_meesage"]);
+                      if ([[dic objectForKey:@"error_code"] intValue] == 0) {
+                          flag = 1;
+                          [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
+                      }
+                      else if ([[dic objectForKey:@"error_code"] intValue] == 2) {
+                          flag = 2;
+                          [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
+                      }
+                  }
+              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  NSLog(@"Error######: %@", error);
+              }];
+    }
+    else {//网络未连接
+        [self alertWithTitle:@"连接错误" msg:@"无法连接服务器，请检查您的网络连接是否正常"];
+    }
+}
+
+- (int)removeActivityView
+{
+    [DejalBezelActivityView removeViewAnimated:YES];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+    switch (flag) {
+        case 0:
+            [self alertWithTitle:@"连接异常" msg:@"网络连接异常"];
+        case 1:{//发送成功
+            [self alertWithTitle:@"更新成功" msg:@"密码修改成功"];
+            break;
+        }
+        case 2:{//发送失败
+            [self alertWithTitle:@"更新失败" msg:@"原密码输入错误"];
+            break;
+        }
+        default:
+            break;
+    }
+    return 0;
 }
 
 #pragma mark - TextField Delegate
@@ -218,8 +244,8 @@
     }
 }
 
-- (void) alertWithTitle:(NSString *)msg{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+- (void) alertWithTitle: (NSString *)_title_ msg: (NSString *)msg{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:_title_
                                                     message:msg
                                                    delegate:nil
                                           cancelButtonTitle:@"确定"

@@ -12,8 +12,10 @@
 #import "AboutUsViewController.h"
 #import "FeedbackViewController.h"
 #import "LoginAndRegisterViewController.h"
-#import "CloudBackupViewController.h"
+#import "CloudSyncingViewController.h"
 #import "PasswordViewController.h"
+#import "AccountManagementViewController.h"
+#import "DejalActivityView.h"
 
 @interface LeftSliderController ()
 {
@@ -39,13 +41,14 @@ static LeftSliderController *sharedLSC;
         sharedLSC = self;
     });
     
+    [self initLoggedOnUser];
+    
     [self connectedToNetWork];//监测网络连接情况
     //获取屏幕分辨率
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
     screen_width = size.width;
     screen_height = size.height;
-    
     menu = [NSArray arrayWithObjects:@"云同步",@"检查更新",@"用户反馈",@"关于我们",@"密码设置",@"好友分享",nil];
     
     //添加一个背景图片
@@ -58,8 +61,13 @@ static LeftSliderController *sharedLSC;
     [portraitButton setImage:[UIImage imageNamed:@"portrait_default"] forState:UIControlStateNormal];
     [portraitButton addTarget:self action:@selector(portraitButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:portraitButton];
-    UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3-25, screen_height/15+55, 50, 15)];
-    userNameLabel.text = @"登录";
+    UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/3-100, screen_height/15+55, 200, 15)];
+    userNameLabel.tag = 10001;
+    if (![loggedOnUser isEqualToString:@"default"]) {
+        userNameLabel.text = loggedOnUser;
+    } else {
+        userNameLabel.text = @"登录";
+    }
     userNameLabel.font = [UIFont systemFontOfSize:13];
     userNameLabel.textColor = [UIColor whiteColor];
     userNameLabel.textAlignment = NSTextAlignmentCenter;
@@ -76,15 +84,15 @@ static LeftSliderController *sharedLSC;
     [self.view addSubview:tableView];
     
     //显示账户注册和退出登录的button
-    UIImageView *registerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/6-40, screen_height/5+320, 25, 25)];
-    registerImageView.image = [UIImage imageNamed:@"account_management"];
-    [self.view addSubview:registerImageView];
-    UIButton *registerButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/6-12, screen_height/5+320, 55, 25)];
-    [registerButton setTitle:@"账号注册" forState:UIControlStateNormal];
-    [registerButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
-    [registerButton addTarget:self action:@selector(registerButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    registerButton.titleLabel.font = [UIFont systemFontOfSize:13];
-    [self.view addSubview:registerButton];
+    UIImageView *manageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/6-40, screen_height/5+320, 25, 25)];
+    manageImageView.image = [UIImage imageNamed:@"account_management"];
+    [self.view addSubview:manageImageView];
+    UIButton *manageButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/6-12, screen_height/5+320, 55, 25)];
+    [manageButton setTitle:@"账号管理" forState:UIControlStateNormal];
+    [manageButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [manageButton addTarget:self action:@selector(manageButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    manageButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [self.view addSubview:manageButton];
     
     UIImageView *separateView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/3-3, screen_height/5+320+4, 1, 17)];
     separateView.image = [UIImage imageNamed:@"vertical_line"];
@@ -96,6 +104,7 @@ static LeftSliderController *sharedLSC;
     UIButton *signOutButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/3+screen_width/3-3-screen_width/6-43+28, screen_height/5+320, 55, 25)];
     [signOutButton setTitle:@"退出账号" forState:UIControlStateNormal];
     [signOutButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [signOutButton addTarget:self action:@selector(signOutButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     signOutButton.titleLabel.font = [UIFont systemFontOfSize:13];
     [self.view addSubview:signOutButton];
     
@@ -104,6 +113,23 @@ static LeftSliderController *sharedLSC;
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)initLoggedOnUser {
+    loggedOnUser = @"default";
+    //获取所有的用户信息
+    [self createEditableCopyOfDatabaseIfNeeded];//拷贝userInfo.plist文件
+    NSString *documentDirectory = [self applicationDocumentsDirectory];
+    NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];//不应该从资源文件中读取数据，资源文件中的数据没有更改，要从沙箱中的资源文件读取数据
+    userInfoArray = [[NSMutableArray alloc] initWithContentsOfFile:path];//从资源文件中加载内容
+    if ([userInfoArray count] != 0) {
+        for (int i = 0; i < [userInfoArray count]; i++) {
+            if ([[userInfoArray[i] objectForKey:@"isSelected"] intValue] == 1) {
+                loggedOnUser = [userInfoArray[i] objectForKey:@"userName"];
+                break;
+            }
+        }
+    }
 }
 
 #pragma mark - TableView delegate methods
@@ -152,11 +178,12 @@ static LeftSliderController *sharedLSC;
         cell = [[UITableViewCell alloc]
                 initWithStyle:UITableViewCellStyleValue1
                 reuseIdentifier:TableSampleIdentifier];
+        cell.tag = indexPath.section*3 + indexPath.row + 1;
     }
     cell.textLabel.text = menu[indexPath.section*3+indexPath.row];
     cell.textLabel.textColor = [UIColor whiteColor];
     
-    cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"menu_icon_%d",indexPath.section*3+indexPath.row+1]];
+    cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"menu_icon_%ld",indexPath.section*3+indexPath.row+1]];
     CGSize itemSize = CGSizeMake(20, 20);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
@@ -182,34 +209,82 @@ static LeftSliderController *sharedLSC;
     NSInteger num = indexPath.section*3 + indexPath.row;
     switch (num) {
         case 0:{
-            CloudBackupViewController *cloudBackupVC = [[CloudBackupViewController alloc] init];
+            CloudSyncingViewController *cloudBackupVC = [[CloudSyncingViewController alloc] init];
+            cloudBackupVC->loggedOnUser = loggedOnUser;
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:cloudBackupVC];
-            [self presentViewController:navC animated:YES completion:nil];
+            [self presentViewController:navC animated:YES completion:^{
+                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:1];
+                cell.selected = NO;
+            }];
             break;
         }
-        case 1:
+        case 1:{
+            if (networkConnected) {
+                UIView *viewToUse = self.parentViewController.view;
+                [DejalBezelActivityView activityViewForView:viewToUse withLabel:@"正在检查最新版本..." width:150];
+                [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:2.0];
+            }
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"连接错误"
+                                                                message:@"无法连接服务器，请检查您的网络连接是否正常"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
+            
             break;
+        }
         case 2:{
             FeedbackViewController *feedbackVC = [[FeedbackViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:feedbackVC];
-            [self presentViewController:navC animated:YES completion:nil];
+            [self presentViewController:navC animated:YES completion:^{
+                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:3];
+                cell.selected = NO;
+            }];
             
             break;
         }
         case 3:{
             AboutUsViewController *aboutUs = [[AboutUsViewController alloc] init];
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:aboutUs];
-            [self presentViewController:navC animated:YES completion:nil];
+            [self presentViewController:navC animated:YES completion:^{
+                UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:4];
+                cell.selected = NO;
+            }];
             break;
         }
         case 4:{
-            PasswordViewController *passwordVC = [[PasswordViewController alloc] init];
-            UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:passwordVC];
-            [self presentViewController:navC animated:YES completion:nil];
+            if (![loggedOnUser isEqualToString:@"default"]) {
+                PasswordViewController *passwordVC = [[PasswordViewController alloc] init];
+                passwordVC->loggedOnUser = loggedOnUser;
+                UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:passwordVC];
+                [self presentViewController:navC animated:YES completion:^{
+                    UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:5];
+                    cell.selected = NO;
+                }];
+            }
+            else {//用户尚未登录
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"无效操作"
+                                                                message:@"操作无效，您尚未登录"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil,nil];
+                [alert show];
+
+            }
             break;
         }
-        case 5:
+        case 5:{//好友分享
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"有待开发！"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil,nil];
+            [alert show];
             break;
+        }
+            
         default:
             break;
     }
@@ -218,17 +293,47 @@ static LeftSliderController *sharedLSC;
 
 #pragma mark - ButtonPressedAction
 - (void)portraitButtonPressed {
-    LoginAndRegisterViewController *registerVC = [[LoginAndRegisterViewController alloc] init];
-    registerVC->isLogin = YES;
-    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:registerVC];
+    if (![loggedOnUser isEqualToString:@"default"]) {
+        
+    } else {
+        AccountManagementViewController *amvc = [[AccountManagementViewController alloc] init];
+        amvc->isManagement = NO;
+        amvc->userInfoArray = userInfoArray;
+        amvc->loggedOnUser = loggedOnUser;
+        UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:amvc];
+        [self presentViewController:navC animated:YES  completion:nil];
+    }
+}
+
+- (void)manageButtonPressed {
+    AccountManagementViewController *amvc = [[AccountManagementViewController alloc] init];
+    amvc->isManagement = YES;
+    amvc->userInfoArray = userInfoArray;
+    amvc->loggedOnUser = loggedOnUser;
+    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:amvc];
     [self presentViewController:navC animated:YES  completion:nil];
 }
 
-- (void)registerButtonPressed {
-    LoginAndRegisterViewController *registerVC = [[LoginAndRegisterViewController alloc] init];
-    registerVC->isLogin = NO;
-    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:registerVC];
-    [self presentViewController:navC animated:YES  completion:nil];
+- (void)signOutButtonPressed {
+    if (![loggedOnUser isEqualToString:@"default"]) {
+        NSString *message = [NSString stringWithFormat:@"确定退出账号:%@？",loggedOnUser];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"退出账号"
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:@"取消"
+                                              otherButtonTitles:@"确定",nil];
+        alert.delegate = self;
+        [alert show];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"退出账号"
+                                                        message:@"操作无效：当前无账号处于登录状态"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    
 }
 
 #pragma mark -
@@ -253,5 +358,64 @@ static LeftSliderController *sharedLSC;
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
 }
 
+#pragma mark -
+#pragma mark Copy of userInfo.plist
+
+- (void)createEditableCopyOfDatabaseIfNeeded {//拷贝CarsInfoList.plist文件到沙箱目录，只执行一次拷贝。
+    // First, test for existence - we don't want to wipe out a user's DB
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *documentDirectory = [self applicationDocumentsDirectory];
+    NSString *writableDBPath = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];//在沙箱创建的数据库文件可以更改，若直接操作资源文件，不能更改数据
+    
+    BOOL dbexits = [fileManager fileExistsAtPath:writableDBPath];//是否存在该数据库文件
+    
+    if (!dbexits) {
+        // The writable database does not exist, so copy the default to the appropriate location.
+        NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"userInfo.plist"];//得到资源（Resources）文件的路径
+        NSError *error;
+        BOOL success = [fileManager copyItemAtPath:defaultDBPath toPath:writableDBPath error:&error];
+        if (!success) {
+            NSAssert1(0, @"Failed to create writable database file with message '%@'.", [error localizedDescription]);
+        }else{
+            NSLog(@"userInfo.plist拷贝成功");
+        }
+    }
+}
+
+- (NSString *)applicationDocumentsDirectory {
+    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+}
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"%@",userInfoArray[0]);
+    if (buttonIndex == 1) {
+        for (int i = 0; i < [userInfoArray count]; i++) {
+            if ([[userInfoArray[i] objectForKey:@"userName"] isEqualToString:loggedOnUser]) {
+                [userInfoArray[i] setObject:[[NSNumber alloc] initWithInt:0] forKey:@"isSelected"];
+                NSString *documentDirectory = [self applicationDocumentsDirectory];
+                NSString *path = [documentDirectory stringByAppendingPathComponent:@"userInfo.plist"];
+                [userInfoArray writeToFile:path atomically:YES];//原子性写入，要么全部写入成功，要么全部没写入
+                loggedOnUser = @"default";
+                UILabel *userNameLabel = (UILabel*)[self.view viewWithTag:10001];
+                userNameLabel.text = @"登录";
+                [delegate refresh1];//切换到默认用户，重新显示投资记录
+                break;
+            }
+        }
+    }
+}
+
+- (void)removeActivityView {
+    [DejalBezelActivityView removeViewAnimated:YES];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                    message:@"当前为最新版本，无需更新"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 
 @end
