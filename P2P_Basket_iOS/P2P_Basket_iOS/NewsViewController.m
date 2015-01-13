@@ -37,7 +37,7 @@
     newsDB = [[NewsDB alloc] init];
     [newsDB copyDatabaseIfNeeded];
     newsArray = [newsDB getAllNews];
-    firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"time_stamp" ascending:YES];
+    firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"time_stamp" ascending:NO];
     sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
     newsArray = [[newsArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
     
@@ -99,12 +99,15 @@
 
 - (void)insertRowAtTop {
     flag = false;
-    [queryArray removeAllObjects];
+    if ([queryArray count] != 0) {
+        [queryArray removeAllObjects];
+    }
     LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
     //读取数据库表recordT中用户的所有未删除的投资记录
     NSNumber *timeStamp;
     if ([newsArray count] != 0) {
         timeStamp = [newsArray[0] objectForKey:@"time_stamp"];
+//        timeStamp = [[NSNumber alloc] initWithInt:1418910328];
     } else {
         timeStamp = [[NSNumber alloc] initWithInt:0];
     }
@@ -126,20 +129,21 @@
                       
                   } else {
                       //系统自带JSON解析
+                      //1418910328
                       queryArray = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
+                      NSLog(@"[queryArray count]:%ld",[queryArray count]);
 //                      NSLog(@"resultDic11111:%d",[[queryArray[0] objectForKey:@"add_time"] intValue]);
 //                      NSLog(@"resultDic22222:%d",[[queryArray[1] objectForKey:@"add_time"] intValue]);
-                      //                      NSLog(@"resultDic:%@",[queryArray[0] objectForKey:@"title"]);
-                      //                      NSLog(@"resultDic:%@",[queryArray[0] objectForKey:@"content"]);
-                      NSLog(@"[queryArray count]:%d",[queryArray count]);
+//                      NSLog(@"resultDic11:%@",[queryArray[0] objectForKey:@"title"]);
+//                      NSLog(@"resultDic22:%@",[queryArray[1] objectForKey:@"title"]);
+//                                            NSLog(@"resultDic:%@",[queryArray[0] objectForKey:@"content"]);
+                      
 //                      [queryArray[1] setObject:[[NSNumber alloc] initWithInt:100] forKey:@"time_stamp"];
                       for (int i = 0; i < [queryArray count]; i++) {
                           [newsDB insertNews:[[queryArray[i] objectForKey:@"add_time"] intValue] withTitle:[queryArray[i] objectForKey:@"title"] withContent:[queryArray[i] objectForKey:@"content"]];
                       }
                       newsArray = [newsDB getAllNews];
-//                      newsArray = [[newsArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
-                      //                      NSLog(@"newsArray:%@",newsArray);
-                      //                          [myTableView reloadData];
+                      newsArray = [[newsArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
                       flag = true;
                   }
               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -167,8 +171,14 @@
     }
     else {
         if ([queryArray count] != 0) {
+            //准备插入数据
+            NSMutableArray *insertIndexPaths = [NSMutableArray arrayWithCapacity:[queryArray count]];
+            for (int i = 0; i < [queryArray count]; i++) {
+                NSIndexPath *newPath = [NSIndexPath indexPathForRow:i inSection:0];
+                [insertIndexPaths addObject:newPath];
+            }
             [myTableView beginUpdates];
-            [myTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
+            [myTableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
             [myTableView endUpdates];
         }
         [myTableView.pullToRefreshView stopAnimating];

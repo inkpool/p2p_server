@@ -7,6 +7,10 @@
 //
 
 #import "FeedbackViewController.h"
+#import "LeftSliderController.h"
+#import "AFHTTPRequestOperationManager.h"
+#import "DejalActivityView.h"
+#import "ALAlertBanner.h"
 
 
 @interface FeedbackViewController ()
@@ -18,6 +22,7 @@
     BOOL flag3;
     int prewTag;
     float prewMoveY;
+    int flag;
 }
 @end
 
@@ -33,25 +38,6 @@
     flag1 = FALSE;
     flag2 = FALSE;
     flag3 = FALSE;
-    
-    NSDictionary* infoDict =[[NSBundle mainBundle] infoDictionary];
-    //应用版本
-    NSString *versionNum =[infoDict objectForKey:@"CFBundleVersion"];
-    NSLog(@"应用版本：%@",versionNum);
-    //设备名称
-    NSString* deviceName = [[UIDevice currentDevice] systemName];
-    NSLog(@"设备名称: %@",deviceName );
-    //手机系统版本
-    NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
-    NSLog(@"手机系统版本: %@", phoneVersion);
-    //手机型号
-    NSString* phoneModel = [[UIDevice currentDevice] model];
-    NSLog(@"手机型号: %@",phoneModel );
-    //地方型号  （国际化区域名称）
-    NSString* localPhoneModel = [[UIDevice currentDevice] localizedModel];
-    NSLog(@"国际化区域名称: %@",localPhoneModel);
-    
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector (keyboardDidShow:)
 name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息UIKeyboardDidShowNotification时，就会调用keyboardDidShow方法
@@ -147,16 +133,18 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
     [topView setItems:buttonsArray];
     [myTextView setInputAccessoryView:topView];
     
-    UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/2-80, 124+screen_height/3.5+20, 160, 30)];
+    UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 124+screen_height/3.5+30, screen_width-20, 40)];
     [sendButton setTitle:@"发送" forState:UIControlStateNormal];
-    [sendButton setTitleColor:[UIColor colorWithRed:47.0/255.0 green:47.0/255.0 blue:47.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    sendButton.titleLabel.font = [UIFont systemFontOfSize:23];
+    sendButton.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:74.0/255.0 blue:46.0/255.0 alpha:1];
+    [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [sendButton setTitleColor:[UIColor colorWithRed:40.0/255.0 green:131.0/255.0 blue:254.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
     [sendButton addTarget:self action:@selector(sendButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    CALayer * buttonLayer4 = [sendButton layer];
-    [buttonLayer4 setMasksToBounds:YES];
-    [buttonLayer4 setCornerRadius:5.0];
-    [buttonLayer4 setBorderWidth:1.5];
-    [buttonLayer4 setBorderColor:[[UIColor grayColor] CGColor]];
+//    CALayer * buttonLayer4 = [sendButton layer];
+//    [buttonLayer4 setMasksToBounds:YES];
+//    [buttonLayer4 setCornerRadius:5.0];
+//    [buttonLayer4 setBorderWidth:1.5];
+//    [buttonLayer4 setBorderColor:[[UIColor grayColor] CGColor]];
     [self.view addSubview:sendButton];
     
 }
@@ -236,36 +224,152 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
 }
 
 - (void)sendButtonPressed {
-    Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
-    if (mailClass !=nil) {
-        if ([mailClass canSendMail]) {
-            MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
-            picker.mailComposeDelegate = self;
-            [picker setToRecipients:[NSArray arrayWithObjects:@"978717070@qq.com",
-                                     @"xuemochi@gmail.com", nil]];
-            NSMutableString *subjectString = [[NSMutableString alloc] initWithString:@"反馈："];
+    //服务器端字段：type content extra
+    if (![myTextView.text isEqualToString:@""]) {
+        LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
+        if (leftSliderC->networkConnected) {//网络已连接
+            UIView *viewToUse = self.view;
+            [DejalBezelActivityView activityViewForView:viewToUse withLabel:@"发送中..." width:100];
+            NSString *typeStr;
+            BOOL isBegin = false;
             if (flag1) {
-                [subjectString appendString:@" 建议 "];
+                typeStr = @"建议";
+                isBegin = true;
             }
             if (flag2) {
-                [subjectString appendString:@" 出错 "];
+                if (isBegin) {
+                    typeStr = [NSString stringWithFormat:@"%@、出错",typeStr];
+                } else {
+                    typeStr = @"出错";
+                    isBegin = true;
+                }
             }
             if (flag3) {
-                [subjectString appendString:@" 帮助 "];
+                if (isBegin) {
+                    typeStr = [NSString stringWithFormat:@"%@、帮助",typeStr];
+                } else {
+                    typeStr = @"帮助";
+                    isBegin = true;
+                }
             }
-            [picker setSubject:subjectString];
-            NSString *emailBody = myTextView.text;
-            [picker setMessageBody:emailBody isHTML:NO];
-            [self presentViewController:picker animated:YES completion:nil];
+            NSString *contentStr = myTextView.text;
+            NSDictionary* infoDict =[[NSBundle mainBundle] infoDictionary];
+            //应用版本
+            NSString *versionNum =[infoDict objectForKey:@"CFBundleVersion"];
+            NSLog(@"应用版本：%@",versionNum);
+            //设备名称
+            NSString* deviceName = [[UIDevice currentDevice] systemName];
+            NSLog(@"设备名称: %@",deviceName );
+            //手机系统版本
+            NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
+            NSLog(@"手机系统版本: %@", phoneVersion);
+            //手机型号
+            NSString* phoneModel = [[UIDevice currentDevice] model];
+            NSLog(@"手机型号: %@",phoneModel );
+            //地方型号  （国际化区域名称）
+            NSString* localPhoneModel = [[UIDevice currentDevice] localizedModel];
+            NSLog(@"国际化区域名称: %@",localPhoneModel);
+            NSString *extraStr = [NSString stringWithFormat:@"应用版本：%@\n手机系统版本: %@\n手机型号: %@",versionNum,phoneVersion,phoneModel];
+            NSLog(@"extraStr:%@",extraStr);
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            manager.responseSerializer = [AFHTTPResponseSerializer serializer]; //这个决定了下面responseObject返回的类型
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//设置相应内容类型
+            [manager POST:@"http://128.199.226.246/beerich/index.php/news/feedback"
+               parameters:@{@"type":typeStr,@"content":contentStr,@"extra":extraStr}
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      if (!operation.responseString) {
+                          flag = 0;
+                          [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
+                      } else {
+                          NSString *requestTmp = [NSString stringWithString:operation.responseString];
+                          NSData *resData = [[NSData alloc] initWithData:[requestTmp dataUsingEncoding:NSUTF8StringEncoding]];
+                          NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:resData options:NSJSONReadingMutableLeaves error:nil];
+                          NSLog(@"%@,%@",[dic objectForKey:@"error_code"],[dic objectForKey:@"error_meesage"]);
+                          if ([[dic objectForKey:@"error_code"] intValue] == 0) {
+                              flag = 1;
+                              [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
+                          }
+                          else {
+                              flag = 2;
+                              [self performSelector:@selector(removeActivityView) withObject:nil afterDelay:0.8];
+                          }
+                      }
+                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      NSLog(@"Error######: %@", error);
+                  }];
         }
-        else{//设备不支持发动邮件功能
-            [self alertWithTitle:@"提示" msg:@"对不起，您还没有设置邮件账户！"];
+        else {//网络未连接
+            [self alertWithTitle:@"连接错误" msg:@"无法连接服务器，请检查您的网络连接是否正常"];
         }
         
+//        Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+//        if (mailClass !=nil) {
+//            if ([mailClass canSendMail]) {
+//                MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+//                picker.mailComposeDelegate = self;
+//                [picker setToRecipients:[NSArray arrayWithObjects:@"978717070@qq.com",
+//                                         @"xuemochi@gmail.com", nil]];
+//                NSMutableString *subjectString = [[NSMutableString alloc] initWithString:@"反馈："];
+//                if (flag1) {
+//                    [subjectString appendString:@" 建议 "];
+//                }
+//                if (flag2) {
+//                    [subjectString appendString:@" 出错 "];
+//                }
+//                if (flag3) {
+//                    [subjectString appendString:@" 帮助 "];
+//                }
+//                [picker setSubject:subjectString];
+//                NSString *emailBody = myTextView.text;
+//                [picker setMessageBody:emailBody isHTML:NO];
+//                [self presentViewController:picker animated:YES completion:nil];
+//            }
+//            else{//设备不支持发动邮件功能
+//                [self alertWithTitle:@"提示" msg:@"对不起，您还没有设置邮件账户！"];
+//            }
+//            
+//        }
+//        else {
+//            [self alertWithTitle:@"提示" msg:@"当前系统版本不支持应用内发送邮件功能，您可以使用mailto方法代替！"];
+//        }
     }
-    else {
-        [self alertWithTitle:@"提示" msg:@"当前系统版本不支持应用内发送邮件功能，您可以使用mailto方法代替！"];
+    else {//用户为输入反馈内容
+        [self alertWithTitle:@"提示" msg:@"请输入反馈信息"];
     }
+    
+}
+
+- (int)removeActivityView
+{
+    [DejalBezelActivityView removeViewAnimated:YES];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self];
+    switch (flag) {
+        case 0:
+            [self alertWithTitle:@"连接异常" msg:@"网络连接异常"];
+        case 1:{//发送成功
+            ALAlertBanner *banner = [ALAlertBanner alertBannerForView:self.view style:ALAlertBannerStyleNotify position:ALAlertBannerPositionTop title:@"发送成功！" subtitle:@"" tappedBlock:^(ALAlertBanner *alertBanner) {
+                NSLog(@"tapped!");
+                [alertBanner hide];
+            }];
+            banner.showAnimationDuration = 0.25;
+            banner.hideAnimationDuration = 0.2;
+            [banner show];
+            break;
+        }
+        case 2:{//发送失败
+            ALAlertBanner *banner = [ALAlertBanner alertBannerForView:self.view style:ALAlertBannerStyleFailure position:ALAlertBannerPositionTop title:@"发送失败！" subtitle:@"" tappedBlock:^(ALAlertBanner *alertBanner) {
+                NSLog(@"tapped!");
+                [alertBanner hide];
+            }];
+            banner.showAnimationDuration = 0.25;
+            banner.hideAnimationDuration = 0.2;
+            [banner show];
+            break;
+        }
+        default:
+            break;
+    }
+    return 0;
 }
 
 #pragma mark -
@@ -286,7 +390,7 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
         prewTag = -1;
         return;
     }
-    prewTag = myTextView.tag;
+    prewTag = (int)myTextView.tag;
     float moveY = keyboardSize.height-bottomY;
     prewMoveY = moveY;
     NSTimeInterval animationDuration = 0.30f;
@@ -331,29 +435,29 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
 #pragma mark -
 #pragma mark MFMailComposeViewControllerDelegate
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
-    NSString *title = @"邮件发送提醒";
-    NSString *msg;
-    switch (result){
-        case MFMailComposeResultCancelled:
-            msg = @"邮件已被取消";
-            break;
-        case MFMailComposeResultSaved:
-            msg = @"邮件保存成功";
-            [self alertWithTitle:title msg:msg];
-            break;
-        case MFMailComposeResultSent:
-            msg = @"邮件发送成功";
-            [self alertWithTitle:title msg:msg];
-            break;
-        case MFMailComposeResultFailed:
-            msg =@"邮件发送失败";
-            [self alertWithTitle:title msg:msg];
-            break;
-    }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}//邮箱关闭，MFMailComposeViewControllerDelegate协议要实现的方法
+//- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+//    NSString *title = @"邮件发送提醒";
+//    NSString *msg;
+//    switch (result){
+//        case MFMailComposeResultCancelled:
+//            msg = @"邮件已被取消";
+//            break;
+//        case MFMailComposeResultSaved:
+//            msg = @"邮件保存成功";
+//            [self alertWithTitle:title msg:msg];
+//            break;
+//        case MFMailComposeResultSent:
+//            msg = @"邮件发送成功";
+//            [self alertWithTitle:title msg:msg];
+//            break;
+//        case MFMailComposeResultFailed:
+//            msg =@"邮件发送失败";
+//            [self alertWithTitle:title msg:msg];
+//            break;
+//    }
+//    
+//    [self dismissViewControllerAnimated:YES completion:nil];
+//}//邮箱关闭，MFMailComposeViewControllerDelegate协议要实现的方法
 
 - (void) alertWithTitle: (NSString *)_title_ msg: (NSString *)msg{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:_title_

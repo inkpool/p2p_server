@@ -22,10 +22,8 @@
 		1D5C9C2E1A0B60CC007CFFF9 /* anchor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5C9C291A0B60CC007CFFF9 /* anchor@2x.png */; };
 		1D5C9C2F1A0B60CC007CFFF9 /* chart_up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5C9C2A1A0B60CC007CFFF9 /* chart_up@2x.png */; };
 		1D5C9C301A0B60CC007CFFF9 /* layers@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5C9C2B1A0B60CC007CFFF9 /* layers@2x.png */; };
-		1D5FB5B61A38266500DB12B7 /* horiz_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5FB5B21A38266500DB12B7 /* horiz_line.png */; };
 		1D5FB5B71A38266500DB12B7 /* triangle_blue_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5FB5B31A38266500DB12B7 /* triangle_blue_1.png */; };
 		1D5FB5B81A38266500DB12B7 /* triangle_gray_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5FB5B41A38266500DB12B7 /* triangle_gray_1.png */; };
-		1D5FB5B91A38266500DB12B7 /* vertical_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5FB5B51A38266500DB12B7 /* vertical_line.png */; };
 		1D5FB5BB1A38281500DB12B7 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D5FB5BA1A38281500DB12B7 /* arrow.png */; };
 		1D5FB60C1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5FB60B1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a */; };
 		1D666CFF1A10C843004DC666 /* LeftSliderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D666CFE1A10C843004DC666 /* LeftSliderController.m */; };
@@ -55,6 +53,9 @@
 		1D84F5371A3BE3BE00413A76 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D84F5361A3BE3BE00413A76 /* AboutUsViewController.m */; };
 		1D84F53D1A3BF29A00413A76 /* wechat-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D84F53C1A3BF29A00413A76 /* wechat-icon.png */; };
 		1D84F53F1A3BF33D00413A76 /* weibo-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D84F53E1A3BF33D00413A76 /* weibo-icon.png */; };
+		1D87364A1A63D28900C4CD8B /* arrow_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D8736491A63D28900C4CD8B /* arrow_right.png */; };
+		1D87364C1A63E87100C4CD8B /* horiz_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D87364B1A63E87100C4CD8B /* horiz_line.png */; };
+		1D87364E1A63E8E900C4CD8B /* vertical_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D87364D1A63E8E900C4CD8B /* vertical_line.png */; };
 		1D8966FA1A49821800616949 /* DejalActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D8966F91A49821800616949 /* DejalActivityView.m */; };
 		1D8F1BEA1A41209000FA7F91 /* arrow_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D8F1BE91A41209000FA7F91 /* arrow_down.png */; };
 		1D989AAB1A10F6260092EED1 /* FlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D989AAA1A10F6260092EED1 /* FlowViewController.m */; };
@@ -86,6 +87,15 @@
 		1DB963431A4D1856006CD037 /* sign-up.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB963421A4D1856006CD037 /* sign-up.png */; };
 		1DB963451A4D1874006CD037 /* add-account.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB963441A4D1874006CD037 /* add-account.png */; };
 		1DCB79681A3993BF00E4372B /* CustomCellBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCB79671A3993BF00E4372B /* CustomCellBackground.m */; };
+		1DE3F5231A61445800C02F46 /* platform_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DE3F5221A61445800C02F46 /* platform_arrow.png */; };
+		1DE3F52D1A6144B100C02F46 /* 爱投资-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DE3F5251A6144B100C02F46 /* 爱投资-120.png */; };
+		1DE3F52E1A6144B100C02F46 /* 点融网-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DE3F5261A6144B100C02F46 /* 点融网-120.png */; };
+		1DE3F52F1A6144B100C02F46 /* 积木盒子-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DE3F5271A6144B100C02F46 /* 积木盒子-120.png */; };
+		1DE3F5301A6144B100C02F46 /* 陆金所-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DE3F5281A6144B100C02F46 /* 陆金所-120.png */; };
+		1DE3F5311A6144B100C02F46 /* 人人贷-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DE3F5291A6144B100C02F46 /* 人人贷-120.png */; };
+		1DE3F5321A6144B100C02F46 /* 盛融在线-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DE3F52A1A6144B100C02F46 /* 盛融在线-120.png */; };
+		1DE3F5331A6144B100C02F46 /* 鑫合汇-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DE3F52B1A6144B100C02F46 /* 鑫合汇-120.png */; };
+		1DE3F5341A6144B100C02F46 /* 有利网-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DE3F52C1A6144B100C02F46 /* 有利网-120.png */; };
 		1DED79D91A287A4A00A054DB /* 爱投资-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D11A287A4A00A054DB /* 爱投资-icon.png */; };
 		1DED79DA1A287A4A00A054DB /* 点融网-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D21A287A4A00A054DB /* 点融网-icon.png */; };
 		1DED79DB1A287A4A00A054DB /* 积木盒子-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DED79D31A287A4A00A054DB /* 积木盒子-icon.png */; };
@@ -156,10 +166,8 @@
 		1D5C9C291A0B60CC007CFFF9 /* anchor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "anchor@2x.png"; sourceTree = "<group>"; };
 		1D5C9C2A1A0B60CC007CFFF9 /* chart_up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chart_up@2x.png"; sourceTree = "<group>"; };
 		1D5C9C2B1A0B60CC007CFFF9 /* layers@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "layers@2x.png"; sourceTree = "<group>"; };
-		1D5FB5B21A38266500DB12B7 /* horiz_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = horiz_line.png; sourceTree = "<group>"; };
 		1D5FB5B31A38266500DB12B7 /* triangle_blue_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle_blue_1.png; sourceTree = "<group>"; };
 		1D5FB5B41A38266500DB12B7 /* triangle_gray_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle_gray_1.png; sourceTree = "<group>"; };
-		1D5FB5B51A38266500DB12B7 /* vertical_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vertical_line.png; sourceTree = "<group>"; };
 		1D5FB5BA1A38281500DB12B7 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
 		1D5FB60B1A3829F800DB12B7 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		1D666CFD1A10C843004DC666 /* LeftSliderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftSliderController.h; sourceTree = "<group>"; };
@@ -210,6 +218,9 @@
 		1D84F5361A3BE3BE00413A76 /* AboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
 		1D84F53C1A3BF29A00413A76 /* wechat-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wechat-icon.png"; sourceTree = "<group>"; };
 		1D84F53E1A3BF33D00413A76 /* weibo-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weibo-icon.png"; sourceTree = "<group>"; };
+		1D8736491A63D28900C4CD8B /* arrow_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_right.png; sourceTree = "<group>"; };
+		1D87364B1A63E87100C4CD8B /* horiz_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = horiz_line.png; sourceTree = "<group>"; };
+		1D87364D1A63E8E900C4CD8B /* vertical_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vertical_line.png; sourceTree = "<group>"; };
 		1D8966F81A49821800616949 /* DejalActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DejalActivityView.h; sourceTree = "<group>"; };
 		1D8966F91A49821800616949 /* DejalActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DejalActivityView.m; sourceTree = "<group>"; };
 		1D8F1BE91A41209000FA7F91 /* arrow_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_down.png; sourceTree = "<group>"; };
@@ -246,6 +257,15 @@
 		1DB963441A4D1874006CD037 /* add-account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-account.png"; sourceTree = "<group>"; };
 		1DCB79661A3993BF00E4372B /* CustomCellBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellBackground.h; sourceTree = "<group>"; };
 		1DCB79671A3993BF00E4372B /* CustomCellBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellBackground.m; sourceTree = "<group>"; };
+		1DE3F5221A61445800C02F46 /* platform_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = platform_arrow.png; sourceTree = "<group>"; };
+		1DE3F5251A6144B100C02F46 /* 爱投资-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "爱投资-120.png"; sourceTree = "<group>"; };
+		1DE3F5261A6144B100C02F46 /* 点融网-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "点融网-120.png"; sourceTree = "<group>"; };
+		1DE3F5271A6144B100C02F46 /* 积木盒子-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "积木盒子-120.png"; sourceTree = "<group>"; };
+		1DE3F5281A6144B100C02F46 /* 陆金所-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "陆金所-120.png"; sourceTree = "<group>"; };
+		1DE3F5291A6144B100C02F46 /* 人人贷-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "人人贷-120.png"; sourceTree = "<group>"; };
+		1DE3F52A1A6144B100C02F46 /* 盛融在线-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "盛融在线-120.png"; sourceTree = "<group>"; };
+		1DE3F52B1A6144B100C02F46 /* 鑫合汇-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "鑫合汇-120.png"; sourceTree = "<group>"; };
+		1DE3F52C1A6144B100C02F46 /* 有利网-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "有利网-120.png"; sourceTree = "<group>"; };
 		1DED79D11A287A4A00A054DB /* 爱投资-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "爱投资-icon.png"; sourceTree = "<group>"; };
 		1DED79D21A287A4A00A054DB /* 点融网-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "点融网-icon.png"; sourceTree = "<group>"; };
 		1DED79D31A287A4A00A054DB /* 积木盒子-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "积木盒子-icon.png"; sourceTree = "<group>"; };
@@ -358,13 +378,14 @@
 			children = (
 				1D1BDF8D1A4D53C9007F9915 /* userInfo.plist */,
 				1D99EBC31A60DBF700E81403 /* button_bk_image.png */,
-				1D5FB5B21A38266500DB12B7 /* horiz_line.png */,
 				1D5FB5B31A38266500DB12B7 /* triangle_blue_1.png */,
+				1D87364B1A63E87100C4CD8B /* horiz_line.png */,
 				1D5FB5B41A38266500DB12B7 /* triangle_gray_1.png */,
-				1D5FB5B51A38266500DB12B7 /* vertical_line.png */,
+				1D87364D1A63E8E900C4CD8B /* vertical_line.png */,
 				1D5FB5BA1A38281500DB12B7 /* arrow.png */,
 				1D5BD1691A5BB513009B2CEA /* recommend.png */,
 				1D5BD16B1A5BB528009B2CEA /* news.png */,
+				1DE3F5241A61447200C02F46 /* PlatformVC */,
 				1DCB79691A39944000E4372B /* LeftSlider */,
 				1D05BC531A26064D00E3EEC8 /* PlatformIcon */,
 				1D05BC521A26061F00E3EEC8 /* TabBarItemIcon */,
@@ -536,6 +557,23 @@
 				1DA23D3F1A3EDD3C00116632 /* menu_icon_3@2x.png */,
 			);
 			name = LeftSlider;
+			sourceTree = "<group>";
+		};
+		1DE3F5241A61447200C02F46 /* PlatformVC */ = {
+			isa = PBXGroup;
+			children = (
+				1D8736491A63D28900C4CD8B /* arrow_right.png */,
+				1DE3F5251A6144B100C02F46 /* 爱投资-120.png */,
+				1DE3F5261A6144B100C02F46 /* 点融网-120.png */,
+				1DE3F5271A6144B100C02F46 /* 积木盒子-120.png */,
+				1DE3F5281A6144B100C02F46 /* 陆金所-120.png */,
+				1DE3F5291A6144B100C02F46 /* 人人贷-120.png */,
+				1DE3F52A1A6144B100C02F46 /* 盛融在线-120.png */,
+				1DE3F52B1A6144B100C02F46 /* 鑫合汇-120.png */,
+				1DE3F52C1A6144B100C02F46 /* 有利网-120.png */,
+				1DE3F5221A61445800C02F46 /* platform_arrow.png */,
+			);
+			name = PlatformVC;
 			sourceTree = "<group>";
 		};
 		1DEF2CFD1A4AF0980029754A /* ALAlertBanner */ = {
@@ -710,20 +748,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DA23D451A3EDD3C00116632 /* menu_icon_5@2x.png in Resources */,
+				1D87364E1A63E8E900C4CD8B /* vertical_line.png in Resources */,
 				1DB963431A4D1856006CD037 /* sign-up.png in Resources */,
 				1DED79E01A287A4A00A054DB /* 有利网-icon.png in Resources */,
 				1DA23D4A1A3EDD3C00116632 /* menu_icon_3.png in Resources */,
 				1DED79DA1A287A4A00A054DB /* 点融网-icon.png in Resources */,
+				1DE3F5341A6144B100C02F46 /* 有利网-120.png in Resources */,
 				1DA23D401A3EDD3C00116632 /* menu_icon_1.png in Resources */,
 				1D8F1BEA1A41209000FA7F91 /* arrow_down.png in Resources */,
 				1D78F4A31A0D1581009ED28B /* menu-icon@2x.png in Resources */,
 				1D84F5341A3BDC1300413A76 /* golden_eggs.jpg in Resources */,
 				1D5C9C251A0B5FF8007CFFF9 /* Main.storyboard in Resources */,
-				1D5FB5B61A38266500DB12B7 /* horiz_line.png in Resources */,
 				1D5BD16C1A5BB528009B2CEA /* news.png in Resources */,
 				E608616419FFEDC800EBDBE1 /* LaunchScreen.xib in Resources */,
 				1DA23D4E1A3EDD6500116632 /* menu_icon_2.png in Resources */,
 				1DA23D461A3EDD3C00116632 /* menu_icon_6.png in Resources */,
+				1DE3F5231A61445800C02F46 /* platform_arrow.png in Resources */,
 				1DEF2D151A4AF0980029754A /* bannerSuccess@2x.png in Resources */,
 				E608616119FFEDC800EBDBE1 /* Images.xcassets in Resources */,
 				1DEF2D101A4AF0980029754A /* bannerFailure.png in Resources */,
@@ -733,27 +773,34 @@
 				1DB963451A4D1874006CD037 /* add-account.png in Resources */,
 				1DEF2D211A4AF9AA0029754A /* 陆金所-icon-灰色.png in Resources */,
 				1DA23D411A3EDD3C00116632 /* menu_icon_1@2x.png in Resources */,
+				1D87364A1A63D28900C4CD8B /* arrow_right.png in Resources */,
 				1D5BD16A1A5BB513009B2CEA /* recommend.png in Resources */,
 				1D5FB5BB1A38281500DB12B7 /* arrow.png in Resources */,
 				1DA23D491A3EDD3C00116632 /* Oval 53@2x.png in Resources */,
 				1D5C9C2E1A0B60CC007CFFF9 /* anchor@2x.png in Resources */,
 				1D99EBC41A60DBF700E81403 /* button_bk_image.png in Resources */,
 				1D5FB5B71A38266500DB12B7 /* triangle_blue_1.png in Resources */,
+				1DE3F52E1A6144B100C02F46 /* 点融网-120.png in Resources */,
 				1D5C9C301A0B60CC007CFFF9 /* layers@2x.png in Resources */,
+				1DE3F5301A6144B100C02F46 /* 陆金所-120.png in Resources */,
 				1DEF2D201A4AF9AA0029754A /* 积木盒子-icon-灰色.png in Resources */,
 				1DACC8D01A39ED6100FF841F /* cellSelected.png in Resources */,
 				1DB339221A3A9C19002CAD78 /* register.png in Resources */,
+				1DE3F5321A6144B100C02F46 /* 盛融在线-120.png in Resources */,
 				1DA23D4B1A3EDD3C00116632 /* menu_icon_3@2x.png in Resources */,
 				1DB339241A3AA1ED002CAD78 /* account_management.png in Resources */,
+				1DE3F5311A6144B100C02F46 /* 人人贷-120.png in Resources */,
 				1DEF2D231A4AF9AA0029754A /* 盛融在线-icon-灰色.png in Resources */,
 				1DA23D431A3EDD3C00116632 /* menu_icon_4@2x.png in Resources */,
 				1DB3391D1A3A970C002CAD78 /* portrait_default.png in Resources */,
+				1DE3F52D1A6144B100C02F46 /* 爱投资-120.png in Resources */,
 				1D5FB5B81A38266500DB12B7 /* triangle_gray_1.png in Resources */,
 				1D817EE11A4045D400D1F914 /* p2p_basket.sqlite in Resources */,
 				1D1BDF8E1A4D53C9007F9915 /* userInfo.plist in Resources */,
 				1DEF2D1F1A4AF9AA0029754A /* 点融网-icon-灰色.png in Resources */,
 				1DED79DC1A287A4A00A054DB /* 陆金所-icon.png in Resources */,
 				1DEF2D111A4AF0980029754A /* bannerFailure@2x.png in Resources */,
+				1DE3F52F1A6144B100C02F46 /* 积木盒子-120.png in Resources */,
 				1DED79DF1A287A4A00A054DB /* 鑫合汇-icon.png in Resources */,
 				1DA23D481A3EDD3C00116632 /* Oval 53.png in Resources */,
 				1DEF2D1E1A4AF9AA0029754A /* 爱投资-icon-灰色.png in Resources */,
@@ -766,12 +813,13 @@
 				1DA23D471A3EDD3C00116632 /* menu_icon_6@2x.png in Resources */,
 				1DB339281A3AA636002CAD78 /* sign_out.png in Resources */,
 				1D5C9C2D1A0B60CC007CFFF9 /* homepage@2x.png in Resources */,
+				1D87364C1A63E87100C4CD8B /* horiz_line.png in Resources */,
+				1DE3F5331A6144B100C02F46 /* 鑫合汇-120.png in Resources */,
 				1D84F53F1A3BF33D00413A76 /* weibo-icon.png in Resources */,
 				1D6ECFE21A4BEC89007C49DB /* shadow.png in Resources */,
 				1D99EBC01A60C4BA00E81403 /* center.png in Resources */,
 				1D5C9C2F1A0B60CC007CFFF9 /* chart_up@2x.png in Resources */,
 				1D99EBBE1A60C3C600E81403 /* select.png in Resources */,
-				1D5FB5B91A38266500DB12B7 /* vertical_line.png in Resources */,
 				1DEF2D141A4AF0980029754A /* bannerSuccess.png in Resources */,
 				1DEF2D241A4AF9AA0029754A /* 鑫合汇-icon-灰色.png in Resources */,
 				1DACC8CE1A39E88100FF841F /* background.jpg in Resources */,

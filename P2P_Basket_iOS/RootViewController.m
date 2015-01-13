@@ -486,12 +486,12 @@
                          completion:^(BOOL finished) {
                              _tapGestureRec.enabled = YES;//开启响应点击屏幕时间，执行closeSideBar方法的手势
                          }];
-        ifActivated=1;
+        ifActivated = 1;
     }
     else
     {
         [self closeSideBar];
-        ifActivated=0;
+        ifActivated = 0;
     }
 
 }

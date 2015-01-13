@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PlatformViewController : UIViewController<UITableViewDelegate, UITableViewDataSource,UIScrollViewDelegate>
+@interface PlatformViewController : UIViewController<UIScrollViewDelegate>
 {
     UIScrollView *myScrollView;
     
