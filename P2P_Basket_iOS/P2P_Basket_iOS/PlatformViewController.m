@@ -13,12 +13,18 @@
 
 #import "PlatformViewController.h"
 #import "PlatformDetailViewController.h"
-
+#define ARC4RANDOM_MAX 0x100000000
 @interface PlatformViewController ()
 {
     CGFloat screen_width;
     CGFloat screen_height;
+    CGFloat myScrollViewHight;
     int tagRecord;//记录用户选择的平台
+    NSMutableDictionary *totalIncome;
+    UIView *orangeBgView;
+    NSMutableDictionary *untreatedDic;//未处理投资
+    NSMutableDictionary *treatedDic;
+    NSMutableArray *rateArray;
 }
 @end
 
@@ -34,28 +40,265 @@
     screen_width = size.width;
     screen_height = size.height;
     
-    if ([plateformArray count] != 0) {
-        tagRecord = 10;
-    }
-    else {
+//    if ([plateformArray count] != 0) {
+//        tagRecord = 10;
+//    }
+//    else {
         tagRecord = 0;
-    }
+//    }
     
     UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 64, screen_width, 1)];//view1的作用就是避免scrollView下垂
     [self.view addSubview:view1];
     
-    CGFloat myScrollViewHight = screen_height/6;
+    myScrollViewHight = screen_height/6;
     myScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, screen_width, myScrollViewHight)];
     //是否支持滑动到最顶端
     myScrollView.delegate = self;
+    //加载scrollView
+    [self.view addSubview:myScrollView];
+    
+    
+//    myScrollView.contentOffset = CGPointMake(([plateformArray count]-1)/2*screen_width/5,0);
+    
+//    UIPageControl *pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 131, screen_width, 5)];
+//    pageControl.numberOfPages = [plateformArray count];
+//    pageControl.tag = 11;
+//    pageControl.pageIndicatorTintColor = [UIColor grayColor];
+//    pageControl.currentPageIndicatorTintColor = [UIColor greenColor];
+//    pageControl.currentPage = ([plateformArray count]-1)/2;
+//    [self.view addSubview:pageControl];//不能加载到scrollView上，避免拖动时将pageIndicaator也拖走
+    
+//    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, 137, screen_width, 2)];
+//    line.image = [UIImage imageNamed:@"horiz_line"];
+//    [self.view addSubview:line];
+    
+    orangeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64, screen_width, screen_height/4.5)];
+    orangeBgView.backgroundColor = [UIColor colorWithRed:251.0/255.0 green:83.0/255.0 blue:48.0/255.0 alpha:1];
+    [self.view addSubview:orangeBgView];
+    
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15, orangeBgView.frame.size.height/4+5, screen_width/2-25, 20)];
+    label1.textColor = [UIColor whiteColor];
+    label1.font = [UIFont systemFontOfSize:18];
+    label1.text = @"平台投资总收益";
+    [orangeBgView addSubview:label1];
+    UILabel *label1_1 = [[UILabel alloc] initWithFrame:CGRectMake(15, orangeBgView.frame.size.height/2, screen_width/2-15, 30)];
+    label1_1.tag = 100001;
+    label1_1.textColor = [UIColor whiteColor];
+//    label1_1.text = @"799878.8元";
+    label1_1.font = [UIFont systemFontOfSize:24];
+    [orangeBgView addSubview:label1_1];
+    
+    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2+15, orangeBgView.frame.size.height/4+5, screen_width/2-30, 20)];
+    label2.text = @"预期年化收益率";
+    label2.textAlignment = NSTextAlignmentRight;
+    label2.textColor = [UIColor whiteColor];
+    label2.font = [UIFont systemFontOfSize:18];
+    [orangeBgView addSubview:label2];
+    UILabel *label2_2 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2+15, orangeBgView.frame.size.height/2, screen_width/2-30, 30)];
+    label2_2.tag = 100002;
+    label2_2.textAlignment = NSTextAlignmentRight;
+    label2_2.textColor = [UIColor whiteColor];
+//    label2_2.text = @"12.80%";
+    label2_2.font = [UIFont systemFontOfSize:24];
+    [orangeBgView addSubview:label2_2];
+    
+    UIImageView *line1 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/2, orangeBgView.frame.size.height/4, 1, orangeBgView.frame.size.height/2)];
+    line1.image = [UIImage imageNamed:@"vertical_line"];
+    [orangeBgView addSubview:line1];
+    
+    UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(15,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/48, screen_width/2-65, 20)];
+    label3.text = @"在投总额";
+//    label3.backgroundColor = [UIColor redColor];
+    [self.view addSubview:label3];
+    UILabel *label3_2 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-50,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/48-5, screen_width/2+15, 30)];
+    label3_2.tag = 100003;
+//    label3_2.text = @"45678458.0";
+    label3_2.textAlignment = NSTextAlignmentRight;
+    label3_2.font = [UIFont systemFontOfSize:25];
+//    label3_2.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:label3_2];
+    UILabel *label3_3 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width-30,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/48, 15, 20)];
+    label3_3.text = @"元";
+//    label3_3.backgroundColor = [UIColor redColor];
+    [self.view addSubview:label3_3];
+    
+    UILabel *label4 = [[UILabel alloc] initWithFrame:CGRectMake(15,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/12+screen_height/48, screen_width/2-65, 20)];
+    label4.text = @"平台余额";
+//    label4.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:label4];
+    UILabel *label4_2 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-50,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/12+screen_height/48-5, screen_width/2+15, 30)];
+    label4_2.tag = 100004;
+//    label4_2.text = @"1554485.0";
+    label4_2.textAlignment = NSTextAlignmentRight;
+    label4_2.font = [UIFont systemFontOfSize:25];
+//    label4_2.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:label4_2];
+    UILabel *label4_3 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width-30,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/12+screen_height/48, 15, 20)];
+    label4_3.text = @"元";
+//    label4_3.backgroundColor = [UIColor redColor];
+    [self.view addSubview:label4_3];
+    
+    UIImageView *line2 = [[UIImageView alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64+screen_height/4.5+screen_height/6, screen_width, 1)];
+    line2.image = [UIImage imageNamed:@"horiz_line"];
+    [self.view addSubview:line2];
+    
+    UIButton *recordButton = [[UIButton alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64+screen_height/4.5+screen_height/6+1, screen_width, screen_height/7-1)];
+    [recordButton setBackgroundImage:[UIImage imageNamed:@"button_bk_image"] forState:UIControlStateHighlighted];
+    [self.view addSubview:recordButton];
+    
+    UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(15,myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/40, 80, 20)];
+    label5.text = @"成交记录";
+//        label5.backgroundColor = [UIColor redColor];
+    [self.view addSubview:label5];
+    
+    UILabel *label6 = [[UILabel alloc] initWithFrame:CGRectMake(15,myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/14+(screen_height/14-screen_height/40-20), 80, 20)];
+    label6.tag = 100005;
+    label6.text = @"暂无数据";
+//        label6.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:label6];
+    
+    UILabel *label6_2 = [[UILabel alloc] initWithFrame:CGRectMake(15+80+5,myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/14+(screen_height/14-screen_height/40-20), 35, 20)];
+    label6_2.text = @"收益";
+//    label6_2.backgroundColor = [UIColor redColor];
+    [self.view addSubview:label6_2];
+    
+    UILabel *label6_3 = [[UILabel alloc] initWithFrame:CGRectMake(15+80+5+35+2,myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/14+(screen_height/14-screen_height/40-20), 10, 20)];
+    label6_3.text = @"+";
+    label6_3.font = [UIFont systemFontOfSize:17];
+    label6_3.textColor = [UIColor colorWithRed:35.0/255 green:150.0/255 blue:0 alpha:1];
+//    label6_3.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:label6_3];
+    
+    UILabel *label6_4 = [[UILabel alloc] initWithFrame:CGRectMake(15+80+5+35+2+10+2,myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/14+(screen_height/14-screen_height/40-20)-5, screen_width/2-15, 30)];
+    label6_4.tag = 100006;
+//    label6_4.text = @"9156433.0元";
+    label6_4.font = [UIFont systemFontOfSize:25];
+    label6_4.textColor = [UIColor colorWithRed:35.0/255 green:150.0/255 blue:0 alpha:1];
+//        label6_4.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:label6_4];
+    
+    
+    UIImageView *line3 = [[UIImageView alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/7, screen_width, 1)];
+    line3.image = [UIImage imageNamed:@"horiz_line"];
+//    [self.view addSubview:line3];
+    
+    UIButton *investButton = [[UIButton alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/7+1, screen_width/2, screen_height/16)];
+    [investButton setTitle:@"投资" forState:UIControlStateNormal];
+//    investButton.backgroundColor = [UIColor blueColor];
+    [investButton setTitleColor:[UIColor colorWithRed:251.0/255.0 green:83.0/255.0 blue:48.0/255.0 alpha:1] forState:UIControlStateNormal];
+    [investButton setBackgroundImage:[UIImage imageNamed:@"button_bk_image"] forState:UIControlStateHighlighted];
+//    [self.view addSubview:investButton];
+    
+    UIImageView *line4 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/2, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/7+1, 1, screen_height/16)];
+    line4.image = [UIImage imageNamed:@"vertical_line"];
+//    [self.view addSubview:line4];
+    
+    UIButton *fetchButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/2+1, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/7+1, screen_width/2-1, screen_height/16)];
+    [fetchButton setTitle:@"取回" forState:UIControlStateNormal];
+    //    investButton.backgroundColor = [UIColor blueColor];
+    [fetchButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [fetchButton setBackgroundImage:[UIImage imageNamed:@"button_bk_image"] forState:UIControlStateHighlighted];
+//    [self.view addSubview:fetchButton];
+    
+    UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width-15-13, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/14-13, 13, 26)];
+    arrowImageView.image = [UIImage imageNamed:@"arrow_right"];
+//    [self.view addSubview:arrowImageView];
+    
+    UIImageView *line5 = [[UIImageView alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/7+screen_height/16+1, screen_width, 1)];
+    line5.image = [UIImage imageNamed:@"horiz_line"];
+//    [self.view addSubview:line5];
+    
+    [self initData];
+    [self showData];
+    
+//    UITableView *myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 30+25+5+145+20, screen_width, screen_height-(30+25+5+145+20)-49)];
+//    myTableView.delegate = self;
+//    myTableView.dataSource = self;
+//    myTableView.backgroundColor = [UIColor clearColor];
+//    [self.view addSubview:myTableView];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)initData {
+    totalIncome = [[NSMutableDictionary alloc] init];
+    untreatedDic = [[NSMutableDictionary alloc] init];
+    treatedDic = [[NSMutableDictionary alloc] init];
+    rateArray = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [plateformArray count]; i++) {
+        [totalIncome setObject:[[NSNumber alloc] initWithFloat:0.0] forKey:plateformArray[i]];
+        [untreatedDic setObject:[[NSMutableArray alloc] init] forKey:plateformArray[i]];
+        [treatedDic setObject:[[NSMutableArray alloc] init] forKey:plateformArray[i]];
+    }
+    if ([plateformArray count] != 0) {
+        for (int i = 0; i < [records count]; i++) {
+            float num = [[totalIncome objectForKey:[records[i] objectForKey:@"platform"]] floatValue];
+            num += [[records[i] objectForKey:@"earning"] floatValue];
+            [totalIncome setObject:[[NSNumber alloc] initWithFloat:num] forKey:[records[i] objectForKey:@"platform"]];
+            
+            NSMutableArray *untreatedRecord = [untreatedDic objectForKey:[records[i] objectForKey:@"platform"]];//未处理投资
+            NSMutableArray *treatedRecord = [treatedDic objectForKey:[records[i] objectForKey:@"platform"]];//已处理过的投资
+            if ([[records[i] objectForKey:@"state"] intValue] == 0) {//未处理
+                [untreatedRecord addObject:records[i]];
+                [untreatedDic setObject:untreatedRecord forKey:[records[i] objectForKey:@"platform"]];
+            }
+            else {//已处理
+                [treatedRecord addObject:records[i]];
+                [treatedDic setObject:treatedRecord forKey:[records[i] objectForKey:@"platform"]];
+            }
+            
+        }
+    }
+    
+    for (int i = 0; i < [plateformArray count]; i++) {
+        if ([[totalIncome objectForKey:plateformArray[i]] floatValue] != 0.0) {
+            NSNumber *number = [[NSNumber alloc] initWithFloat:floorf(((double)arc4random()/ARC4RANDOM_MAX) * 8.0f)+4.0];
+            [rateArray addObject:number];
+        }
+        else {
+            NSNumber *number = [[NSNumber alloc] initWithFloat:0.0];
+            [rateArray addObject:number];
+        }
+        
+    }
+    
+    
+//    if ([untreatedRecord count] != 0) {//存在未处理的投资
+//        NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+//        NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+//        untreatedRecord = [[untreatedRecord sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+//        rest = [[untreatedRecord[0] objectForKey:@"rest"] floatValue];
+//    }
+//    else if ([treatedRecord count] != 0) {
+//        NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStampEnd" ascending:NO];
+//        NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+//        treatedRecord = [[treatedRecord sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+//        rest = [[treatedRecord[0] objectForKey:@"rest"] floatValue];
+//    }
+    
+}
+
+- (void)showData {
     //设置内容大小
     myScrollView.contentSize = CGSizeMake(screen_width/3 * [plateformArray count], myScrollView.frame.size.height);
     myScrollView.pagingEnabled = NO;
     myScrollView.showsHorizontalScrollIndicator = NO;//不显示滑动条
-    //加载scrollView
-    [self.view addSubview:myScrollView];
+    
+    UILabel *label1_1 = (UILabel*)[orangeBgView viewWithTag:100001];
+    UILabel *label3_2 = (UILabel*)[self.view viewWithTag:100003];
+    UILabel *label4_2 = (UILabel*)[self.view viewWithTag:100004];
+    UILabel *label6_4 = (UILabel*)[self.view viewWithTag:100006];
+    UILabel *label2_2 = (UILabel*)[self.view viewWithTag:100002];
     
     if ([plateformArray count] != 0) {
+        if (tagRecord != 0) {
+            UIView *platformBgView2 = (UIView *)[myScrollView viewWithTag:10000+tagRecord-10];
+            UIImageView *orangeArrow2 = (UIImageView *)[platformBgView2 viewWithTag:1000+tagRecord-10];
+            orangeArrow2.hidden = YES;
+        }
         tagRecord = 10;
         UIView *platformBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width/3, myScrollViewHight)];
         platformBgView.tag = 10000;
@@ -98,170 +341,65 @@
             [platformBgView addSubview:platformButton];
             
             [myScrollView addSubview:platformBgView];
+            
         }
+        
+        float num = [[totalIncome objectForKey:plateformArray[tagRecord-10]] floatValue];
+        label1_1.text = [NSString stringWithFormat:@"%.1f",num];
+        
+        NSMutableArray *untreatedRecord = [untreatedDic objectForKey:plateformArray[tagRecord-10]];//未处理投资
+        NSMutableArray *treatedRecord = [treatedDic objectForKey:plateformArray[tagRecord-10]];//已处理过的投资
+        num = 0.0;
+        for (int i = 0; i < [untreatedRecord count]; i++) {//计算在投总额
+            num += [[untreatedRecord[i] objectForKey:@"capital"] floatValue];
+        }
+        label3_2.text = [NSString stringWithFormat:@"%.1f",num];
+        
+        if ([untreatedRecord count] != 0) {
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            untreatedRecord = [[untreatedRecord sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+            num = [[untreatedRecord[0] objectForKey:@"rest"] floatValue];
+            label4_2.text = [NSString stringWithFormat:@"%.1f",num];
+            
+        } else if ([treatedRecord count] != 0) {
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            treatedRecord = [[treatedRecord sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+            num = [[treatedRecord[0] objectForKey:@"rest"] floatValue];
+            label4_2.text = [NSString stringWithFormat:@"%.1f",num];
+        } else {
+            label4_2.text = @"0.0";
+        }
+        
+        if ([treatedRecord count] != 0) {
+            num = [[treatedRecord[0] objectForKey:@"earning"] floatValue];
+            label6_4.text = [NSString stringWithFormat:@"%.1f元",num];
+        } else {
+            label6_4.text = @"0.0元";
+        }
+        
+        label2_2.text = [NSString stringWithFormat:@"%.2f%%",[rateArray[0] floatValue]];
     }
-    
-    
-//    myScrollView.contentOffset = CGPointMake(([plateformArray count]-1)/2*screen_width/5,0);
-    
-//    UIPageControl *pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 131, screen_width, 5)];
-//    pageControl.numberOfPages = [plateformArray count];
-//    pageControl.tag = 11;
-//    pageControl.pageIndicatorTintColor = [UIColor grayColor];
-//    pageControl.currentPageIndicatorTintColor = [UIColor greenColor];
-//    pageControl.currentPage = ([plateformArray count]-1)/2;
-//    [self.view addSubview:pageControl];//不能加载到scrollView上，避免拖动时将pageIndicaator也拖走
-    
-//    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, 137, screen_width, 2)];
-//    line.image = [UIImage imageNamed:@"horiz_line"];
-//    [self.view addSubview:line];
-    
-    UIView *orangeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64, screen_width, screen_height/4.5)];
-    orangeBgView.backgroundColor = [UIColor colorWithRed:251.0/255.0 green:83.0/255.0 blue:48.0/255.0 alpha:1];
-    [self.view addSubview:orangeBgView];
-    
-    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15, orangeBgView.frame.size.height/4+5, screen_width/2-25, 20)];
-    label1.textColor = [UIColor whiteColor];
-    label1.font = [UIFont systemFontOfSize:18];
-    label1.text = @"平台投资总收益";
-    [orangeBgView addSubview:label1];
-    UILabel *label1_1 = [[UILabel alloc] initWithFrame:CGRectMake(15, orangeBgView.frame.size.height/2, screen_width/2-15, 30)];
-    label1_1.textColor = [UIColor whiteColor];
-    label1_1.text = @"799878.8元";
-    label1_1.font = [UIFont systemFontOfSize:24];
-    [orangeBgView addSubview:label1_1];
-    
-    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2+15, orangeBgView.frame.size.height/4+5, screen_width/2-30, 20)];
-    label2.text = @"预期年化收益率";
-    label2.textAlignment = NSTextAlignmentRight;
-    label2.textColor = [UIColor whiteColor];
-    label2.font = [UIFont systemFontOfSize:18];
-    [orangeBgView addSubview:label2];
-    UILabel *label2_2 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2+15, orangeBgView.frame.size.height/2, screen_width/2-30, 30)];
-    label2_2.textAlignment = NSTextAlignmentRight;
-    label2_2.textColor = [UIColor whiteColor];
-    label2_2.text = @"12.80%";
-    label2_2.font = [UIFont systemFontOfSize:24];
-    [orangeBgView addSubview:label2_2];
-    
-    UIImageView *line1 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/2, orangeBgView.frame.size.height/4, 1, orangeBgView.frame.size.height/2)];
-    line1.image = [UIImage imageNamed:@"vertical_line"];
-    [orangeBgView addSubview:line1];
-    
-    UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(15,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/48, screen_width/2-65, 20)];
-    label3.text = @"投资总额";
-//    label3.backgroundColor = [UIColor redColor];
-    [self.view addSubview:label3];
-    UILabel *label3_2 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-50,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/48-5, screen_width/2+15, 30)];
-    label3_2.text = @"45678458.0";
-    label3_2.textAlignment = NSTextAlignmentRight;
-    label3_2.font = [UIFont systemFontOfSize:25];
-//    label3_2.backgroundColor = [UIColor grayColor];
-    [self.view addSubview:label3_2];
-    UILabel *label3_3 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width-30,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/48, 15, 20)];
-    label3_3.text = @"元";
-//    label3_3.backgroundColor = [UIColor redColor];
-    [self.view addSubview:label3_3];
-    
-    UILabel *label4 = [[UILabel alloc] initWithFrame:CGRectMake(15,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/12+screen_height/48, screen_width/2-65, 20)];
-    label4.text = @"平台余额";
-//    label4.backgroundColor = [UIColor yellowColor];
-    [self.view addSubview:label4];
-    UILabel *label4_2 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-50,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/12+screen_height/48-5, screen_width/2+15, 30)];
-    label4_2.text = @"1554485.0";
-    label4_2.textAlignment = NSTextAlignmentRight;
-    label4_2.font = [UIFont systemFontOfSize:25];
-//    label4_2.backgroundColor = [UIColor grayColor];
-    [self.view addSubview:label4_2];
-    UILabel *label4_3 = [[UILabel alloc] initWithFrame:CGRectMake(screen_width-30,myScrollViewHight+64+orangeBgView.frame.size.height+screen_height/12+screen_height/48, 15, 20)];
-    label4_3.text = @"元";
-//    label4_3.backgroundColor = [UIColor redColor];
-    [self.view addSubview:label4_3];
-    
-    UIImageView *line2 = [[UIImageView alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64+screen_height/4.5+screen_height/6, screen_width, 1)];
-    line2.image = [UIImage imageNamed:@"horiz_line"];
-    [self.view addSubview:line2];
-    
-    UIButton *recordButton = [[UIButton alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64+screen_height/4.5+screen_height/6+1, screen_width, screen_height/7-1)];
-    [recordButton setBackgroundImage:[UIImage imageNamed:@"button_bk_image"] forState:UIControlStateHighlighted];
-    [self.view addSubview:recordButton];
-    
-    UILabel *label5 = [[UILabel alloc] initWithFrame:CGRectMake(15,myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/40, 80, 20)];
-    label5.text = @"成交记录";
-//        label5.backgroundColor = [UIColor redColor];
-    [self.view addSubview:label5];
-    
-    UILabel *label6 = [[UILabel alloc] initWithFrame:CGRectMake(15,myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/14+(screen_height/14-screen_height/40-20), 80, 20)];
-    label6.text = @"暂无数据";
-//        label6.backgroundColor = [UIColor yellowColor];
-    [self.view addSubview:label6];
-    
-    UILabel *label6_2 = [[UILabel alloc] initWithFrame:CGRectMake(15+80+5,myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/14+(screen_height/14-screen_height/40-20), 35, 20)];
-    label6_2.text = @"收益";
-//    label6_2.backgroundColor = [UIColor redColor];
-    [self.view addSubview:label6_2];
-    
-    UILabel *label6_3 = [[UILabel alloc] initWithFrame:CGRectMake(15+80+5+35+2,myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/14+(screen_height/14-screen_height/40-20), 10, 20)];
-    label6_3.text = @"+";
-    label6_3.font = [UIFont systemFontOfSize:17];
-    label6_3.textColor = [UIColor colorWithRed:35.0/255 green:150.0/255 blue:0 alpha:1];
-//    label6_3.backgroundColor = [UIColor yellowColor];
-    [self.view addSubview:label6_3];
-    
-    UILabel *label6_4 = [[UILabel alloc] initWithFrame:CGRectMake(15+80+5+35+2+10+2,myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/14+(screen_height/14-screen_height/40-20)-5, screen_width/2-15, 30)];
-    label6_4.text = @"9156433.0元";
-    label6_4.font = [UIFont systemFontOfSize:25];
-    label6_4.textColor = [UIColor colorWithRed:35.0/255 green:150.0/255 blue:0 alpha:1];
-//        label6_4.backgroundColor = [UIColor yellowColor];
-    [self.view addSubview:label6_4];
-    
-    
-    UIImageView *line3 = [[UIImageView alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/7, screen_width, 1)];
-    line3.image = [UIImage imageNamed:@"horiz_line"];
-    [self.view addSubview:line3];
-    
-    UIButton *investButton = [[UIButton alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/7+1, screen_width/2, screen_height/16)];
-    [investButton setTitle:@"投资" forState:UIControlStateNormal];
-//    investButton.backgroundColor = [UIColor blueColor];
-    [investButton setTitleColor:[UIColor colorWithRed:251.0/255.0 green:83.0/255.0 blue:48.0/255.0 alpha:1] forState:UIControlStateNormal];
-    [investButton setBackgroundImage:[UIImage imageNamed:@"button_bk_image"] forState:UIControlStateHighlighted];
-    [self.view addSubview:investButton];
-    
-    UIImageView *line4 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/2, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/7+1, 1, screen_height/16)];
-    line4.image = [UIImage imageNamed:@"vertical_line"];
-    [self.view addSubview:line4];
-    
-    UIButton *fetchButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/2+1, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/7+1, screen_width/2-1, screen_height/16)];
-    [fetchButton setTitle:@"取回" forState:UIControlStateNormal];
-    //    investButton.backgroundColor = [UIColor blueColor];
-    [fetchButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [fetchButton setBackgroundImage:[UIImage imageNamed:@"button_bk_image"] forState:UIControlStateHighlighted];
-    [self.view addSubview:fetchButton];
-    
-    UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width-15-13, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/14-13, 13, 26)];
-    arrowImageView.image = [UIImage imageNamed:@"arrow_right"];
-    [self.view addSubview:arrowImageView];
-    
-    UIImageView *line5 = [[UIImageView alloc] initWithFrame:CGRectMake(0, myScrollViewHight+64+screen_height/4.5+screen_height/6+screen_height/7+screen_height/16+1, screen_width, 1)];
-    line5.image = [UIImage imageNamed:@"horiz_line"];
-    [self.view addSubview:line5];
-    
-//    UITableView *myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 30+25+5+145+20, screen_width, screen_height-(30+25+5+145+20)-49)];
-//    myTableView.delegate = self;
-//    myTableView.dataSource = self;
-//    myTableView.backgroundColor = [UIColor clearColor];
-//    [self.view addSubview:myTableView];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    else {
+        label1_1.text = @"暂无数据";
+        label3_2.text = @"暂无数据";
+        label4_2.text = @"暂无数据";
+        label6_4.text = @"暂无数据";
+        label2_2.text = @"暂无数据";
+    }
 }
 
 - (void)platformButtonPressed:(id)sender {
     UIButton *platformButton = (UIButton *)sender;
-//    NSLog(@"%d",platformButton.tag);
+    //    NSLog(@"%d",platformButton.tag);
     if (tagRecord != platformButton.tag) {
+        UILabel *label1_1 = (UILabel*)[orangeBgView viewWithTag:100001];
+        UILabel *label3_2 = (UILabel*)[self.view viewWithTag:100003];
+        UILabel *label4_2 = (UILabel*)[self.view viewWithTag:100004];
+        UILabel *label6_4 = (UILabel*)[self.view viewWithTag:100006];
+        UILabel *label2_2 = (UILabel*)[self.view viewWithTag:100002];
+        
         UIView *platformBgView1 = (UIView *)[myScrollView viewWithTag:10000+platformButton.tag-10];
         UIView *platformBgView2 = (UIView *)[myScrollView viewWithTag:10000+tagRecord-10];
         UIImageView *orangeArrow1 = (UIImageView *)[platformBgView1 viewWithTag:1000+platformButton.tag-10];
@@ -269,6 +407,43 @@
         orangeArrow1.hidden = NO;
         orangeArrow2.hidden = YES;
         tagRecord = (int)platformButton.tag;
+        
+        float num = [[totalIncome objectForKey:plateformArray[tagRecord-10]] floatValue];
+        label1_1.text = [NSString stringWithFormat:@"%.1f",num];
+        
+        NSMutableArray *untreatedRecord = [untreatedDic objectForKey:plateformArray[tagRecord-10]];//未处理投资
+        NSMutableArray *treatedRecord = [treatedDic objectForKey:plateformArray[tagRecord-10]];//已处理过的投资
+        num = 0.0;
+        for (int i = 0; i < [untreatedRecord count]; i++) {//计算在投总额
+            num += [[untreatedRecord[i] objectForKey:@"capital"] floatValue];
+        }
+        label3_2.text = [NSString stringWithFormat:@"%.1f",num];
+        
+        if ([untreatedRecord count] != 0) {
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            untreatedRecord = [[untreatedRecord sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+            num = [[untreatedRecord[0] objectForKey:@"rest"] floatValue];
+            label4_2.text = [NSString stringWithFormat:@"%.1f",num];
+            
+        } else if ([treatedRecord count] != 0) {
+            NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+            NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+            treatedRecord = [[treatedRecord sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+            num = [[treatedRecord[0] objectForKey:@"rest"] floatValue];
+            label4_2.text = [NSString stringWithFormat:@"%.1f",num];
+        } else {
+            label4_2.text = @"0.0";
+        }
+        
+        if ([treatedRecord count] != 0) {
+            num = [[treatedRecord[0] objectForKey:@"earning"] floatValue];
+            label6_4.text = [NSString stringWithFormat:@"%.1f元",num];
+        } else {
+            label6_4.text = @"0.0元";
+        }
+        
+        label2_2.text = [NSString stringWithFormat:@"%.2f%%",[rateArray[tagRecord-10] floatValue]];
     }
 }
 

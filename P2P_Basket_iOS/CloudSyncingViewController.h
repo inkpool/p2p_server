@@ -11,6 +11,7 @@
 @interface CloudSyncingViewController : UIViewController
 {
     NSMutableArray *records;//用户所有的投资记录
-
+@public
+    NSString *loggedOnUser;
 }
 @end

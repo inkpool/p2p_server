@@ -8,6 +8,7 @@
 
 #import "HomeViewController.h"
 #import "AddViewController.h"
+#import "RecordDB.h"
 
 @interface HomeViewController ()
 {
@@ -23,6 +24,7 @@
     UITextField *rest1;
     int prewTag;
     float prewMoveY;
+    int selectedRow;
 }
 
 @end
@@ -377,15 +379,59 @@
 }
 
 - (void)sureButtonPressed {
+    NSMutableArray *untreatedRecord = [[NSMutableArray alloc] init];//未处理投资
+    NSMutableArray *treatedRecord = [[NSMutableArray alloc] init];//已处理过的投资
+    float rest = 0.0;//默认为0
+    for (int i = 0; i < [records count]; i++) {
+        if ([[records[i] objectForKey:@"platform"] isEqualToString:[expireRecord[selectedRow] objectForKey:@"platform"]]) {
+            if ([[records[i] objectForKey:@"state"] intValue] == 0) {//未处理
+                [untreatedRecord addObject:records[i]];
+            }
+            else {//已处理
+                [treatedRecord addObject:records[i]];
+            }
+        }
+    }
+    if ([untreatedRecord count] != 0) {//存在未处理的投资
+        NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+        NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+        untreatedRecord = [[untreatedRecord sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+        rest = [[untreatedRecord[0] objectForKey:@"rest"] floatValue];
+    }
+    else if ([treatedRecord count] != 0) {
+        NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStampEnd" ascending:NO];
+        NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor,nil];
+        treatedRecord = [[treatedRecord sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+        rest = [[treatedRecord[0] objectForKey:@"rest"] floatValue];
+    }
+    
+    RecordDB *myRecordDB = [[RecordDB alloc]init];
+    
     if (![income1.text isEqualToString:@""]) {//已输入最终收益
         if ([self isValidatedDecimal:income1.text]) {//最终收益输入格式合法
             if (![rest1.text isEqualToString:@""]) {//用户输入了取出余额的数量
                 if ([self isValidatedDecimal:rest1.text]) {//取出的余额值格式合法
-                    
+                    rest += [[expireRecord[selectedRow] objectForKey:@"capital"] floatValue];//加上本金
+                    rest += [income1.text floatValue];//加上收益
+                    if (rest > [rest1.text floatValue]) {
+                        rest -= [rest1.text floatValue];
+                    }
+                    else {
+                        rest = 0.0;
+                    }
+                    [myRecordDB settleUpdate:[[expireRecord[selectedRow] objectForKey:@"timeStamp"] longValue] withUserName:[expireRecord[selectedRow] objectForKey:@"userName"] withEarning:[income1.text floatValue] withTakeout:[rest1.text floatValue] withRest:rest];
                     [alertView removeFromSuperview];
                     [bgView removeFromSuperview];
                     income1.text = @"";
                     rest1.text = @"";
+                    NSMutableArray *insertIndexPaths = [NSMutableArray arrayWithCapacity:1];
+                    NSIndexPath *newPath = [NSIndexPath indexPathForRow:selectedRow inSection:0];
+                    [insertIndexPaths addObject:newPath];
+                    [expireRecord removeObjectAtIndex:selectedRow];
+                    [myTableView beginUpdates];
+                    [myTableView deleteRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
+                    [myTableView endUpdates];
+                    right_label1.text = [NSString stringWithFormat:@"%ld",[expireRecord count]];
                 }
                 else {//取出的余额值格式不合法
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"输入错误"
@@ -397,11 +443,22 @@
                 }
             }
             else {//取出的余额为默认值0
+                rest += [[expireRecord[selectedRow] objectForKey:@"capital"] floatValue];//加上本金
+                rest += [income1.text floatValue];//加上收益
+                [myRecordDB settleUpdate:[[expireRecord[selectedRow] objectForKey:@"timeStamp"] longValue] withUserName:[expireRecord[selectedRow] objectForKey:@"userName"] withEarning:[income1.text floatValue] withTakeout:0.0 withRest:rest];
                 
                 [alertView removeFromSuperview];
                 [bgView removeFromSuperview];
                 income1.text = @"";
                 rest1.text = @"";
+                NSMutableArray *insertIndexPaths = [NSMutableArray arrayWithCapacity:1];
+                NSIndexPath *newPath = [NSIndexPath indexPathForRow:selectedRow inSection:0];
+                [insertIndexPaths addObject:newPath];
+                [expireRecord removeObjectAtIndex:selectedRow];
+                [myTableView beginUpdates];
+                [myTableView deleteRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                [myTableView endUpdates];
+                right_label1.text = [NSString stringWithFormat:@"%ld",[expireRecord count]];
             }
         }
         else {//最终收益输入格式不合法
@@ -574,6 +631,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (flag == 2) {
+        selectedRow = (int)indexPath.row;
         UILabel *datelabel = (UILabel *)[alertView viewWithTag:201];
         NSString *dateStr = [NSString stringWithFormat:@"%@",[expireRecord[indexPath.row] objectForKey:@"endDate"]];
         datelabel.text = dateStr;

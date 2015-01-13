@@ -18,7 +18,7 @@
     IBOutlet UILabel *rateLable2;
 @public
     UITableView *myTableView;//表视图:显示已到期投资和即将到期投资
-//    NSMutableArray *records;//用户所有的投资记录
+    NSMutableArray *records;//用户所有的投资记录
     UIView *alertView;//确认投资对话框
     UIView *bgView;//确认投资对话框灰色背景
     NSMutableArray *expireRecord;//已到期的投资记录

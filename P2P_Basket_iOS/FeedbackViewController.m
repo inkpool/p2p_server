@@ -230,27 +230,13 @@ name: UIKeyboardDidShowNotification object:nil];//接收到系统发出的消息
         if (leftSliderC->networkConnected) {//网络已连接
             UIView *viewToUse = self.view;
             [DejalBezelActivityView activityViewForView:viewToUse withLabel:@"发送中..." width:100];
-            NSString *typeStr;
-            BOOL isBegin = false;
-            if (flag1) {
-                typeStr = @"建议";
-                isBegin = true;
-            }
+            NSString *typeStr = @"建议";
             if (flag2) {
-                if (isBegin) {
-                    typeStr = [NSString stringWithFormat:@"%@、出错",typeStr];
-                } else {
-                    typeStr = @"出错";
-                    isBegin = true;
-                }
+                typeStr = [NSString stringWithFormat:@"%@、出错",typeStr];
+                
             }
             if (flag3) {
-                if (isBegin) {
-                    typeStr = [NSString stringWithFormat:@"%@、帮助",typeStr];
-                } else {
-                    typeStr = @"帮助";
-                    isBegin = true;
-                }
+                typeStr = [NSString stringWithFormat:@"%@、帮助",typeStr];
             }
             NSString *contentStr = myTextView.text;
             NSDictionary* infoDict =[[NSBundle mainBundle] infoDictionary];

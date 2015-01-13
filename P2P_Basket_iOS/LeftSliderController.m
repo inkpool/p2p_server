@@ -210,6 +210,7 @@ static LeftSliderController *sharedLSC;
     switch (num) {
         case 0:{
             CloudSyncingViewController *cloudBackupVC = [[CloudSyncingViewController alloc] init];
+            cloudBackupVC->loggedOnUser = loggedOnUser;
             UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:cloudBackupVC];
             [self presentViewController:navC animated:YES completion:^{
                 UITableViewCell *cell = (UITableViewCell*)[self.view viewWithTag:1];

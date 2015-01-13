@@ -50,7 +50,7 @@
     CGRect rect = [[UIScreen mainScreen] bounds];
     CGSize size = rect.size;
     CGFloat screen_width = size.width;
-    CGFloat screen_height = size.height;
+//    CGFloat screen_height = size.height;
     
     syncButton = [[UIButton alloc] initWithFrame:CGRectMake(screen_width/2-40, 80, 80, 30)];
     [syncButton setTitle:@"同步" forState:UIControlStateNormal];
@@ -112,7 +112,7 @@
 //        progressView.progress = (index+1)/amount/2.0;
         
         [manager POST:@"http://128.199.226.246/beerich/index.php/sync"
-           parameters:@{@"user_name":@"xuxin@qq.com",@"platform":[records[index] objectForKey:@"platform"],
+           parameters:@{@"user_name":loggedOnUser,@"platform":[records[index] objectForKey:@"platform"],
                         @"product":[records[index] objectForKey:@"product"],
                         @"capital":[records[index] objectForKey:@"capital"],
                         @"minRate":[records[index] objectForKey:@"minRate"],
@@ -122,7 +122,11 @@
                         @"endDate":[records[index] objectForKey:@"endDate"],
                         @"state":[records[index] objectForKey:@"state"],
                         @"add_time":[records[index] objectForKey:@"timeStamp"],
-                        @"ifDeleted":[records[index] objectForKey:@"isDeleted"]}
+                        @"ifDeleted":[records[index] objectForKey:@"isDeleted"],
+                        @"earning":[records[index] objectForKey:@"earning"],
+                        @"takeout":[records[index] objectForKey:@"takeout"],
+                        @"timeStampEnd":[records[index] objectForKey:@"timeStampEnd"],
+                        @"rest":[records[index] objectForKey:@"rest"]}
             constructingBodyWithBlock:^(id <AFMultipartFormData> formData){
                 
              
@@ -153,7 +157,7 @@
 
 - (void)cloudSyncingDownStep1:(AFHTTPRequestOperationManager*)manager {
     [manager POST:@"http://128.199.226.246/beerich/index.php/sync/cloudAmount"
-       parameters:@{@"user_name":@"xuxin@qq.com"}
+       parameters:@{@"user_name":loggedOnUser}
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (!operation.responseString) {
                   [self alertWithTitle:@"提示" withMsg:@"网络连接异常"];
@@ -174,7 +178,7 @@
     LeftSliderController *leftSliderC = [LeftSliderController sharedViewController];
     if (num <= amount) {
         [manager POST:@"http://128.199.226.246/beerich/index.php/sync/fromCloud"
-           parameters:@{@"user_name":@"xuxin@qq.com",
+           parameters:@{@"user_name":loggedOnUser,
                         @"index":[[NSNumber alloc] initWithInt:index*5],
                         @"number":[[NSNumber alloc] initWithInt:5]}
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -199,7 +203,11 @@
                                                        ninthPara:[[resultArray[j] objectForKey:@"addTime"] longLongValue]
                                                        tenthPara:[[resultArray[j] objectForKey:@"state"] intValue]
                                                     eleventhPara:[[resultArray[j] objectForKey:@"ifDeleted"] intValue]
-                                                    withUserName:leftSliderC->loggedOnUser
+                                                    twelfthPara:leftSliderC->loggedOnUser
+                                                  thirteenthPara:[[resultArray[j] objectForKey:@"earning"] floatValue]
+                                                  fourteenthPara:[[resultArray[j] objectForKey:@"takeout"] floatValue]
+                                                   fifteenthPara:[[resultArray[j] objectForKey:@"timeStampEnd"] longLongValue]
+                                                   sixteenthPara:[[resultArray[j] objectForKey:@"rest"] floatValue]
                                        ];//end isOK
                           NSLog(@"isOK:%d",isOK);
                           
@@ -218,7 +226,7 @@
     }
     else {
         [manager POST:@"http://128.199.226.246/beerich/index.php/sync/fromCloud"
-           parameters:@{@"user_name":@"xuxin@qq.com",
+           parameters:@{@"user_name":loggedOnUser,
                         @"index":[[NSNumber alloc] initWithInt:index*5],
                         @"number":[[NSNumber alloc] initWithInt:amount-index*5]}
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -244,7 +252,11 @@
                                                        ninthPara:[[resultArray[j] objectForKey:@"addTime"] longLongValue]
                                                        tenthPara:[[resultArray[j] objectForKey:@"state"] intValue]
                                                     eleventhPara:[[resultArray[j] objectForKey:@"ifDeleted"] intValue]
-                                                    withUserName:leftSliderC->loggedOnUser
+                                                    twelfthPara:leftSliderC->loggedOnUser
+                                                  thirteenthPara:[[resultArray[j] objectForKey:@"earning"] floatValue]
+                                                  fourteenthPara:[[resultArray[j] objectForKey:@"takeout"] floatValue]
+                                                   fifteenthPara:[[resultArray[j] objectForKey:@"timeStampEnd"] longLongValue]
+                                                   sixteenthPara:[[resultArray[j] objectForKey:@"rest"] floatValue]
                                        ];//end isOK
                           NSLog(@"isOK:%d",isOK);
                           
