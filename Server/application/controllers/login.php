@@ -116,5 +116,4 @@ class Login extends CI_Controller {
 		$ticket=$this->input->get('ticket');
 		$token=$this->input->get('token');
 	}
-	
 }
