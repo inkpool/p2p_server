@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>822EDCA1-1B23-4686-85E8-2D85F4F42F6C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>P2P_Basket_iOS</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>5644A81BDDCB0634E17B7CF30F7A3DC2E9C04475</key>
+		<string>http://202.120.40.98:40080/asegroup15/p2p_basket.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>P2P_Basket_iOS/P2P_Basket_iOS.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>5644A81BDDCB0634E17B7CF30F7A3DC2E9C04475</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>http://202.120.40.98:40080/asegroup15/p2p_basket.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>5644A81BDDCB0634E17B7CF30F7A3DC2E9C04475</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>5644A81BDDCB0634E17B7CF30F7A3DC2E9C04475</string>
+			<key>IDESourceControlWCCName</key>
+			<string>P2P_Basket</string>
+		</dict>
+	</array>
+</dict>
+</plist>

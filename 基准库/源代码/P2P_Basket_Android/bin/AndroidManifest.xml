@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.crowley.p2pnote"
+    android:versionCode="2"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" android:logo="@drawable/logo">
+        <activity
+            android:name="com.crowley.p2pnote.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.crowley.p2pnote.NewItemActivity" >
+        </activity>
+        <activity
+            android:name="com.crowley.p2pnote.LoginActivity" >
+        </activity>
+        <activity
+            android:name="com.crowley.p2pnote.RegisterActivity" >
+        </activity>
+        <activity
+            android:name="com.crowley.p2pnote.UserActivity" >
+        </activity>
+        <activity
+            android:name="com.crowley.p2pnote.AdviceActivity" >
+        </activity>
+        <activity
+            android:name="com.crowley.p2pnote.AboutActivity" >
+        </activity>
+        <activity
+            android:name="com.crowley.p2pnote.RecordActivity" >
+        </activity>
+        <activity
+            android:name="com.crowley.p2pnote.ModifyPasswordActivity" >
+        </activity>
+    </application>
+
+</manifest>
