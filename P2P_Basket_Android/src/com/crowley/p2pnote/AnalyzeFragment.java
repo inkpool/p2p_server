@@ -184,5 +184,12 @@ public class AnalyzeFragment extends Fragment implements OnClickListener{
 		}
 		
 	}
+	
+	public void reflash(){
+		analyze_name.setText(DBOpenHelper.ANALYZE_TITLE[status]);
+		mChart.setData(generatePieData(status));
+		mChart.setCenterText(this.getActivity().getResources().getString(DBOpenHelper.ANALYZE_TITLE_SMALL[status]));
+		mChart.invalidate();
+	}
 
 }

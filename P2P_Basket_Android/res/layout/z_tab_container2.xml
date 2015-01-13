@@ -126,7 +126,7 @@
 	            android:button="@null"
 	            android:drawableTop="@drawable/more"
 	            android:gravity="center_horizontal"
-	            android:text="@string/tab_more"
+	            android:text="@string/tab_news"
 	            android:textSize="12sp"
 	            android:textColor="@color/tab_text" />
 	    </RadioGroup>        
