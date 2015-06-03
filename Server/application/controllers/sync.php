@@ -2,154 +2,158 @@
 
 class Sync extends CI_Controller {
 	
-	private function ifExists($user_name,$add_time)
-	{
-		$query=$this->db->select('*')->from('my_records')->where('userName',$user_name)->where('addTime',$add_time);
-		$num=$query->count_all_results();
-		return $num;
-	}
-	
-	private function getState($user_name,$add_time)
-	{
-		$query=$this->db->select('*')
-						->from('my_records')
-						->where('userName',$user_name)
-						->where('addTime',$add_time);
-		$row=$query->get()->result_array();
-		return $row[0]['state'];
-	}
-	
-	private function getIfDeleted($user_name,$add_time)
-	{
-		$query=$this->db->select('*')
-		->from('my_records')
-		->where('userName',$user_name)
-		->where('addTime',$add_time);
-		$row=$query->get()->result_array();
-		return $row[0]['ifDeleted'];
-	}
-	
-	private function insertRecord($user_name,$platform,$product,
-			$capital,$minRate,$maxRate,$calType,$startDate,$endDate,
-			$state,$add_time,$ifDeleted,$earning,$takeout,$calTime,$balance){
-		$data=array(
-				'id'=>'',
-				'userName'=>$user_name,
-				'platform'=>$platform,
-				'product'=>$product,
-				'capital'=>$capital,
-				'minRate'=>$minRate,
-				'maxRate'=>$maxRate,
-				'calType'=>$calType,
-				'startDate'=>$startDate,
-				'endDate'=>$endDate,
-				'state'=>$state,
-				'addTime'=>$add_time,
-				'ifDeleted'=>$ifDeleted,
-				'earning'=>$earning,
-				'takeout'=>$takeout,
-				'calTime'=>$calTime,
-				'balance'=>$balance,
-		);
-		$this->db->insert('my_records',$data);
-	}
-	
-	private function output($code,$message)
-	{
-		$output=array(
-				'error_code'=>$code,
-				'error_meesage'=>$message,
-		);
-		echo json_encode($output);
-		exit();
-	} 
-	
 	//从本地上传所有记录到云端
 	public function index()
 	{
+		$this->load->model('Record_model','record');
 // 		$this->insertRecord('xmc','test','test2',
 // 				1000,8.3,10.4,1,'2010-10-9','2014-1-3',
 // 				0,1418724601);
-		$user_name=$this->input->post('user_name');
+		$user_name=$this->input->post('username');
 		$platform=$this->input->post('platform');
 		$product=$this->input->post('product');
-		$capital=$this->input->post('capital');
+		$moneyFromPlatform=$this->input->post('moneyFromPlatform');
+		$moneyFormNew=$this->input->post('moneyFromNew');
 		$minRate=$this->input->post('minRate');
 		$maxRate=$this->input->post('maxRate');
 		$calType=$this->input->post('calType');
 		$startDate=$this->input->post('startDate');
 		$endDate=$this->input->post('endDate');
 		$state=$this->input->post('state');
-		$add_time=$this->input->post('add_time');
-		$ifDeleted=$this->input->post('ifDeleted');
-		
-		$earning=$this->input->post('earning');
-		$takeout=$this->input->post('takeout');
-		$calTime=$this->input->post('timeStampEnd');
-		$balance=$this->input->post('rest');
+		$timestamp=$this->input->post('timestamp');
+		$updateTime=$this->input->post('updateTime');
+		$isDeleted=$this->input->post('isDeleted');
+		$timestampEnd=$this->input->post('timestampEnd');
+		$renewAward=$this->input->post('renewAward');
+		$manageFee=$this->input->post('manageFee');
 
-		if($this->ifExists($user_name,$add_time))
+		if($this->record->ifExists($user_name,$timestamp))
 		{
 			//$db_ifDeleted=$this->getIfDeleted($user_name, $add_time);
-			if($ifDeleted)
+			if($isDeleted)
 			{
 				$update_data=array(
-						'ifDeleted'=>$ifDeleted,
+						'is_deleted'=>$isDeleted,
+						'update_time'=>$updateTime,
 				);
-				$this->db->where('userName',$user_name)
-						 ->where('addTime',$add_time)
-						 ->update('my_records',$update_data);
-				$this->output(0, "Deleted record. DB updated.");
+				$this->record->update($update_data,$user_name,$timestamp);
+				$this->my_tools->output(0, "Deleted record. DB updated.");
 			}
 				
-			$db_state=$this->getState($user_name, $add_time);
-			if(intval($db_state)<intval($state))
+			$dbUpdateTime=$this->record->getUpdateTime($user_name, $timestamp);
+			if(intval($dbUpdateTime)<intval($updateTime))
 			{
 				$update_data=array(
+						'platform'=>$platform,
+						'product'=>$product,
+						'money_from_platform'=>$moneyFromPlatform,
+						'money_from_new'=>$moneyFormNew,
+						'min_rate'=>$minRate,
+						'max_rate'=>$maxRate,
+						'cal_type'=>$calType,
+						'start_date'=>$startDate,
+						'end_date'=>$endDate,
 						'state'=>$state,
+						'update_time'=>$updateTime,
+						'is_deleted'=>$isDeleted,
+						'timestamp_end'=>$timestampEnd,
+						'renew_award'=>$renewAward,
+						'management_fee'=>$manageFee,
 				);
-				$this->db->where('userName',$user_name)
-						 ->where('addTime',$add_time)
-						 ->update('my_records',$update_data);
-				$this->output(0, "Updated.");
+				$this->record->update($update_data,$user_name,$timestamp);
+				$this->my_tools->output(0, "Updated.");
 			}
-			$this->output(0, "Already exists, jumped.");		
+			$this->my_tools->output(0, "Already exists, jumped.");
 		}
 		else{
-			$this->insertRecord($user_name,$platform,$product,
-			$capital,$minRate,$maxRate,$calType,$startDate,$endDate,
-			$state,$add_time,$ifDeleted,$earning,$takeout,$calTime,$balance);
-			$this->output(0, "Inserted.");
+			$this->record->insert($user_name,$platform,$product,$moneyFromPlatform,$moneyFormNew,$minRate,
+			$maxRate,$calType,$startDate,$endDate,$state,$timestamp,$updateTime,$isDeleted,
+			$timestampEnd,$renewAward,$manageFee);
+			$this->my_tools->output(0, "Inserted.");
 		}
 	}
 	
-	public function fromCloud()
-	{
-		//post 用户名、第几条、往后多少条
-		$user_name=$this->input->post('user_name');
-		$index=$this->input->post('index');
-		$number=$this->input->post('number');
+	public function balanceSync(){
+		$this->load->model('Balance_model','balance');
 		
-		$query=$this->db->select('*')
-						->from('my_records')
-						->where('userName',$user_name)
-						->limit($number,$index)
-						->order_by('id','desc');
-		$result=$query->get()->result();
+		
+		$user_name=$this->input->post('username');
+		$createTime=$this->input->post('createTime');
+		$platform=$this->input->post('platform');
+		$name=$this->input->post('name');
+		$type=$this->input->post('type');
+		$money=$this->input->post('money');
+		$timestamp=$this->input->post('timestamp');
+		$updateTime=$this->input->post('updateTime');
+		$isDeleted=$this->input->post('isDeleted');
+		
+		if($this->balance->ifExists($user_name,$createTime))
+		{
+			if($isDeleted)
+			{
+				$update_data=array(
+						'is_Deleted'=>$isDeleted,
+						'update_time'=>$updateTime,
+				);
+				$this->balance->update($update_data,$user_name,$createTime);
+				$this->my_tools->output(0, "Deleted record. DB updated.");
+			}
+		
+			$dbUpdateTime=$this->balance->getUpdateTime($user_name, $createTime);
+			if(intval($dbUpdateTime)<intval($updateTime))
+			{
+				$update_data=array(
+						'platform'=>$platform,
+						'name'=>$name,
+						'type'=>$type,
+						'money'=>$money,
+						'timestamp'=>$timestamp,
+						'update_time'=>$updateTime,
+						'is_deleted'=>$isDeleted,
+				);
+				$this->balance->update($update_data,$user_name,$createTime);
+				$this->my_tools->output(0, "Updated.");
+			}
+			$this->my_tools->output(0, "Already exists, jumped.");
+		}
+		else{
+			$this->balance->insert($user_name,$createTime,$platform,$name,$type,
+					$money,$timestamp,$updateTime,$isDeleted);
+			$this->my_tools->output(0, "Inserted.");
+		}		
+	}
+	
+	public function RecordFromCloud(){
+		$this->load->model('Record_model','record');
+		
+		//post 用户名、第几条往后
+		$user_name=$this->input->post('username');
+		$index=$this->input->post('index');
+		$result=$this->record->getRecords($user_name,$index);
 		echo json_encode($result);
 	}
 	
-	public function cloudAmount()
-	{
-		$user_name=$this->input->post('user_name');
-		$query=$this->db->select('*')->from('my_records')->where('userName',$user_name);
-		$num=$query->count_all_results();
-		echo $num;
+	public function BalanceFromCloud(){
+		$this->load->model('Balance_model','balance');
+		
+		//post 用户名、第几条往后
+		$user_name=$this->input->post('username');
+		$index=$this->input->post('index');
+		$result=$this->balance->getRecords($user_name,$index);
+		echo json_encode($result);
 	}
 	
-	public function test()
+	public function RecordAmount()
 	{
-		echo ($this->getState('xuxin@qq.com',1413725078));
+		$this->load->model('Record_model','record');
+		$user_name=$this->input->post('username');
+		echo $this->record->getAmount($user_name);
+	}
+	
+	public function BalanceAmount(){
+		$this->load->model('Balance_model','balance');
+		$user_name=$this->input->post('username');
+		echo $this->balance->getAmount($user_name);
 	}
 	
 	

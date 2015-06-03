@@ -49,9 +49,9 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = 'yangjian123';
-$db['default']['database'] = 'p2pbeerich';
+$db['default']['username'] = 'p2pnote';
+$db['default']['password'] = 'note@rich.cn';
+$db['default']['database'] = 'P2Pbeerich';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
